@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puente · Apprendre l'espagnol de zéro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F2EA; --tile:#FFFFFF;
+  --cobalt:#1E3BA8; --deep:#0D1B4D;
+  --sun:#F2B705; --sun-soft:#FDEBB2;
+  --carmin:#C8102E; --ok:#1B7F4E;
+  --ok-soft:#DCEFE4; --err-soft:#FADDE1;
+  --line:#C9CDE0;
+  --mono:'Space Mono',monospace;
+  --sans:'Archivo',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--deep);min-height:100vh;font-size:16px;line-height:1.55}
+.azulejo{height:14px;background:repeating-linear-gradient(45deg,var(--cobalt) 0 10px,var(--tile) 10px 20px,var(--sun) 20px 24px,var(--tile) 24px 34px);border-bottom:3px solid var(--deep)}
+header{background:var(--tile);border-bottom:3px solid var(--deep);position:sticky;top:0;z-index:50}
+.header-inner{max-width:1080px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{font-weight:900;font-size:1.5rem;letter-spacing:-0.02em;color:var(--cobalt);text-transform:uppercase;display:flex;align-items:baseline;gap:8px}
+.logo span{font-family:var(--mono);font-size:.68rem;font-weight:400;color:var(--deep);letter-spacing:0;text-transform:none}
+nav{display:flex;gap:3px;flex-wrap:wrap;margin-left:auto}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:.84rem;padding:8px 12px;border:2px solid transparent;background:none;cursor:pointer;color:var(--deep);border-radius:6px}
+.tab-btn:hover{border-color:var(--cobalt);color:var(--cobalt)}
+.tab-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.tab-btn.active{background:var(--cobalt);color:#fff;border-color:var(--cobalt)}
+.hud{display:flex;gap:8px;align-items:center}
+.xp-badge,.streak-badge{font-family:var(--mono);font-size:.78rem;font-weight:700;background:var(--sun);border:2px solid var(--deep);border-radius:999px;padding:4px 12px;white-space:nowrap}
+.streak-badge{background:var(--tile)}
+.gear-btn{font-size:1rem;background:var(--tile);border:2px solid var(--deep);border-radius:50%;width:34px;height:34px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gear-btn:hover{background:var(--sun-soft)}
+.gear-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.modal-overlay{position:fixed;inset:0;background:rgba(13,27,77,.55);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal-overlay.show{display:flex;animation:fadein .18s ease}
+.modal{background:var(--tile);border:3px solid var(--deep);border-radius:16px;padding:24px;max-width:440px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.modal-head h3{margin:0}
+.modal-close{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--deep);padding:4px 8px}
+.modal-close:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.vm-label{display:block;font-weight:700;font-size:.85rem;margin:16px 0 6px}
+.vm-select{width:100%;font-family:var(--sans);font-size:.92rem;padding:10px 12px;border:2px solid var(--deep);border-radius:8px;background:var(--paper);color:var(--deep)}
+.vm-select:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.vm-range{width:100%;accent-color:var(--cobalt);height:26px}
+.vm-hint{font-size:.78rem;color:#4A5578;margin:6px 0 0}
+.vm-actions{display:flex;gap:10px;margin-top:18px}
+.vm-note{font-size:.76rem;color:#4A5578;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);line-height:1.5}
+main{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+section.view{display:none}
+section.view.active{display:block;animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:900;line-height:1.05;letter-spacing:-0.02em}
+h2{font-size:1.5rem;font-weight:800;margin:0 0 14px;color:var(--cobalt)}
+h3{font-size:1.08rem;font-weight:800;margin:0 0 8px}
+.eyebrow{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--carmin);margin-bottom:10px}
+/* HERO */
+.hero{background:var(--tile);border:3px solid var(--deep);border-radius:14px;padding:36px 30px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-30px;top:-30px;width:150px;height:150px;background:conic-gradient(from 45deg,var(--cobalt) 0 25%,var(--sun) 0 50%,var(--cobalt) 0 75%,var(--sun) 0);border-radius:50%;opacity:.12}
+.converter{margin:22px 0 8px;font-weight:900;font-size:clamp(1.5rem,5vw,2.7rem);letter-spacing:-0.01em;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.converter .arrow{color:var(--carmin);font-size:.8em}
+.converter b{color:var(--sun);-webkit-text-stroke:1px var(--deep)}
+.converter .es{color:var(--cobalt)}
+.hero p.sub{max-width:560px;font-size:1rem;margin-top:8px}
+.home-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+/* PHRASE DU JOUR */
+.pdj{background:var(--deep);color:#fff;border-radius:12px;padding:22px 24px;margin-bottom:24px;border:3px solid var(--deep)}
+.pdj .eyebrow{color:var(--sun)}
+.pdj-es{font-size:clamp(1.2rem,3.5vw,1.7rem);font-weight:800;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pdj-fr{color:#C7CEEA;margin-top:4px}
+.pdj-note{font-size:.85rem;margin-top:10px;padding-top:10px;border-top:1px dashed #3A4A8A;color:#E8EBF7}
+.pdj-note b{color:var(--sun)}
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.card{background:var(--tile);border:2px solid var(--deep);border-radius:12px;padding:20px;position:relative}
+.card.clickable{cursor:pointer;transition:transform .12s,box-shadow .12s}
+.card.clickable:hover{transform:translateY(-3px);box-shadow:0 6px 0 var(--cobalt)}
+.card.clickable:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.card .corner{position:absolute;top:0;right:0;width:26px;height:26px;background:linear-gradient(135deg,transparent 50%,var(--cobalt) 50%);border-radius:0 10px 0 0}
+.pattern-key{font-family:var(--mono);font-weight:700;font-size:1.05rem;background:var(--deep);color:#fff;display:inline-block;padding:4px 12px;border-radius:6px;margin-bottom:10px}
+.pattern-key em{color:var(--sun);font-style:normal}
+/* SPEAK */
+.spk{display:inline-flex;align-items:center;justify-content:center;background:var(--sun);border:2px solid var(--deep);border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:1rem;flex-shrink:0}
+.spk:hover{transform:scale(1.08)}
+.spk:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px}
+.spk.big{width:64px;height:64px;font-size:1.7rem}
+td.es,.sayable{cursor:pointer}
+td.es::after{content:" 🔊";opacity:.22;font-size:.7em}
+td.es:hover::after{opacity:1}
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--tile);font-size:.92rem}
+th{background:var(--cobalt);color:#fff;text-align:left;padding:8px 12px;font-weight:700;font-size:.82rem;letter-spacing:.04em}
+td{padding:8px 12px;border-bottom:1px solid var(--line)}
+tr:nth-child(even) td{background:#F7F8FC}
+td.es{color:var(--cobalt);font-weight:600}
+td.mono{font-family:var(--mono);font-size:.85rem}
+/* BUTTONS */
+.btn{font-family:var(--sans);font-weight:800;font-size:.95rem;background:var(--cobalt);color:#fff;border:2px solid var(--deep);border-radius:8px;padding:11px 20px;cursor:pointer;box-shadow:0 4px 0 var(--deep);transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--deep)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--deep)}
+.btn:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.btn.sun{background:var(--sun);color:var(--deep)}
+.btn.red{background:var(--carmin)}
+.btn.ghost{background:var(--tile);color:var(--cobalt)}
+.btn.small{padding:7px 14px;font-size:.82rem;box-shadow:0 3px 0 var(--deep)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+/* PARCOURS */
+.level{background:var(--tile);border:2px solid var(--deep);border-radius:12px;padding:20px 22px;margin-bottom:14px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.level.locked{opacity:.55;background:#ECEDF3}
+.level-num{font-family:var(--mono);font-weight:700;font-size:1.3rem;background:var(--sun);border:2px solid var(--deep);border-radius:10px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.level.locked .level-num{background:#D5D7E2}
+.level.passed .level-num{background:var(--ok);color:#fff}
+.level-info{flex:1;min-width:200px}
+.level-info h3{margin-bottom:2px}
+.level-info p{font-size:.88rem;color:#4A5578}
+.level-best{font-family:var(--mono);font-size:.75rem;font-weight:700;color:var(--ok)}
+.level-actions{display:flex;gap:8px;flex-wrap:wrap}
+/* QUIZ */
+.quiz-shell{max-width:680px;margin:0 auto}
+.progress-track{height:12px;background:var(--tile);border:2px solid var(--deep);border-radius:999px;overflow:hidden;margin:14px 0 22px}
+.progress-fill{height:100%;background:repeating-linear-gradient(45deg,var(--sun) 0 10px,var(--cobalt) 10px 20px);width:0%;transition:width .3s ease}
+.qcard{background:var(--tile);border:3px solid var(--deep);border-radius:14px;padding:26px}
+.qcard .qword{font-size:clamp(1.4rem,4vw,2rem);font-weight:900;margin:10px 0 4px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.qcard .qword .hl{color:var(--carmin)}
+.qmeta{font-family:var(--mono);font-size:.75rem;color:var(--cobalt);font-weight:700}
+.options{display:grid;gap:10px;margin-top:20px}
+.opt{text-align:left;font-family:var(--sans);font-size:1.02rem;font-weight:600;background:var(--paper);border:2px solid var(--deep);border-radius:10px;padding:13px 16px;cursor:pointer;transition:background .1s}
+.opt:hover{background:var(--sun-soft)}
+.opt:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.opt.correct{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.opt.wrong{background:var(--err-soft);border-color:var(--carmin);color:var(--carmin)}
+.opt:disabled{cursor:default}
+.expl{margin-top:18px;padding:14px 16px;border-left:5px solid var(--sun);background:var(--sun-soft);border-radius:0 8px 8px 0;font-size:.92rem;display:none}
+.expl.show{display:block}
+.expl b{color:var(--cobalt)}
+/* CONJUG */
+.sentence{font-size:clamp(1.25rem,3.5vw,1.7rem);font-weight:700;line-height:1.5;margin:14px 0}
+.sentence .blank{display:inline-block;min-width:100px;border-bottom:3px dashed var(--carmin);text-align:center;color:var(--cobalt);font-weight:900;padding:0 6px}
+.fr-hint{font-style:italic;color:#4A5578;font-size:.95rem;margin-bottom:6px}
+.verb-picker{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.verb-btn{font-family:var(--mono);font-weight:700;font-size:1rem;background:var(--tile);border:2px solid var(--deep);border-radius:999px;padding:9px 20px;cursor:pointer}
+.verb-btn:hover{background:var(--sun-soft)}
+.verb-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.verb-btn.good{background:var(--ok);border-color:var(--ok);color:#fff}
+.verb-btn.bad{background:var(--carmin);border-color:var(--carmin);color:#fff}
+.conj-input-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.conj-input{font-family:var(--mono);font-size:1.15rem;font-weight:700;border:2px solid var(--deep);border-radius:8px;padding:10px 14px;width:210px;background:var(--tile);color:var(--deep)}
+.conj-input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.accent-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.acc{font-family:var(--mono);font-size:1rem;font-weight:700;border:1px solid var(--line);background:var(--tile);border-radius:6px;padding:4px 10px;cursor:pointer}
+.acc:hover{background:var(--sun-soft);border-color:var(--deep)}
+.feedback{margin-top:16px;font-weight:700;font-size:.98rem;display:none;border-radius:8px;padding:12px 16px}
+.feedback.ok{display:block;background:var(--ok-soft);color:var(--ok);border:2px solid var(--ok)}
+.feedback.almost{display:block;background:var(--sun-soft);color:#8a6400;border:2px solid var(--sun)}
+.feedback.ko{display:block;background:var(--err-soft);color:var(--carmin);border:2px solid var(--carmin)}
+/* FLASHCARDS */
+.flash-stage{perspective:1000px;max-width:440px;margin:24px auto}
+.flashcard{position:relative;width:100%;height:250px;transform-style:preserve-3d;transition:transform .45s;cursor:pointer}
+.flashcard.flipped{transform:rotateY(180deg)}
+.flash-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:3px solid var(--deep);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}
+.flash-front{background:var(--tile)}
+.flash-back{background:var(--deep);color:var(--sun);transform:rotateY(180deg)}
+.flash-word{font-size:clamp(1.4rem,4vw,2rem);font-weight:900}
+.flash-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;opacity:.6}
+.flash-grade{display:flex;gap:12px;justify-content:center;margin-top:18px}
+.srs-stats{font-family:var(--mono);font-size:.75rem;text-align:center;margin-top:12px;color:#4A5578}
+/* LESSONS */
+.lesson{background:var(--tile);border:2px solid var(--deep);border-radius:12px;margin-bottom:14px;overflow:hidden}
+.lesson-head{width:100%;display:flex;align-items:center;gap:14px;padding:16px 20px;background:none;border:none;cursor:pointer;text-align:left;font-family:var(--sans)}
+.lesson-head:focus-visible{outline:3px solid var(--sun);outline-offset:-3px}
+.lesson-num{font-family:var(--mono);font-weight:700;background:var(--sun);border:2px solid var(--deep);border-radius:8px;padding:4px 10px;font-size:.85rem;flex-shrink:0}
+.lesson-title{font-weight:800;font-size:1.05rem;flex:1}
+.lesson-arrow{font-size:1.2rem;color:var(--cobalt);transition:transform .2s}
+.lesson.open .lesson-arrow{transform:rotate(90deg)}
+.lesson-body{display:none;padding:0 20px 22px;border-top:2px dashed var(--line)}
+.lesson.open .lesson-body{display:block}
+.lesson-body h4{margin:20px 0 8px;color:var(--cobalt);font-size:1rem}
+.lesson-body p{margin:8px 0;max-width:72ch}
+.lesson-body ul{margin:8px 0 8px 22px}
+.lesson-body li{margin:4px 0}
+.reveal{display:inline-block;font-family:var(--mono);font-weight:700;font-size:.9rem;background:var(--paper);border:2px dashed var(--cobalt);border-radius:8px;padding:6px 14px;cursor:pointer;margin:4px 6px 4px 0}
+.reveal:hover{background:var(--sun-soft)}
+.reveal:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.reveal .ans{display:none;color:var(--cobalt)}
+.reveal.on .q-mark{display:none}
+.reveal.on .ans{display:inline}
+.tip{background:var(--sun-soft);border-left:5px solid var(--sun);padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:.93rem}
+.warn{background:var(--err-soft);border-left:5px solid var(--carmin);padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:.93rem}
+/* DIALOGUES */
+.dlg-pick{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.dlg-box{max-width:640px;margin:0 auto}
+.dlg-line{display:flex;gap:10px;margin:12px 0;align-items:flex-end}
+.dlg-line.me{flex-direction:row-reverse}
+.bubble{max-width:78%;padding:12px 16px;border:2px solid var(--deep);border-radius:14px;font-size:1rem;background:var(--tile);position:relative}
+.dlg-line.me .bubble{background:var(--sun-soft);border-radius:14px 14px 4px 14px}
+.dlg-line:not(.me) .bubble{background:#E8ECFB;border-radius:14px 14px 14px 4px}
+.bubble .who{font-family:var(--mono);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cobalt);display:block;margin-bottom:3px}
+.bubble .gap{display:inline-block;min-width:80px;border-bottom:2px dashed var(--carmin);color:var(--cobalt);font-weight:800;text-align:center}
+.bubble .tr{display:block;font-size:.78rem;color:#4A5578;font-style:italic;margin-top:4px}
+.dlg-opts{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px 44px}
+.dlg-note{font-size:.85rem;background:var(--sun-soft);border-left:4px solid var(--sun);padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0 8px 44px}
+/* EXAM */
+.exam-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.timer{font-family:var(--mono);font-weight:700;font-size:1.3rem;background:var(--deep);color:var(--sun);padding:8px 18px;border-radius:8px}
+.timer.low{background:var(--carmin);color:#fff}
+.result-card{background:var(--tile);border:3px solid var(--deep);border-radius:14px;padding:34px;text-align:center;max-width:560px;margin:0 auto}
+.result-note{font-size:4rem;font-weight:900;color:var(--cobalt);line-height:1}
+.result-note small{font-size:1.5rem;color:var(--deep)}
+.mention{display:inline-block;font-family:var(--mono);font-weight:700;background:var(--sun);border:2px solid var(--deep);border-radius:999px;padding:6px 20px;margin:14px 0}
+.review-item{background:var(--tile);border:2px solid var(--line);border-left:5px solid var(--carmin);border-radius:8px;padding:14px 18px;margin:10px 0;text-align:left;font-size:.92rem}
+.review-item.good{border-left-color:var(--ok)}
+/* FICHES */
+.fiche{background:var(--tile);border:2px solid var(--deep);border-radius:12px;padding:22px;margin-bottom:18px;break-inside:avoid}
+.fiche h3{display:flex;align-items:center;gap:10px}
+.fiche h3::before{content:"▰";color:var(--sun)}
+.fiche-tools{display:flex;gap:10px;margin-bottom:18px}
+/* BADGES */
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:14px}
+.badge{background:var(--tile);border:2px solid var(--deep);border-radius:10px;padding:14px 10px;text-align:center}
+.badge.off{opacity:.35;filter:grayscale(1)}
+.badge .bi{font-size:1.8rem}
+.badge .bn{font-weight:800;font-size:.85rem;margin-top:4px}
+.badge .bd{font-size:.72rem;color:#4A5578}
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--deep);color:#fff;border:2px solid var(--sun);border-radius:12px;padding:14px 22px;font-weight:700;z-index:100;transition:transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:90vw;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0)}
+footer{border-top:3px solid var(--deep);background:var(--tile);padding:20px;text-align:center;font-family:var(--mono);font-size:.75rem}
+.mode-pick{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.jeux-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+@media print{
+  header,footer,nav,.fiche-tools,.hero,.home-cta,.pdj{display:none!important}
+  body{background:#fff}
+  section.view{display:none}
+  #view-fiches{display:block!important}
+  .fiche{border:1px solid #000;page-break-inside:avoid}
+  td.es::after{content:""}
+}
+@media (max-width:640px){
+  .header-inner{padding:10px 12px;gap:8px}
+  nav{width:100%;overflow-x:auto;padding-bottom:4px}
+  .tab-btn{white-space:nowrap;font-size:.78rem;padding:7px 9px}
+  main{padding:20px 14px 60px}
+  .hero{padding:24px 18px}
+}
+</style>
+</head>
+<body>
+<div class="azulejo" aria-hidden="true"></div>
+<header>
+  <div class="header-inner">
+    <div class="logo">Puente <span>fr → es</span></div>
+    <nav aria-label="Navigation principale">
+      <button class="tab-btn active" data-view="home">Accueil</button>
+      <button class="tab-btn" data-view="parcours">Parcours</button>
+      <button class="tab-btn" data-view="lecons">Leçons</button>
+      <button class="tab-btn" data-view="fiches">Fiches</button>
+      <button class="tab-btn" data-view="jeux">Jeux</button>
+      <button class="tab-btn" data-view="dialogues">Dialogues</button>
+      <button class="tab-btn" data-view="exam">Examen</button>
+    </nav>
+    <div class="hud">
+      <div class="streak-badge" id="streakBadge">🔥 0</div>
+      <div class="xp-badge" id="xpBadge">⚡ 0 XP</div>
+      <button class="gear-btn" id="gearBtn" aria-label="Réglages de la voix" title="Réglages de la voix">⚙️</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════ ACCUEIL ══════════════ -->
+<section class="view active" id="view-home">
+  <div class="hero">
+    <div class="eyebrow">Méthode des patterns · pour vrai débutant · avec audio 🔊</div>
+    <h1>Apprends l'espagnol<br>de zéro, par la logique.</h1>
+    <div class="converter" aria-live="polite">
+      <span class="fr" id="convFr">informa<b>tion</b></span>
+      <span class="arrow">→</span>
+      <span class="es sayable" id="convEs" data-say="información">informa<b>ción</b></span>
+    </div>
+    <p class="sub">Le français et l'espagnol partagent ~75 % de leur vocabulaire. Suis le <strong>parcours guidé</strong> : chaque niveau validé à 70 % déverrouille le suivant. Clique sur n'importe quel mot espagnol 🔊 pour l'entendre.</p>
+    <div class="home-cta">
+      <button class="btn" data-goto="parcours">🗺️ Suivre le parcours</button>
+      <button class="btn sun" data-goto="jeux">🎮 Aller aux jeux</button>
+      <button class="btn ghost" data-goto="lecons">📖 Leçons libres</button>
+    </div>
+  </div>
+
+  <div class="pdj">
+    <div class="eyebrow">📅 La phrase du jour</div>
+    <div class="pdj-es"><button class="spk" id="pdjSpk" aria-label="Écouter la phrase">🔊</button><span id="pdjEs"></span></div>
+    <div class="pdj-fr" id="pdjFr"></div>
+    <div class="pdj-note" id="pdjNote"></div>
+  </div>
+
+  <div class="grid">
+    <div class="card clickable" data-goto="parcours" tabindex="0" role="button">
+      <div class="corner"></div>
+      <div class="pattern-key">6 <em>niveaux</em></div>
+      <h3>Parcours guidé</h3>
+      <p>Du kit de survie à l'examen final. 70 % pour déverrouiller le niveau suivant.</p>
+    </div>
+    <div class="card clickable" data-goto="jeux" tabindex="0" role="button">
+      <div class="corner"></div>
+      <div class="pattern-key">9 <em>jeux</em></div>
+      <h3>Jeux d'entraînement</h3>
+      <p>Quiz, dictée 🔊, compréhension orale 🔊, flashcards à révision espacée, conjugaison, genre el/la…</p>
+    </div>
+    <div class="card clickable" data-goto="dialogues" tabindex="0" role="button">
+      <div class="corner"></div>
+      <div class="pattern-key">3 <em>scènes</em></div>
+      <h3>Dialogues à trous</h3>
+      <p>Au café, à l'hôtel, une rencontre : complète les répliques et écoute chaque phrase.</p>
+    </div>
+    <div class="card">
+      <div class="corner"></div>
+      <div class="pattern-key" id="statKey">⚡ <em>0</em> XP</div>
+      <h3>Ta progression</h3>
+      <p id="statLine"></p>
+    </div>
+  </div>
+
+  <h2 style="margin-top:32px">🏅 Tes badges</h2>
+  <div class="badge-grid" id="badgeGrid"></div>
+</section>
+
+<!-- ══════════════ PARCOURS ══════════════ -->
+<section class="view" id="view-parcours">
+  <div class="eyebrow">Un chemin, pas un labyrinthe</div>
+  <h2>Parcours guidé</h2>
+  <p style="margin-bottom:18px;max-width:64ch">Chaque niveau : <strong>Apprendre</strong> (la leçon) puis <strong>Valider</strong> (le test). Obtiens <strong>70 %</strong> pour déverrouiller le suivant. Tu peux repasser un test autant de fois que tu veux — seul ton meilleur score compte.</p>
+  <div id="levelList"></div>
+</section>
+
+<!-- ══════════════ LEÇONS ══════════════ -->
+<section class="view" id="view-lecons">
+  <div class="eyebrow">Le raccourci d'abord, la logique toujours</div>
+  <h2>Leçons</h2>
+
+  <div class="lesson open" id="lesson-l0">
+    <button class="lesson-head" aria-expanded="true">
+      <span class="lesson-num">L0</span>
+      <span class="lesson-title">Kit de survie — parler dès la première heure</span>
+      <span class="lesson-arrow">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p>Avant toute grammaire, voici les phrases qui te sauvent dans 90 % des situations. <strong>Clique sur chaque phrase espagnole pour l'écouter 🔊</strong>, et répète à voix haute — c'est non négociable pour la prononciation.</p>
+      <h4>👋 Saluer & prendre congé</h4>
+      <table>
+        <tr><th>Español 🔊</th><th>Français</th><th>Quand ?</th></tr>
+        <tr><td class="es">Hola</td><td>Salut / Bonjour</td><td>Toujours, informel</td></tr>
+        <tr><td class="es">Buenos días</td><td>Bonjour</td><td>Le matin</td></tr>
+        <tr><td class="es">Buenas tardes</td><td>Bonjour / Bonsoir</td><td>L'après-midi</td></tr>
+        <tr><td class="es">Buenas noches</td><td>Bonsoir / Bonne nuit</td><td>Le soir</td></tr>
+        <tr><td class="es">Adiós</td><td>Au revoir</td><td>Définitif</td></tr>
+        <tr><td class="es">Hasta luego</td><td>À plus tard</td><td>Le plus courant</td></tr>
+      </table>
+      <div class="tip">🧠 <strong>Logique :</strong> <em>buenos días</em> est au pluriel (« bons jours ») — l'espagnol souhaite en grand. Et <em>hasta</em> = « jusqu'à » : <em>hasta mañana</em> (à demain), <em>hasta pronto</em> (à bientôt) — 1 mot, plein de formules.</div>
+      <h4>🙏 Politesse & secours</h4>
+      <table>
+        <tr><th>Español 🔊</th><th>Français</th></tr>
+        <tr><td class="es">Por favor</td><td>S'il te/vous plaît</td></tr>
+        <tr><td class="es">Gracias</td><td>Merci</td></tr>
+        <tr><td class="es">De nada</td><td>De rien</td></tr>
+        <tr><td class="es">Perdón</td><td>Pardon</td></tr>
+        <tr><td class="es">Lo siento</td><td>Je suis désolé (litt. « je le ressens »)</td></tr>
+        <tr><td class="es">No entiendo</td><td>Je ne comprends pas</td></tr>
+        <tr><td class="es">¿Puedes repetir?</td><td>Tu peux répéter ?</td></tr>
+        <tr><td class="es">¿Hablas francés?</td><td>Tu parles français ?</td></tr>
+      </table>
+      <h4>🙋 Se présenter</h4>
+      <table>
+        <tr><th>Español 🔊</th><th>Français</th></tr>
+        <tr><td class="es">Me llamo Léo</td><td>Je m'appelle Léo (litt. « je me nomme »)</td></tr>
+        <tr><td class="es">Soy de Francia</td><td>Je viens de France</td></tr>
+        <tr><td class="es">Tengo veinte años</td><td>J'ai vingt ans</td></tr>
+        <tr><td class="es">¿Cómo estás?</td><td>Comment vas-tu ?</td></tr>
+        <tr><td class="es">Muy bien, ¿y tú?</td><td>Très bien, et toi ?</td></tr>
+        <tr><td class="es">Encantado / Encantada</td><td>Enchanté / Enchantée</td></tr>
+      </table>
+      <h4>❓ Les questions magiques</h4>
+      <table>
+        <tr><th>Español 🔊</th><th>Français</th></tr>
+        <tr><td class="es">¿Qué?</td><td>Quoi ? / Que ?</td></tr>
+        <tr><td class="es">¿Dónde está…?</td><td>Où est… ?</td></tr>
+        <tr><td class="es">¿Cuándo?</td><td>Quand ?</td></tr>
+        <tr><td class="es">¿Cuánto cuesta?</td><td>Combien ça coûte ?</td></tr>
+        <tr><td class="es">¿Por qué?</td><td>Pourquoi ?</td></tr>
+        <tr><td class="es">¿Quién?</td><td>Qui ?</td></tr>
+      </table>
+      <div class="tip">💡 Le <strong>¿ renversé</strong> ouvre la question : l'espagnol te prévient dès le début qu'une question arrive (à l'oral, l'intonation monte dès le premier mot). Tous les mots interrogatifs portent un accent écrit : <em>qué, dónde, cuándo…</em></div>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson-l0b">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">L1</span>
+      <span class="lesson-title">Les nombres 0–100 — 3 règles, pas 100 mots</span>
+      <span class="lesson-arrow">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p>Bonne nouvelle : il n'y a que <strong>~25 mots à connaître</strong>, le reste est de la combinaison logique. Et zéro folie à la « quatre-vingt-dix » : l'espagnol est régulier.</p>
+      <h4>📦 Bloc 1 : les 16 mots uniques (0–15)</h4>
+      <table>
+        <tr><td class="es">cero</td><td>0</td><td class="es">seis</td><td>6</td><td class="es">doce</td><td>12</td></tr>
+        <tr><td class="es">uno</td><td>1</td><td class="es">siete</td><td>7</td><td class="es">trece</td><td>13</td></tr>
+        <tr><td class="es">dos</td><td>2</td><td class="es">ocho</td><td>8</td><td class="es">catorce</td><td>14</td></tr>
+        <tr><td class="es">tres</td><td>3</td><td class="es">nueve</td><td>9</td><td class="es">quince</td><td>15</td></tr>
+        <tr><td class="es">cuatro</td><td>4</td><td class="es">diez</td><td>10</td><td></td><td></td></tr>
+        <tr><td class="es">cinco</td><td>5</td><td class="es">once</td><td>11</td><td></td><td></td></tr>
+      </table>
+      <h4>🔧 Bloc 2 : 16–29, le mode « soudure »</h4>
+      <p><strong>16–19</strong> = dieci + unité : <span class="es sayable">dieciséis</span>, <span class="es sayable">diecisiete</span>, <span class="es sayable">dieciocho</span>, <span class="es sayable">diecinueve</span> (littéralement « dix-et-six » soudé).<br>
+      <strong>21–29</strong> = veinti + unité : <span class="es sayable">veintiuno</span>, <span class="es sayable">veintidós</span>, <span class="es sayable">veinticinco</span>…</p>
+      <h4>🔧 Bloc 3 : 30–99, le mode « y »</h4>
+      <p>Dizaine + <b>y</b> + unité : <span class="es sayable">treinta y uno</span> (31), <span class="es sayable">cuarenta y siete</span> (47), <span class="es sayable">noventa y nueve</span> (99).</p>
+      <table>
+        <tr><th>Dizaines</th><th></th><th></th><th></th></tr>
+        <tr><td class="es">veinte</td><td>20</td><td class="es">sesenta</td><td>60</td></tr>
+        <tr><td class="es">treinta</td><td>30</td><td class="es">setenta</td><td>70</td></tr>
+        <tr><td class="es">cuarenta</td><td>40</td><td class="es">ochenta</td><td>80</td></tr>
+        <tr><td class="es">cincuenta</td><td>50</td><td class="es">noventa</td><td>90</td></tr>
+        <tr><td class="es">cien</td><td>100</td><td></td><td></td></tr>
+      </table>
+      <div class="tip">🧠 <strong>Le pattern caché :</strong> les dizaines dérivent des unités + <em>-enta</em> : cuatro→cuar<b>enta</b>, cinco→cincu<b>enta</b>, seis→ses<b>enta</b>, siete→set<b>enta</b>, ocho→och<b>enta</b>, nueve→nov<b>enta</b>. Tu connais 4 → tu connais 40.</div>
+      <div class="tip">🧠 <strong>Défi :</strong>
+        <button class="reveal">73 → <span class="q-mark">?</span><span class="ans">setenta y tres</span></button>
+        <button class="reveal">58 → <span class="q-mark">?</span><span class="ans">cincuenta y ocho</span></button>
+        <button class="reveal">17 → <span class="q-mark">?</span><span class="ans">diecisiete</span></button>
+        <button class="reveal">24 → <span class="q-mark">?</span><span class="ans">veinticuatro</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson-l1">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">L2</span>
+      <span class="lesson-title">Les 4 grandes transformations — ~2 800 mots débloqués</span>
+      <span class="lesson-arrow">▸</span>
+    </button>
+    <div class="lesson-body">
+      <h4>🔑 -tion → -ción (~1 250 mots)</h4>
+      <p><strong>La logique :</strong> les deux langues héritent du latin <em>-tionem</em>. Le français garde le <em>t</em>, l'espagnol l'adoucit en <em>c</em>. Tous ces mots sont <strong>féminins</strong> : <em>la información</em>.</p>
+      <table>
+        <tr><th>Français</th><th>Español 🔊</th><th>Français</th><th>Español 🔊</th></tr>
+        <tr><td>information</td><td class="es">información</td><td>attention</td><td class="es">atención</td></tr>
+        <tr><td>nation</td><td class="es">nación</td><td>solution</td><td class="es">solución</td></tr>
+        <tr><td>situation</td><td class="es">situación</td><td>tradition</td><td class="es">tradición</td></tr>
+        <tr><td>éducation</td><td class="es">educación</td><td>émotion</td><td class="es">emoción</td></tr>
+      </table>
+      <div class="warn">⚠️ Quand le français a <strong>-ction</strong>, l'espagnol double : ac<strong>ción</strong>, produc<strong>ción</strong>, tradu<strong>cción</strong>. Les deux c se prononcent : ak-thión.</div>
+      <h4>🔑 -ité → -idad (~800 mots)</h4>
+      <p><strong>La logique :</strong> latin <em>-itatem</em>. L'espagnol a gardé le <em>d</em> latin que le français a perdu. Féminin aussi.</p>
+      <table>
+        <tr><th>Français</th><th>Español 🔊</th><th>Français</th><th>Español 🔊</th></tr>
+        <tr><td>réalité</td><td class="es">realidad</td><td>université</td><td class="es">universidad</td></tr>
+        <tr><td>qualité</td><td class="es">calidad</td><td>sécurité</td><td class="es">seguridad</td></tr>
+        <tr><td>liberté</td><td class="es">libertad</td><td>vérité</td><td class="es">verdad</td></tr>
+      </table>
+      <h4>🔑 -ique → -ico / -ica (~600 mots)</h4>
+      <p><strong>La logique :</strong> suffixe grec <em>-ikos</em>. L'espagnol garde la voyelle finale que le français a effacée. Accent écrit sur l'antépénultième : <em>polí-ti-ca, mú-si-ca</em>.</p>
+      <table>
+        <tr><th>Français</th><th>Español 🔊</th><th>Français</th><th>Español 🔊</th></tr>
+        <tr><td>politique</td><td class="es">política</td><td>magique</td><td class="es">mágico</td></tr>
+        <tr><td>musique</td><td class="es">música</td><td>fantastique</td><td class="es">fantástico</td></tr>
+        <tr><td>économique</td><td class="es">económico</td><td>technique</td><td class="es">técnica</td></tr>
+      </table>
+      <h4>🔑 -ment → -mente (~2 000 adverbes)</h4>
+      <p><strong>Formule :</strong> adjectif au féminin + <em>mente</em>. <em>Mente</em> = « esprit » en latin ; « d'un esprit rapide » → <span class="es sayable">rápidamente</span>. Le <em>-ment</em> français vient de la même source !</p>
+      <div class="tip">🧠 <strong>Défi — clique pour vérifier :</strong><br>
+        <button class="reveal">révolution → <span class="q-mark">?</span><span class="ans">revolución</span></button>
+        <button class="reveal">félicité → <span class="q-mark">?</span><span class="ans">felicidad</span></button>
+        <button class="reveal">automatique → <span class="q-mark">?</span><span class="ans">automático</span></button>
+        <button class="reveal">finalement → <span class="q-mark">?</span><span class="ans">finalmente</span></button>
+        <button class="reveal">perfection → <span class="q-mark">?</span><span class="ans">perfección</span></button>
+      </div>
+      <h4>🔑 Bonus : é- → es-, -eur → -or, ph → f, -aire → -ario</h4>
+      <p><strong>é- → es- :</strong> l'accent aigu français cache un <strong>s latin perdu</strong> : école → <span class="es sayable">escuela</span>, étudiant → <span class="es sayable">estudiante</span>, état → <span class="es sayable">estado</span>, étoile → <span class="es sayable">estrella</span>. (Le circonflexe aussi : hôpital → <span class="es sayable">hospital</span>.)</p>
+      <p><strong>-eur → -or :</strong> docteur → <span class="es sayable">doctor</span>, couleur → <span class="es sayable">color</span>, professeur → <span class="es sayable">profesor</span>. ⚠️ Ces mots deviennent <em>masculins</em> : el color, el calor.</p>
+      <p><strong>ph → f :</strong> l'espagnol écrit ce qu'il prononce : pharmacie → <span class="es sayable">farmacia</span>, téléphone → <span class="es sayable">teléfono</span>, photo → <span class="es sayable">foto</span>.</p>
+      <p><strong>-aire → -ario :</strong> vocabulaire → <span class="es sayable">vocabulario</span>, salaire → <span class="es sayable">salario</span>, anniversaire → <span class="es sayable">aniversario</span>.</p>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson-lg">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">L3</span>
+      <span class="lesson-title">El ou La ? — le genre en 4 règles</span>
+      <span class="lesson-arrow">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p>Le réflexe <em>el/la</em> est indispensable — et bien plus régulier qu'en français. 4 règles couvrent ~90 % des mots :</p>
+      <table>
+        <tr><th>Règle</th><th>Exemples 🔊</th><th>Fiabilité</th></tr>
+        <tr><td><b>-o → EL</b> (masculin)</td><td class="es">el libro, el trabajo, el año</td><td>★★★★★</td></tr>
+        <tr><td><b>-a → LA</b> (féminin)</td><td class="es">la casa, la playa, la semana</td><td>★★★★★</td></tr>
+        <tr><td><b>-ción / -sión / -dad / -tad → LA</b> toujours</td><td class="es">la canción, la ciudad, la libertad</td><td>★★★★★</td></tr>
+        <tr><td><b>-or / -ón → EL</b> souvent</td><td class="es">el color, el corazón</td><td>★★★★☆</td></tr>
+      </table>
+      <h4>⚠️ Les 7 exceptions célèbres (à connaître par cœur, ce sont les seules)</h4>
+      <table>
+        <tr><th>Mot 🔊</th><th>Pourquoi</th></tr>
+        <tr><td class="es">el día</td><td>le jour — vieux mot latin masculin (dies)</td></tr>
+        <tr><td class="es">el mapa</td><td>la carte — du latin <em>mappa</em>, passé au masculin</td></tr>
+        <tr><td class="es">el problema</td><td>les mots grecs en <b>-ma</b> sont masculins : el problema, el tema, el idioma, el programa</td></tr>
+        <tr><td class="es">la mano</td><td>la main — féminin latin (manus) conservé</td></tr>
+        <tr><td class="es">la foto</td><td>abréviation de la foto<em>grafía</em> → reste féminin</td></tr>
+        <tr><td class="es">la moto</td><td>abréviation de la moto<em>cicleta</em> → féminin</td></tr>
+        <tr><td class="es">la radio</td><td>abréviation de la radio<em>difusión</em> → féminin</td></tr>
+      </table>
+      <div class="tip">🧠 <strong>Mnémotechnique grec :</strong> « le problème, le thème, le programme » — en français aussi ces mots sont masculins malgré leur allure ! Même héritage grec, même logique. Ton intuition française fonctionne.</div>
+      <div class="tip">💡 <strong>Bonus pluriel :</strong> el → los, la → las, et on ajoute -s (ou -es après consonne) : el libro → los libros, la ciudad → las ciudades. C'est tout — pas de « aux, eaux, oux ».</div>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson-l3">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">L4</span>
+      <span class="lesson-title">SER / ESTAR / TENER — le cœur de 50 % des phrases</span>
+      <span class="lesson-arrow">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p>Le français a UN verbe « être ». L'espagnol en a DEUX, et il utilise « avoir » (<em>tener</em>) là où tu ne l'attends pas. C'est LA difficulté n°1 du francophone — et une fois comprise, c'est un réflexe.</p>
+      <h4>SER = l'identité (la carte d'identité)</h4>
+      <ul>
+        <li>Nationalité, origine : <span class="es sayable">Soy francés.</span></li>
+        <li>Profession : <span class="es sayable">Es profesora.</span></li>
+        <li>Caractère permanent : <span class="es sayable">Eres inteligente.</span></li>
+        <li>L'heure et la date : <span class="es sayable">Son las tres.</span></li>
+      </ul>
+      <h4>ESTAR = l'état & le lieu (le GPS et l'humeur)</h4>
+      <ul>
+        <li>Localisation : <span class="es sayable">Estoy en París.</span> (toujours ESTAR pour un lieu !)</li>
+        <li>État temporaire : <span class="es sayable">Estamos cansados.</span> (fatigués)</li>
+        <li>Émotions du moment : <span class="es sayable">Está contenta.</span></li>
+      </ul>
+      <div class="tip">🧠 <strong>Mnémotechnique :</strong> SER = ce qui est écrit sur ta carte d'identité. ESTAR = ce que dirait ton GPS ou ton médecin aujourd'hui.<br>Test ultime : <em>La sopa <strong>es</strong> buena</em> (bonne en général) vs <em>La sopa <strong>está</strong> buena</em> (délicieuse, là, maintenant — goûte !).</div>
+      <h4>TENER = avoir… et bien plus</h4>
+      <table>
+        <tr><th>Français</th><th>Español 🔊</th><th>Note</th></tr>
+        <tr><td>J'ai 20 ans</td><td class="es">Tengo 20 años</td><td>✅ comme en français</td></tr>
+        <tr><td>J'ai faim / soif</td><td class="es">Tengo hambre / sed</td><td>✅</td></tr>
+        <tr><td>J'ai chaud / froid</td><td class="es">Tengo calor / frío</td><td>⚠️ jamais « estoy caliente » (contresens gênant !)</td></tr>
+        <tr><td>J'ai raison</td><td class="es">Tengo razón</td><td>✅</td></tr>
+        <tr><td>J'ai sommeil</td><td class="es">Tengo sueño</td><td>« j'ai du sommeil »</td></tr>
+      </table>
+      <h4>Conjugaison au présent</h4>
+      <table>
+        <tr><th></th><th>SER</th><th>ESTAR</th><th>TENER</th></tr>
+        <tr><td class="mono">yo</td><td class="es">soy</td><td class="es">estoy</td><td class="es">tengo</td></tr>
+        <tr><td class="mono">tú</td><td class="es">eres</td><td class="es">estás</td><td class="es">tienes</td></tr>
+        <tr><td class="mono">él / ella / usted</td><td class="es">es</td><td class="es">está</td><td class="es">tiene</td></tr>
+        <tr><td class="mono">nosotros</td><td class="es">somos</td><td class="es">estamos</td><td class="es">tenemos</td></tr>
+        <tr><td class="mono">vosotros</td><td class="es">sois</td><td class="es">estáis</td><td class="es">tenéis</td></tr>
+        <tr><td class="mono">ellos / ustedes</td><td class="es">son</td><td class="es">están</td><td class="es">tienen</td></tr>
+      </table>
+      <h4>Les verbes réguliers : 3 moules, des milliers de verbes</h4>
+      <table>
+        <tr><th></th><th>-AR · hablar</th><th>-ER · comer</th><th>-IR · vivir</th></tr>
+        <tr><td class="mono">yo</td><td class="es">hablo</td><td class="es">como</td><td class="es">vivo</td></tr>
+        <tr><td class="mono">tú</td><td class="es">hablas</td><td class="es">comes</td><td class="es">vives</td></tr>
+        <tr><td class="mono">él / ella</td><td class="es">habla</td><td class="es">come</td><td class="es">vive</td></tr>
+        <tr><td class="mono">nosotros</td><td class="es">hablamos</td><td class="es">comemos</td><td class="es">vivimos</td></tr>
+        <tr><td class="mono">ellos</td><td class="es">hablan</td><td class="es">comen</td><td class="es">viven</td></tr>
+      </table>
+      <div class="tip">💡 <strong>Le pattern caché :</strong> yo = toujours <b>-o</b>. tú = toujours <b>-s</b>. nosotros = toujours <b>-mos</b>. ellos = toujours <b>-n</b>. Ces 4 marqueurs valent pour TOUS les verbes espagnols, réguliers ou non (tengo, tienes, tenemos, tienen…). Repère le marqueur, tu sais qui parle.</div>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson-l4">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">L5</span>
+      <span class="lesson-title">Faux amis & prononciation — éviter les pièges, parler juste</span>
+      <span class="lesson-arrow">▸</span>
+    </button>
+    <div class="lesson-body">
+      <h4>⚠️ Les faux amis : des cousins qui ont mal tourné</h4>
+      <p>Ces mots viennent du <em>même</em> mot latin, mais le sens a dérivé différemment. Ce ne sont pas des étrangers — ce sont des cousins, d'où le piège.</p>
+      <table>
+        <tr><th>Español 🔊</th><th>Ça ressemble à…</th><th>Ça veut dire</th><th>Pour dire le mot FR</th></tr>
+        <tr><td class="es">embarazada</td><td>embarrassée</td><td><b>enceinte</b> 🤰</td><td>avergonzada</td></tr>
+        <tr><td class="es">constipado</td><td>constipé</td><td><b>enrhumé</b> 🤧</td><td>estreñido</td></tr>
+        <tr><td class="es">salir</td><td>salir</td><td><b>sortir</b></td><td>ensuciar</td></tr>
+        <tr><td class="es">subir</td><td>subir</td><td><b>monter</b> ⬆️</td><td>sufrir</td></tr>
+        <tr><td class="es">largo</td><td>large</td><td><b>long</b></td><td>ancho</td></tr>
+        <tr><td class="es">entender</td><td>entendre</td><td><b>comprendre</b></td><td>oír</td></tr>
+        <tr><td class="es">quitar</td><td>quitter</td><td><b>enlever</b></td><td>dejar</td></tr>
+        <tr><td class="es">demandar</td><td>demander</td><td><b>poursuivre en justice</b> ⚖️</td><td>pedir / preguntar</td></tr>
+        <tr><td class="es">carta</td><td>carte</td><td><b>lettre</b> ✉️</td><td>tarjeta / mapa</td></tr>
+        <tr><td class="es">gato</td><td>gâteau</td><td><b>chat</b> 🐱</td><td>pastel</td></tr>
+      </table>
+      <div class="warn">🚨 La gaffe classique : <em>« estoy embarazado »</em> pour « je suis embarrassé » = tu viens d'annoncer une grossesse. Et <em>« pido un gato »</em> à la pâtisserie = tu commandes un chat.</div>
+      <h4>🗣️ Les 6 règles de prononciation qui suffisent</h4>
+      <table>
+        <tr><th>Règle</th><th>Exemple 🔊</th></tr>
+        <tr><td><b>Tout se prononce</b> (sauf le h)</td><td class="es">chocolate</td></tr>
+        <tr><td><b>J</b> = « rh » raclé (jota)</td><td class="es">trabajo</td></tr>
+        <tr><td><b>Z, CE, CI</b> = « th » anglais (ou « s » en Am. latine)</td><td class="es">cerveza</td></tr>
+        <tr><td><b>V = B</b> (aucune différence)</td><td class="es">vino</td></tr>
+        <tr><td><b>U</b> = « ou » (le « u » français n'existe pas)</td><td class="es">universidad</td></tr>
+        <tr><td><b>Ñ</b> = « gn »</td><td class="es">España</td></tr>
+      </table>
+      <div class="tip">🎯 <strong>L'accent tonique — la règle d'or :</strong> mot finissant par voyelle, <b>n</b> ou <b>s</b> → accent sur l'avant-dernière syllabe (<em>ha-BLA-mos</em>). Autre consonne → dernière syllabe (<em>ha-BLAR</em>). Un accent écrit (´) gagne toujours (<em>informa-CIÓN</em>). Erreur n°1 du francophone : tout accentuer à la fin, à la française. Clique les exemples 🔊 et imite !</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:24px">
+    <button class="btn sun" data-goto="parcours">Je valide mes niveaux →</button>
+  </div>
+</section>
+
+<!-- ══════════════ FICHES ══════════════ -->
+<section class="view" id="view-fiches">
+  <div class="eyebrow">Tout l'essentiel, format compact · clique un mot pour l'écouter 🔊</div>
+  <h2>Fiches de révision</h2>
+  <div class="fiche-tools">
+    <button class="btn small ghost" onclick="window.print()">🖨️ Imprimer les fiches</button>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 1 · Kit de survie</h3>
+    <table>
+      <tr><th>Español</th><th>Français</th><th>Español</th><th>Français</th></tr>
+      <tr><td class="es">Hola</td><td>Salut</td><td class="es">Gracias</td><td>Merci</td></tr>
+      <tr><td class="es">Buenos días</td><td>Bonjour (matin)</td><td class="es">De nada</td><td>De rien</td></tr>
+      <tr><td class="es">Buenas tardes</td><td>Bonjour (a.-m.)</td><td class="es">Por favor</td><td>S'il te plaît</td></tr>
+      <tr><td class="es">Hasta luego</td><td>À plus tard</td><td class="es">Perdón</td><td>Pardon</td></tr>
+      <tr><td class="es">Adiós</td><td>Au revoir</td><td class="es">Lo siento</td><td>Désolé</td></tr>
+      <tr><td class="es">Me llamo…</td><td>Je m'appelle…</td><td class="es">No entiendo</td><td>Je ne comprends pas</td></tr>
+      <tr><td class="es">Soy de Francia</td><td>Je viens de France</td><td class="es">¿Puedes repetir?</td><td>Tu peux répéter ?</td></tr>
+      <tr><td class="es">¿Cómo estás?</td><td>Comment vas-tu ?</td><td class="es">¿Cuánto cuesta?</td><td>Combien ça coûte ?</td></tr>
+      <tr><td class="es">Muy bien, ¿y tú?</td><td>Très bien, et toi ?</td><td class="es">¿Dónde está…?</td><td>Où est… ?</td></tr>
+    </table>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 2 · Les nombres</h3>
+    <table>
+      <tr><td class="es">cero</td><td>0</td><td class="es">diez</td><td>10</td><td class="es">veinte</td><td>20</td><td class="es">setenta</td><td>70</td></tr>
+      <tr><td class="es">uno</td><td>1</td><td class="es">once</td><td>11</td><td class="es">treinta</td><td>30</td><td class="es">ochenta</td><td>80</td></tr>
+      <tr><td class="es">dos</td><td>2</td><td class="es">doce</td><td>12</td><td class="es">cuarenta</td><td>40</td><td class="es">noventa</td><td>90</td></tr>
+      <tr><td class="es">tres</td><td>3</td><td class="es">trece</td><td>13</td><td class="es">cincuenta</td><td>50</td><td class="es">cien</td><td>100</td></tr>
+      <tr><td class="es">cuatro</td><td>4</td><td class="es">catorce</td><td>14</td><td class="es">sesenta</td><td>60</td><td></td><td></td></tr>
+      <tr><td class="es">cinco</td><td>5</td><td class="es">quince</td><td>15</td><td colspan="4">16-19 : dieci+ · 21-29 : veinti+ · 31+ : dizaine <b>y</b> unité</td></tr>
+      <tr><td class="es">seis</td><td>6</td><td class="es">siete</td><td>7</td><td class="es">ocho</td><td>8</td><td class="es">nueve</td><td>9</td></tr>
+    </table>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 3 · Les clés de conversion FR → ES</h3>
+    <table>
+      <tr><th>Clé</th><th>Exemple</th><th>Rendement</th><th>Fiabilité</th></tr>
+      <tr><td class="mono">-tion → -ción</td><td class="es">nación</td><td>~1 250 mots</td><td>★★★★★</td></tr>
+      <tr><td class="mono">-ction → -cción</td><td class="es">acción</td><td>~150 mots</td><td>★★★★☆</td></tr>
+      <tr><td class="mono">-ité → -idad</td><td class="es">realidad</td><td>~800 mots</td><td>★★★★★</td></tr>
+      <tr><td class="mono">-ique → -ico/-ica</td><td class="es">música</td><td>~600 mots</td><td>★★★★☆</td></tr>
+      <tr><td class="mono">-ment → -mente</td><td class="es">rápidamente</td><td>~2 000 mots</td><td>★★★★★</td></tr>
+      <tr><td class="mono">é- → es-</td><td class="es">escuela</td><td>~300 mots</td><td>★★★★☆</td></tr>
+      <tr><td class="mono">-eur → -or</td><td class="es">doctor</td><td>~400 mots</td><td>★★★★☆</td></tr>
+      <tr><td class="mono">ph → f</td><td class="es">foto</td><td>~200 mots</td><td>★★★★★</td></tr>
+      <tr><td class="mono">-aire → -ario</td><td class="es">salario</td><td>~250 mots</td><td>★★★★☆</td></tr>
+    </table>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 4 · El ou La ?</h3>
+    <table>
+      <tr><th>Règle</th><th>Exemples</th></tr>
+      <tr><td>-o → <b>EL</b></td><td class="es">el libro, el año</td></tr>
+      <tr><td>-a → <b>LA</b></td><td class="es">la casa, la semana</td></tr>
+      <tr><td>-ción/-sión/-dad/-tad → <b>LA</b></td><td class="es">la canción, la ciudad</td></tr>
+      <tr><td>-or/-ón → <b>EL</b></td><td class="es">el color, el corazón</td></tr>
+      <tr><td>⚠️ Exceptions</td><td class="es">el día, el mapa, el problema (+ -ma grecs), la mano, la foto, la moto, la radio</td></tr>
+      <tr><td>Pluriel</td><td class="es">los libros, las ciudades (-s / -es)</td></tr>
+    </table>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 5 · Top 10 des faux amis</h3>
+    <table>
+      <tr><th>Español</th><th>≠</th><th>Sens réel</th></tr>
+      <tr><td class="es">embarazada</td><td>embarrassée</td><td>enceinte</td></tr>
+      <tr><td class="es">constipado</td><td>constipé</td><td>enrhumé</td></tr>
+      <tr><td class="es">salir</td><td>salir</td><td>sortir</td></tr>
+      <tr><td class="es">subir</td><td>subir</td><td>monter</td></tr>
+      <tr><td class="es">largo</td><td>large</td><td>long</td></tr>
+      <tr><td class="es">entender</td><td>entendre</td><td>comprendre</td></tr>
+      <tr><td class="es">quitar</td><td>quitter</td><td>enlever</td></tr>
+      <tr><td class="es">demandar</td><td>demander</td><td>poursuivre en justice</td></tr>
+      <tr><td class="es">carta</td><td>carte</td><td>lettre</td></tr>
+      <tr><td class="es">gato</td><td>gâteau</td><td>chat</td></tr>
+    </table>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 6 · Conjugaison présent — 3 irréguliers vitaux + 3 moules</h3>
+    <table>
+      <tr><th></th><th>SER</th><th>ESTAR</th><th>TENER</th><th>-AR (hablar)</th><th>-ER (comer)</th><th>-IR (vivir)</th></tr>
+      <tr><td class="mono">yo</td><td class="es">soy</td><td class="es">estoy</td><td class="es">tengo</td><td class="es">hablo</td><td class="es">como</td><td class="es">vivo</td></tr>
+      <tr><td class="mono">tú</td><td class="es">eres</td><td class="es">estás</td><td class="es">tienes</td><td class="es">hablas</td><td class="es">comes</td><td class="es">vives</td></tr>
+      <tr><td class="mono">él/ella</td><td class="es">es</td><td class="es">está</td><td class="es">tiene</td><td class="es">habla</td><td class="es">come</td><td class="es">vive</td></tr>
+      <tr><td class="mono">nosotros</td><td class="es">somos</td><td class="es">estamos</td><td class="es">tenemos</td><td class="es">hablamos</td><td class="es">comemos</td><td class="es">vivimos</td></tr>
+      <tr><td class="mono">vosotros</td><td class="es">sois</td><td class="es">estáis</td><td class="es">tenéis</td><td class="es">habláis</td><td class="es">coméis</td><td class="es">vivís</td></tr>
+      <tr><td class="mono">ellos</td><td class="es">son</td><td class="es">están</td><td class="es">tienen</td><td class="es">hablan</td><td class="es">comen</td><td class="es">viven</td></tr>
+    </table>
+    <p style="font-size:.85rem"><b>SER</b> = identité, profession, nationalité, heure · <b>ESTAR</b> = lieu, état temporaire, émotion · <b>TENER</b> = possession + âge, faim, soif, chaud, froid, raison, sommeil.</p>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 7 · Prononciation</h3>
+    <table>
+      <tr><th>Lettre</th><th>Son</th><th>Exemple</th></tr>
+      <tr><td class="mono">J / GE / GI</td><td>« rh » raclé</td><td class="es">trabajo, gente</td></tr>
+      <tr><td class="mono">Z / CE / CI</td><td>« th » anglais (Esp.) ou « s » (Am. lat.)</td><td class="es">cerveza, gracias</td></tr>
+      <tr><td class="mono">V</td><td>= B</td><td class="es">vino</td></tr>
+      <tr><td class="mono">U</td><td>« ou »</td><td class="es">tú</td></tr>
+      <tr><td class="mono">H</td><td>muet</td><td class="es">hola</td></tr>
+      <tr><td class="mono">Ñ</td><td>« gn »</td><td class="es">mañana</td></tr>
+      <tr><td class="mono">LL / Y</td><td>« y » de yoga</td><td class="es">llamar, playa</td></tr>
+      <tr><td class="mono">R / RR</td><td>battu / roulé</td><td class="es">pero, perro</td></tr>
+    </table>
+    <p style="font-size:.85rem"><b>Accent tonique :</b> finale en voyelle/n/s → avant-dernière syllabe. Autre consonne → dernière. Accent écrit (´) → il gagne toujours.</p>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 8 · Les 20 mots-outils</h3>
+    <table>
+      <tr><th>ES</th><th>FR</th><th>ES</th><th>FR</th></tr>
+      <tr><td class="es">pero</td><td>mais</td><td class="es">también</td><td>aussi</td></tr>
+      <tr><td class="es">porque</td><td>parce que</td><td class="es">ahora</td><td>maintenant</td></tr>
+      <tr><td class="es">muy</td><td>très</td><td class="es">aquí</td><td>ici</td></tr>
+      <tr><td class="es">más</td><td>plus</td><td class="es">siempre</td><td>toujours</td></tr>
+      <tr><td class="es">nada</td><td>rien</td><td class="es">nunca</td><td>jamais</td></tr>
+      <tr><td class="es">todo</td><td>tout</td><td class="es">algo</td><td>quelque chose</td></tr>
+      <tr><td class="es">hoy</td><td>aujourd'hui</td><td class="es">mañana</td><td>demain / matin</td></tr>
+      <tr><td class="es">antes</td><td>avant</td><td class="es">después</td><td>après</td></tr>
+      <tr><td class="es">mucho</td><td>beaucoup</td><td class="es">poco</td><td>peu</td></tr>
+      <tr><td class="es">sí / no</td><td>oui / non</td><td class="es">quizás</td><td>peut-être</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════ JEUX ══════════════ -->
+<section class="view" id="view-jeux">
+  <div class="eyebrow">Devine, écoute, ne récite jamais</div>
+  <h2>Jeux d'entraînement</h2>
+
+  <div id="jeuxMenu">
+    <div class="jeux-grid">
+      <div class="card clickable" data-quiz="survie" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🛟</div><h3>Kit de survie</h3><p>Les phrases vitales, dans les deux sens.</p></div>
+      <div class="card clickable" data-quiz="nombres" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🔢</div><h3>Les nombres</h3><p>0 → 100, chiffres et lettres.</p></div>
+      <div class="card clickable" data-quiz="patterns" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🔑</div><h3>Patterns FR → ES</h3><p>Devine la conversion.</p></div>
+      <div class="card clickable" data-quiz="genre" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">⚖️</div><h3>El ou La ?</h3><p>Le réflexe du genre.</p></div>
+      <div class="card clickable" data-quiz="fauxamis" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">⚠️</div><h3>Faux amis</h3><p>Repère les pièges.</p></div>
+      <div class="card clickable" data-quiz="ecoute" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">👂🔊</div><h3>Compréhension orale</h3><p>Écoute et choisis la traduction.</p></div>
+      <div class="card clickable" id="dicteeCard" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">✏️🔊</div><h3>Dictée</h3><p>Écoute un mot, écris-le.</p></div>
+      <div class="card clickable" id="flashCard" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🃏</div><h3>Flashcards</h3><p>Révision espacée : tes mots faibles reviennent plus souvent.</p></div>
+      <div class="card clickable" id="conjCard" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🔧</div><h3>Conjugaison</h3><p>Choisis le verbe, puis conjugue-le dans la phrase.</p></div>
+    </div>
+  </div>
+
+  <!-- QCM générique -->
+  <div class="quiz-shell" id="quizArea" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span class="qmeta" id="quizCounter"></span>
+      <span class="qmeta" id="quizScore"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="quizProg"></div></div>
+    <div class="qcard">
+      <div class="qmeta" id="quizType"></div>
+      <div class="qword" id="quizQuestion"></div>
+      <div class="options" id="quizOptions"></div>
+      <div class="expl" id="quizExpl"></div>
+      <div style="margin-top:20px;display:flex;gap:10px">
+        <button class="btn sun" id="quizNext" style="display:none">Suivant →</button>
+        <button class="btn ghost small" id="quizQuit">Quitter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DICTÉE -->
+  <div class="quiz-shell" id="dicteeArea" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span class="qmeta" id="dicCounter"></span>
+      <span class="qmeta" id="dicScore"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="dicProg"></div></div>
+    <div class="qcard" style="text-align:center">
+      <div class="qmeta">DICTÉE · écoute et écris le mot</div>
+      <div style="margin:22px 0"><button class="spk big" id="dicPlay" aria-label="Écouter le mot">🔊</button></div>
+      <div class="conj-input-row" style="justify-content:center">
+        <input type="text" class="conj-input" id="dicInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="écris ce que tu entends…" aria-label="Mot entendu">
+        <button class="btn small sun" id="dicCheck">Vérifier</button>
+      </div>
+      <div class="accent-bar" style="justify-content:center">
+        <button class="acc" data-ch="á">á</button><button class="acc" data-ch="é">é</button>
+        <button class="acc" data-ch="í">í</button><button class="acc" data-ch="ó">ó</button>
+        <button class="acc" data-ch="ú">ú</button><button class="acc" data-ch="ñ">ñ</button>
+      </div>
+      <div class="feedback" id="dicFeedback" style="text-align:left"></div>
+      <div style="margin-top:20px;display:flex;gap:10px;justify-content:center">
+        <button class="btn sun" id="dicNext" style="display:none">Suivant →</button>
+        <button class="btn ghost small" id="dicQuit">Quitter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLASHCARDS -->
+  <div class="quiz-shell" id="flashArea" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span class="qmeta" id="flashCounter"></span>
+      <button class="btn ghost small" id="flashQuit">Quitter</button>
+    </div>
+    <div class="flash-stage">
+      <div class="flashcard" id="flashEl" tabindex="0" role="button" aria-label="Retourner la carte">
+        <div class="flash-face flash-front">
+          <span class="flash-tag">🇫🇷 Français — clique pour retourner</span>
+          <span class="flash-word" id="flashFr"></span>
+        </div>
+        <div class="flash-face flash-back">
+          <span class="flash-tag" style="color:#C7CEEA">🇪🇸 Español</span>
+          <span class="flash-word" id="flashEs"></span>
+          <button class="spk" id="flashSpk" aria-label="Écouter">🔊</button>
+        </div>
+      </div>
+    </div>
+    <div class="flash-grade" id="flashGrade" style="visibility:hidden">
+      <button class="btn red" id="flashNo">😵 Je ne savais pas</button>
+      <button class="btn" style="background:var(--ok)" id="flashYes">✅ Je savais</button>
+    </div>
+    <div class="srs-stats" id="flashStats"></div>
+  </div>
+
+  <!-- CONJUGAISON -->
+  <div class="quiz-shell" id="conjArea" style="display:none">
+    <div class="mode-pick" id="conjModes">
+      <button class="btn" data-conj="serestar">⚖️ SER / ESTAR / TENER</button>
+      <button class="btn sun" data-conj="reguliers">🔧 Verbes réguliers</button>
+      <button class="btn red" data-conj="tout">🎲 Tout mélangé</button>
+    </div>
+    <div id="conjGame" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="qmeta" id="conjCounter"></span>
+        <span class="qmeta" id="conjScore"></span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="conjProg"></div></div>
+      <div class="qcard">
+        <div class="fr-hint" id="conjFr"></div>
+        <div class="sentence" id="conjSentence"></div>
+        <div class="qmeta" style="margin-top:14px">① Quel verbe ?</div>
+        <div class="verb-picker" id="conjVerbs"></div>
+        <div id="conjStep2" style="display:none">
+          <div class="qmeta">② Conjugue-le :</div>
+          <div class="conj-input-row">
+            <input type="text" class="conj-input" id="conjInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ta réponse…" aria-label="Forme conjuguée">
+            <button class="btn small sun" id="conjCheck">Vérifier</button>
+          </div>
+          <div class="accent-bar">
+            <button class="acc" data-ch="á">á</button><button class="acc" data-ch="é">é</button>
+            <button class="acc" data-ch="í">í</button><button class="acc" data-ch="ó">ó</button>
+            <button class="acc" data-ch="ú">ú</button><button class="acc" data-ch="ñ">ñ</button>
+          </div>
+        </div>
+        <div class="feedback" id="conjFeedback"></div>
+        <div style="margin-top:20px;display:flex;gap:10px">
+          <button class="btn sun" id="conjNext" style="display:none">Suivant →</button>
+          <button class="btn ghost small" id="conjQuit">Quitter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RÉSULTAT générique -->
+  <div class="quiz-shell" id="gameResult" style="display:none">
+    <div class="result-card">
+      <div class="eyebrow">Série terminée</div>
+      <div class="result-note" id="gameFinalScore"></div>
+      <div class="mention" id="gameFinalMsg"></div>
+      <p id="gameFinalTip" style="margin:12px 0"></p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+        <button class="btn" id="gameRetry">🔁 Rejouer</button>
+        <button class="btn ghost" id="gameBack">← Retour aux jeux</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ DIALOGUES ══════════════ -->
+<section class="view" id="view-dialogues">
+  <div class="eyebrow">Complète tes répliques · chaque phrase se prononce 🔊</div>
+  <h2>Dialogues à trous</h2>
+  <div class="dlg-pick" id="dlgPick"></div>
+  <div class="dlg-box" id="dlgBox"></div>
+</section>
+
+<!-- ══════════════ EXAMEN ══════════════ -->
+<section class="view" id="view-exam">
+  <div class="eyebrow">15 questions · 12 minutes · note sur 20</div>
+  <h2>Examen blanc</h2>
+  <div id="examIntro">
+    <div class="card" style="max-width:640px">
+      <h3>Règles de l'examen</h3>
+      <ul style="margin:12px 0 12px 22px;line-height:2">
+        <li>🛟 2 questions de <strong>survie</strong> · 🔢 2 de <strong>nombres</strong></li>
+        <li>🔑 4 de <strong>patterns</strong> · ⚖️ 2 de <strong>genre</strong> · ⚠️ 2 de <strong>faux amis</strong></li>
+        <li>✍️ 3 phrases de <strong>conjugaison</strong> (verbe + forme, 2 pts chacune)</li>
+        <li>⏱️ <strong>12 minutes</strong> — l'examen se termine automatiquement</li>
+        <li>📊 Note /20, mention, correction détaillée · <strong>12/20 valide le niveau final</strong></li>
+      </ul>
+      <button class="btn" id="examStart" style="margin-top:10px">🎓 Commencer l'examen</button>
+    </div>
+  </div>
+  <div class="quiz-shell" id="examArea" style="display:none">
+    <div class="exam-header">
+      <span class="qmeta" id="examCounter"></span>
+      <div class="timer" id="examTimer">12:00</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="examProg"></div></div>
+    <div class="qcard">
+      <div class="qmeta" id="examType"></div>
+      <div class="fr-hint" id="examFr" style="display:none"></div>
+      <div class="qword" id="examQuestion"></div>
+      <div class="options" id="examOptions" style="display:none"></div>
+      <div id="examConjZone" style="display:none">
+        <div class="qmeta" style="margin-top:14px">① Quel verbe ?</div>
+        <div class="verb-picker" id="examVerbs"></div>
+        <div id="examStep2" style="display:none">
+          <div class="qmeta">② Conjugue-le :</div>
+          <div class="conj-input-row">
+            <input type="text" class="conj-input" id="examInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ta réponse…" aria-label="Forme conjuguée">
+            <button class="btn small sun" id="examCheck">Valider</button>
+          </div>
+          <div class="accent-bar">
+            <button class="acc" data-ch="á">á</button><button class="acc" data-ch="é">é</button>
+            <button class="acc" data-ch="í">í</button><button class="acc" data-ch="ó">ó</button>
+            <button class="acc" data-ch="ú">ú</button><button class="acc" data-ch="ñ">ñ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="examResultZone" style="display:none">
+    <div class="result-card">
+      <div class="eyebrow">Résultat de l'examen</div>
+      <div class="result-note" id="examNote"></div>
+      <div class="mention" id="examMention"></div>
+      <p id="examComment"></p>
+      <button class="btn" id="examRetry" style="margin-top:14px">🔁 Repasser l'examen</button>
+    </div>
+    <h3 style="margin:28px 0 6px">Correction détaillée</h3>
+    <div id="examReview"></div>
+  </div>
+</section>
+
+</main>
+<div class="modal-overlay" id="voiceModal" role="dialog" aria-modal="true" aria-labelledby="vmTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="vmTitle">🔊 Réglages de la voix</h3>
+      <button class="modal-close" id="vmClose" aria-label="Fermer">✕</button>
+    </div>
+    <p class="vm-hint">Choisis la voix qui te plaît le plus et sa vitesse. Puente essaie automatiquement de prendre la meilleure.</p>
+    <label class="vm-label" for="voiceSelect">Voix espagnole</label>
+    <select id="voiceSelect" class="vm-select"></select>
+    <p class="vm-hint" id="voiceHint"></p>
+    <label class="vm-label" for="rateRange">Vitesse : <span id="rateVal"></span></label>
+    <input type="range" id="rateRange" class="vm-range" min="0.6" max="1.15" step="0.05">
+    <div class="vm-actions">
+      <button class="btn small sun" id="voiceTest">▶︎ Tester la voix</button>
+      <button class="btn small ghost" id="voiceReset">Réinitialiser</button>
+    </div>
+    <p class="vm-note">💡 La liste dépend des voix installées sur ton appareil. Les voix marquées ⭐ (Premium / Natural / Enhanced) sonnent beaucoup mieux — sur mobile, tu peux en télécharger une « español » dans les réglages du téléphone (Accessibilité → Contenu énoncé → Voix), elle apparaîtra ensuite ici. Ouvrir Puente dans <b>Chrome</b> donne souvent accès à la voix « Google español ».</p>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<footer>PUENTE v2 · méthode des patterns · avec audio 🔊 · 1 règle &gt; 500 mots par cœur</footer>
+
+<script>
+/* ═══════════ AUDIO (synthèse vocale espagnole) ═══════════ */
+const VOICE_PREFS=(()=>{try{return JSON.parse(localStorage.getItem('puente_voice')||'{}')}catch(e){return {}}})();
+let allVoices=[],esVoices=[],curVoice=null,curRate=(typeof VOICE_PREFS.rate==='number'?VOICE_PREFS.rate:0.95);
+const GOOD_RE=/natural|neural|enhanced|premium|siri/i;
+
+function scoreVoice(v){
+  const n=(v.name||'').toLowerCase(),lang=(v.lang||'').toLowerCase();
+  let s=0;
+  if(GOOD_RE.test(n))s+=100;                                   // voix nouvelle génération
+  if(/google/.test(n))s+=60;                                   // Google TTS : très correct
+  if(/mónica|monica|paulina|elvira|dalia|helena|laura|sabina|jorge|álvaro|alvaro|marisol|angélica|angelica|lucía|lucia|penélope|penelope/.test(n))s+=40;
+  if(/compact|reducida|comprimida|eloquence/.test(n))s-=50;    // vieilles voix robotiques
+  if(lang==='es-es')s+=20; else if(lang==='es-mx'||lang==='es-us')s+=12; else if(lang.startsWith('es'))s+=6;
+  if(v.localService===false)s+=8;                              // voix en ligne souvent meilleures
+  return s;
+}
+function loadVoices(){
+  try{
+    allVoices=speechSynthesis.getVoices()||[];
+    esVoices=allVoices.filter(v=>v.lang&&v.lang.toLowerCase().startsWith('es')).sort((a,b)=>scoreVoice(b)-scoreVoice(a));
+    if(VOICE_PREFS.uri){
+      curVoice=esVoices.find(v=>v.voiceURI===VOICE_PREFS.uri)||allVoices.find(v=>v.voiceURI===VOICE_PREFS.uri)||null;
+    }
+    if(!curVoice)curVoice=esVoices[0]||null;
+    if(typeof populateVoiceSelect==='function')populateVoiceSelect();
+  }catch(e){}
+}
+try{
+  speechSynthesis.onvoiceschanged=loadVoices;loadVoices();
+  let tries=0;const iv=setInterval(()=>{if((esVoices&&esVoices.length)||tries++>12){clearInterval(iv)}else loadVoices()},400);
+}catch(e){}
+function speak(t){
+  try{
+    if(!curVoice)loadVoices();
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(String(t).replace(/…/g,'').trim());
+    u.lang=(curVoice&&curVoice.lang)||'es-ES';
+    u.rate=curRate;u.pitch=1;
+    if(curVoice)u.voice=curVoice;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function setVoiceByURI(uri){
+  curVoice=esVoices.find(v=>v.voiceURI===uri)||allVoices.find(v=>v.voiceURI===uri)||curVoice;
+  VOICE_PREFS.uri=curVoice?curVoice.voiceURI:null;
+  try{localStorage.setItem('puente_voice',JSON.stringify(VOICE_PREFS))}catch(e){}
+}
+function setRate(r){
+  curRate=r;VOICE_PREFS.rate=r;
+  try{localStorage.setItem('puente_voice',JSON.stringify(VOICE_PREFS))}catch(e){}
+}
+/* clic sur n'importe quel mot espagnol */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('td.es,.sayable');
+  if(t)speak(t.dataset.say||t.textContent);
+});
+
+/* ═══════════ RÉGLAGES VOIX (UI) ═══════════ */
+function populateVoiceSelect(){
+  const sel=document.getElementById('voiceSelect');
+  if(!sel)return;
+  const list=esVoices.length?esVoices:allVoices;
+  sel.innerHTML='';
+  const hint=document.getElementById('voiceHint');
+  if(!list.length){
+    const o=document.createElement('option');o.textContent='Aucune voix détectée';o.disabled=true;sel.appendChild(o);
+    if(hint)hint.textContent='Ton appareil ne propose pas encore de voix. Essaie Chrome, ou installe une voix « español » dans les réglages du système.';
+    return;
+  }
+  list.forEach(v=>{
+    const o=document.createElement('option');
+    o.value=v.voiceURI;
+    o.textContent=v.name+' ('+v.lang+')'+(GOOD_RE.test(v.name)?' ⭐':'');
+    if(curVoice&&v.voiceURI===curVoice.voiceURI)o.selected=true;
+    sel.appendChild(o);
+  });
+  if(hint)hint.textContent=(curVoice&&GOOD_RE.test(curVoice.name))?'✨ Belle voix sélectionnée.':'Astuce : les voix marquées ⭐ sonnent le plus naturel.';
+}
+function syncRateUI(){
+  const r=document.getElementById('rateRange'),val=document.getElementById('rateVal');
+  if(r)r.value=curRate;
+  if(val)val.textContent=curRate.toFixed(2)+'× '+(curRate<0.85?'(lent)':curRate>1.05?'(rapide)':'(normal)');
+}
+(function initVoiceUI(){
+  const modal=document.getElementById('voiceModal');if(!modal)return;
+  const open=()=>{populateVoiceSelect();syncRateUI();modal.classList.add('show')};
+  const close=()=>modal.classList.remove('show');
+  document.getElementById('gearBtn').addEventListener('click',open);
+  document.getElementById('vmClose').addEventListener('click',close);
+  modal.addEventListener('click',e=>{if(e.target===modal)close()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+  document.getElementById('voiceSelect').addEventListener('change',e=>{setVoiceByURI(e.target.value);populateVoiceSelect();speak('Hola, así sueno yo.')});
+  const r=document.getElementById('rateRange');
+  r.addEventListener('input',e=>{setRate(parseFloat(e.target.value));syncRateUI()});
+  r.addEventListener('change',()=>speak('Uno, dos, tres.'));
+  document.getElementById('voiceTest').addEventListener('click',()=>speak('Hola, me llamo Puente. ¿Cómo estás? Muy bien, gracias.'));
+  document.getElementById('voiceReset').addEventListener('click',()=>{
+    setRate(0.95);curVoice=esVoices[0]||null;VOICE_PREFS.uri=curVoice?curVoice.voiceURI:null;
+    try{localStorage.setItem('puente_voice',JSON.stringify(VOICE_PREFS))}catch(e){}
+    populateVoiceSelect();syncRateUI();speak('Hola.');
+  });
+  syncRateUI();
+})();
+
+/* ═══════════ STOCKAGE (persiste si possible, sinon session) ═══════════ */
+const MEM={};
+const store={
+  get(k,d){try{const v=localStorage.getItem('puente_'+k);return v!==null?JSON.parse(v):(k in MEM?MEM[k]:d)}catch(e){return k in MEM?MEM[k]:d}},
+  set(k,v){MEM[k]=v;try{localStorage.setItem('puente_'+k,JSON.stringify(v))}catch(e){}}
+};
+
+/* ═══════════ ÉTAT + STREAK ═══════════ */
+const S={
+  xp:store.get('xp',0),
+  quizAnswered:store.get('qa',0),
+  conjDone:store.get('cd',0),
+  bestExam:store.get('be',null),
+  badges:store.get('badges',[]),
+  levels:store.get('levels',{}),
+  streak:store.get('streak',{last:null,count:0}),
+};
+(function initStreak(){
+  const today=new Date().toISOString().slice(0,10);
+  const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
+  if(S.streak.last===today){}
+  else if(S.streak.last===y){S.streak.count++;S.streak.last=today}
+  else{S.streak.count=1;S.streak.last=today}
+  store.set('streak',S.streak);
+})();
+function save(){
+  store.set('xp',S.xp);store.set('qa',S.quizAnswered);store.set('cd',S.conjDone);
+  store.set('be',S.bestExam);store.set('badges',S.badges);store.set('levels',S.levels);
+}
+function addXP(n){S.xp+=n;if(S.xp>=500)award('xp500');save();render()}
+
+/* ═══════════ BADGES ═══════════ */
+const BADGES=[
+ {id:'first',icon:'👣',name:'Primeros pasos',desc:'Terminer une première série'},
+ {id:'perfect',icon:'💯',name:'¡Perfecto!',desc:'Une série sans faute'},
+ {id:'survivor',icon:'🛟',name:'Superviviente',desc:'Valider le kit de survie'},
+ {id:'mate',icon:'🔢',name:'Matemático',desc:'Valider les nombres'},
+ {id:'llave',icon:'🔑',name:'Cerrajero',desc:'Valider les patterns'},
+ {id:'genero',icon:'⚖️',name:'El o La',desc:'Valider le genre'},
+ {id:'conj',icon:'🔧',name:'Conjugador',desc:'Valider la conjugaison'},
+ {id:'oreja',icon:'👂',name:'Buena oreja',desc:'Dictée parfaite 8/8'},
+ {id:'diploma',icon:'🎓',name:'Diplomado',desc:'Examen ≥ 12/20'},
+ {id:'honor',icon:'🏆',name:'Mención de honor',desc:'Examen ≥ 16/20'},
+ {id:'racha3',icon:'🔥',name:'Racha ×3',desc:'3 jours d\'affilée'},
+ {id:'xp500',icon:'⚡',name:'500 XP',desc:'Atteindre 500 XP'},
+];
+function award(id){
+  if(S.badges.includes(id))return;
+  S.badges.push(id);save();
+  const b=BADGES.find(x=>x.id===id);
+  toast(b.icon+' Badge débloqué : '+b.name+' !');
+  renderBadges();
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._to);t._to=setTimeout(()=>t.classList.remove('show'),3200);
+}
+function renderBadges(){
+  const g=document.getElementById('badgeGrid');g.innerHTML='';
+  BADGES.forEach(b=>{
+    const d=document.createElement('div');
+    d.className='badge'+(S.badges.includes(b.id)?'':' off');
+    d.innerHTML='<div class="bi">'+b.icon+'</div><div class="bn">'+b.name+'</div><div class="bd">'+b.desc+'</div>';
+    g.appendChild(d);
+  });
+}
+
+/* ═══════════ RENDER HUD ═══════════ */
+function render(){
+  document.getElementById('xpBadge').textContent='⚡ '+S.xp+' XP';
+  document.getElementById('streakBadge').textContent='🔥 '+S.streak.count;
+  document.getElementById('statKey').innerHTML='⚡ <em>'+S.xp+'</em> XP · 🔥 '+S.streak.count+' j';
+  const passed=Object.values(S.levels).filter(l=>l.passed).length;
+  document.getElementById('statLine').textContent=
+   'Niveaux validés : '+passed+'/6 · Quiz : '+S.quizAnswered+' réponses · Conjugaison : '+S.conjDone+' phrases · Meilleur examen : '+(S.bestExam===null?'—':S.bestExam+'/20');
+  if(S.streak.count>=3)award('racha3');
+}
+
+/* ═══════════ NAV ═══════════ */
+const views=document.querySelectorAll('.view');
+const tabs=document.querySelectorAll('.tab-btn');
+function goto(v){
+  views.forEach(x=>x.classList.toggle('active',x.id==='view-'+v));
+  tabs.forEach(t=>t.classList.toggle('active',t.dataset.view===v));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+tabs.forEach(t=>t.addEventListener('click',()=>goto(t.dataset.view)));
+document.querySelectorAll('[data-goto]').forEach(b=>{
+  const go=()=>goto(b.dataset.goto);
+  b.addEventListener('click',go);
+  b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+});
+function openLesson(id){
+  goto('lecons');
+  document.querySelectorAll('.lesson').forEach(l=>l.classList.remove('open'));
+  const l=document.getElementById('lesson-'+id);
+  if(l){l.classList.add('open');setTimeout(()=>l.scrollIntoView({behavior:'smooth',block:'start'}),80)}
+}
+
+/* ═══════════ HERO CONVERTER ═══════════ */
+const convPairs=[
+ ['informa<b>tion</b>','informa<b>ción</b>','información'],
+ ['univers<b>ité</b>','univers<b>idad</b>','universidad'],
+ ['fantast<b>ique</b>','fantást<b>ico</b>','fantástico'],
+ ['rapide<b>ment</b>','rápida<b>mente</b>','rápidamente'],
+ ['<b>é</b>cole','<b>es</b>cuela','escuela'],
+ ['doct<b>eur</b>','doct<b>or</b>','doctor'],
+ ['<b>ph</b>armacie','<b>f</b>armacia','farmacia'],
+];
+let ci=0;
+const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduced){
+  setInterval(()=>{
+    ci=(ci+1)%convPairs.length;
+    document.getElementById('convFr').innerHTML=convPairs[ci][0];
+    const es=document.getElementById('convEs');
+    es.innerHTML=convPairs[ci][1];es.dataset.say=convPairs[ci][2];
+  },2600);
+}
+
+/* ═══════════ PHRASE DU JOUR ═══════════ */
+const PDJ=[
+ {es:'Un café con leche, por favor.',fr:'Un café au lait, s\'il vous plaît.',note:'<b>con</b> = avec, <b>leche</b> = lait. La formule magique du matin.'},
+ {es:'¿Dónde está la estación?',fr:'Où est la gare ?',note:'Lieu → <b>estar</b>. Et station → e<b>st</b>ación : le é- français cache un s !'},
+ {es:'No entiendo, ¿puedes hablar más despacio?',fr:'Je ne comprends pas, tu peux parler plus lentement ?',note:'<b>entender</b> = comprendre (faux ami !), <b>despacio</b> = lentement.'},
+ {es:'Tengo hambre, ¿comemos algo?',fr:'J\'ai faim, on mange quelque chose ?',note:'Faim → <b>tener</b> hambre, jamais « estar ». <b>algo</b> = quelque chose.'},
+ {es:'Me gusta mucho la música española.',fr:'J\'aime beaucoup la musique espagnole.',note:'<b>me gusta</b> = litt. « ça me plaît » — la façon espagnole de dire « j\'aime ».'},
+ {es:'¿Cuánto cuesta esta camiseta?',fr:'Combien coûte ce t-shirt ?',note:'<b>¿Cuánto cuesta?</b> : LA question du voyageur. cuesta ← costar (coûter).'},
+ {es:'Hasta mañana, que descanses.',fr:'À demain, repose-toi bien.',note:'<b>hasta</b> = jusqu\'à → hasta luego, hasta pronto, hasta mañana.'},
+ {es:'Lo siento, no hablo español todavía.',fr:'Désolé, je ne parle pas encore espagnol.',note:'<b>todavía</b> = encore. La phrase d\'excuse qui fait sourire tout le monde.'},
+ {es:'La cuenta, por favor.',fr:'L\'addition, s\'il vous plaît.',note:'<b>cuenta</b> ← contar (compter). Indispensable au restaurant.'},
+ {es:'¡Qué buena idea!',fr:'Quelle bonne idée !',note:'<b>¡Qué + adjectif!</b> = « Quel… ! » : ¡Qué bonito! ¡Qué interesante!'},
+];
+(function initPDJ(){
+  const day=Math.floor(Date.now()/864e5);
+  const p=PDJ[day%PDJ.length];
+  document.getElementById('pdjEs').textContent=p.es;
+  document.getElementById('pdjFr').textContent=p.fr;
+  document.getElementById('pdjNote').innerHTML=p.note;
+  document.getElementById('pdjSpk').addEventListener('click',()=>speak(p.es));
+})();
+
+/* ═══════════ DONNÉES ═══════════ */
+const PATTERN_Q=[
+ {q:'révolu<span class="hl">tion</span>',opts:['revolution','revolución','revolutión'],a:1,say:'revolución',e:'<b>-tion → -ción</b>. Le t latin s\'adoucit en c espagnol. Accent obligatoire sur le ó.'},
+ {q:'quali<span class="hl">té</span>',opts:['calidad','calité','cualitad'],a:0,say:'calidad',e:'<b>-ité → -idad</b>. L\'espagnol garde le d du latin <em>qualitatem</em>. Et qua- devient souvent ca-.'},
+ {q:'automa<span class="hl">tique</span>',opts:['automatique','automatico','automático'],a:2,say:'automático',e:'<b>-ique → -ico</b> + accent écrit sur l\'antépénultième : au-to-MÁ-ti-co.'},
+ {q:'a<span class="hl">ction</span>',opts:['ación','acción','actión'],a:1,say:'acción',e:'<b>-ction → -cción</b> : le français fusionne, l\'espagnol prononce les deux c : ak-thión.'},
+ {q:'rapide<span class="hl">ment</span>',opts:['rápidamente','rapidomente','rápidment'],a:0,say:'rápidamente',e:'<b>adjectif au féminin + mente</b>. <em>Mente</em> = « esprit » — même origine que notre -ment !'},
+ {q:'<span class="hl">é</span>tudiant',opts:['etudiante','estudiante','étudiante'],a:1,say:'estudiante',e:'<b>é- → es-</b> : l\'accent aigu français cache un s latin perdu (<em>studens</em>).'},
+ {q:'doct<span class="hl">eur</span>',opts:['docteur','doctor','doctador'],a:1,say:'doctor',e:'<b>-eur → -or</b>. Latin <em>doctor</em> : l\'espagnol n\'a rien changé, c\'est le français qui a déformé.'},
+ {q:'<span class="hl">ph</span>armacie',opts:['pharmacia','farmacía','farmacia'],a:2,say:'farmacia',e:'<b>ph → f</b> : l\'espagnol écrit ce qu\'il prononce. Pas d\'accent : far-MA-cia.'},
+ {q:'vocabul<span class="hl">aire</span>',opts:['vocabulario','vocabulaire','vocabulero'],a:0,say:'vocabulario',e:'<b>-aire → -ario</b>, du latin <em>-arium</em>. Idem : salario, aniversario, diccionario.'},
+ {q:'perfe<span class="hl">ction</span>',opts:['perfectión','perfección','perfeción'],a:1,say:'perfección',e:'<b>-ction → -cción</b> : deux c, prononcés k + th.'},
+ {q:'univers<span class="hl">ité</span>',opts:['universitad','université','universidad'],a:2,say:'universidad',e:'<b>-ité → -idad</b>. Le i reste, le d latin revient.'},
+ {q:'mus<span class="hl">ique</span>',opts:['música','musica','musique'],a:0,say:'música',e:'<b>-ique → -ica</b> + accent écrit : MÚ-si-ca.'},
+ {q:'<span class="hl">é</span>cole',opts:['ecola','escuela','écola'],a:1,say:'escuela',e:'<b>é- → es-</b> (latin <em>schola</em>). Bonus : le o latin bref devient la diphtongue <b>ue</b> (escuela, puerta, bueno).'},
+ {q:'coul<span class="hl">eur</span>',opts:['coulor','colora','color'],a:2,say:'color',e:'<b>-eur → -or</b>. ⚠️ Et le genre change : <em>la</em> couleur mais <em>el</em> color.'},
+ {q:'télé<span class="hl">ph</span>one',opts:['teléfono','telephono','telefón'],a:0,say:'teléfono',e:'<b>ph → f</b> + accent esdrújula : te-LÉ-fo-no.'},
+ {q:'liber<span class="hl">té</span>',opts:['liberté','libertad','libertidad'],a:1,say:'libertad',e:'<b>-té → -tad</b> : variante de -idad quand il n\'y a pas de i (libertad, verdad, dificultad).'},
+];
+const FAUX_Q=[
+ {q:'« embarazada » signifie…',opts:['embarrassée','enceinte 🤰','embêtée'],a:1,say:'embarazada',e:'LE piège classique. « Embarrassée » = <b>avergonzada</b>. Dire <em>estoy embarazado</em> = annoncer une grossesse.'},
+ {q:'« constipado » signifie…',opts:['constipé','fatigué','enrhumé 🤧'],a:2,say:'constipado',e:'Faux ami médical : constipado = enrhumé. « Constipé » = <b>estreñido</b>.'},
+ {q:'« salir » signifie…',opts:['salir','sortir','saler'],a:1,say:'salir',e:'Du latin <em>salire</em> (bondir) → « bondir dehors ». « Salir » = <b>ensuciar</b>.'},
+ {q:'« subir » signifie…',opts:['monter ⬆️','subir','descendre'],a:0,say:'subir',e:'Latin <em>subire</em> = aller vers le haut. « Subir » = <b>sufrir</b>.'},
+ {q:'« largo » signifie…',opts:['large','long','grand'],a:1,say:'largo',e:'Un camino largo = un LONG chemin. « Large » = <b>ancho</b>.'},
+ {q:'« entender » signifie…',opts:['entendre','attendre','comprendre'],a:2,say:'entender',e:'Comme « entendement » en vieux français ! « Entendre » = <b>oír</b>.'},
+ {q:'« quitar » signifie…',opts:['quitter','enlever','acquitter'],a:1,say:'quitar',e:'Quitar la mesa = débarrasser la table. « Quitter quelqu\'un » = <b>dejar</b>.'},
+ {q:'« demandar » signifie…',opts:['demander','commander','poursuivre en justice ⚖️'],a:2,say:'demandar',e:'Demandar = attaquer au tribunal ! « Demander » = <b>pedir</b> (objet) ou <b>preguntar</b> (question).'},
+ {q:'« una carta » signifie…',opts:['une lettre ✉️','une carte','une charte'],a:0,say:'una carta',e:'Carta = lettre (courrier). Carte bancaire = <b>tarjeta</b>, carte géo = <b>mapa</b>.'},
+ {q:'« un gato » signifie…',opts:['un gâteau','un chat 🐱','un gars'],a:1,say:'un gato',e:'Gato = chat (latin <em>cattus</em>). « Gâteau » = <b>pastel</b> ou <b>tarta</b>.'},
+];
+const SURVIE=[
+ {es:'Hola',fr:'Salut / Bonjour'},{es:'Buenos días',fr:'Bonjour (le matin)'},
+ {es:'Buenas noches',fr:'Bonsoir / Bonne nuit'},{es:'Adiós',fr:'Au revoir'},
+ {es:'Hasta luego',fr:'À plus tard'},{es:'Por favor',fr:'S\'il te plaît'},
+ {es:'Gracias',fr:'Merci'},{es:'De nada',fr:'De rien'},
+ {es:'Perdón',fr:'Pardon'},{es:'Lo siento',fr:'Je suis désolé'},
+ {es:'No entiendo',fr:'Je ne comprends pas'},{es:'¿Puedes repetir?',fr:'Tu peux répéter ?'},
+ {es:'Me llamo…',fr:'Je m\'appelle…'},{es:'Soy de Francia',fr:'Je viens de France'},
+ {es:'¿Cómo estás?',fr:'Comment vas-tu ?'},{es:'Muy bien, ¿y tú?',fr:'Très bien, et toi ?'},
+ {es:'¿Cuánto cuesta?',fr:'Combien ça coûte ?'},{es:'¿Dónde está el baño?',fr:'Où sont les toilettes ?'},
+ {es:'La cuenta, por favor',fr:'L\'addition, s\'il vous plaît'},{es:'Encantado',fr:'Enchanté'},
+];
+const NUM=[[0,'cero'],[1,'uno'],[2,'dos'],[3,'tres'],[4,'cuatro'],[5,'cinco'],[6,'seis'],[7,'siete'],[8,'ocho'],[9,'nueve'],[10,'diez'],[11,'once'],[12,'doce'],[13,'trece'],[14,'catorce'],[15,'quince'],[16,'dieciséis'],[17,'diecisiete'],[18,'dieciocho'],[19,'diecinueve'],[20,'veinte'],[21,'veintiuno'],[22,'veintidós'],[25,'veinticinco'],[30,'treinta'],[33,'treinta y tres'],[40,'cuarenta'],[47,'cuarenta y siete'],[50,'cincuenta'],[58,'cincuenta y ocho'],[60,'sesenta'],[70,'setenta'],[73,'setenta y tres'],[80,'ochenta'],[90,'noventa'],[99,'noventa y nueve'],[100,'cien']];
+const GENRE_W=[
+ ['libro','el','<b>-o → EL</b> (masculin). El libro = le livre.'],
+ ['casa','la','<b>-a → LA</b> (féminin). La casa = la maison.'],
+ ['canción','la','<b>-ción → toujours LA</b>. La canción = la chanson.'],
+ ['universidad','la','<b>-dad → toujours LA</b>.'],
+ ['problema','el','⚠️ Les mots grecs en <b>-ma</b> sont masculins : el problema, el tema, el idioma. Comme « LE problème » en français !'],
+ ['día','el','⚠️ Exception célèbre : <b>el día</b> (vieux masculin latin, <em>dies</em>). Buenos días !'],
+ ['mano','la','⚠️ Exception : <b>la mano</b> — féminin latin (<em>manus</em>) conservé.'],
+ ['foto','la','⚠️ Abréviation de la foto<em>grafía</em> → reste féminin : la foto.'],
+ ['mapa','el','⚠️ Exception : <b>el mapa</b> (du latin <em>mappa</em>).'],
+ ['color','el','<b>-or → EL</b>. El color — alors que « la couleur » est féminin en français !'],
+ ['ciudad','la','<b>-dad → toujours LA</b>. La ciudad = la ville.'],
+ ['corazón','el','<b>-ón → EL</b> souvent. El corazón = le cœur.'],
+ ['moto','la','⚠️ Abréviation de la moto<em>cicleta</em> → la moto.'],
+ ['trabajo','el','<b>-o → EL</b>. El trabajo = le travail.'],
+ ['playa','la','<b>-a → LA</b>. La playa = la plage.'],
+ ['idioma','el','⚠️ Mot grec en <b>-ma</b> → masculin : el idioma = la langue !'],
+];
+const ECOUTE=[
+ {es:'Tengo veinte años',fr:'J\'ai vingt ans',w:['Je tiens vingt euros','J\'ai vingt amis']},
+ {es:'¿Dónde está la escuela?',fr:'Où est l\'école ?',w:['Où est l\'écurie ?','Quand ouvre l\'école ?']},
+ {es:'Me llamo Pablo',fr:'Je m\'appelle Pablo',w:['J\'appelle Pablo','Pablo m\'aime']},
+ {es:'No entiendo',fr:'Je ne comprends pas',w:['Je n\'entends pas','Je n\'attends pas']},
+ {es:'La cuenta, por favor',fr:'L\'addition, s\'il vous plaît',w:['Le conte, s\'il vous plaît','La chambre, s\'il vous plaît']},
+ {es:'Tengo mucha hambre',fr:'J\'ai très faim',w:['J\'ai beaucoup d\'hommes','Je suis très fatigué']},
+ {es:'Hasta mañana',fr:'À demain',w:['Jusqu\'au matin','Bonne nuit']},
+ {es:'Somos de Francia',fr:'Nous venons de France',w:['Nous sommes en France','Ils viennent de France']},
+ {es:'¿Cuánto cuesta el libro?',fr:'Combien coûte le livre ?',w:['Combien de livres ?','Où est le livre ?']},
+ {es:'Estoy muy cansado',fr:'Je suis très fatigué',w:['Je suis très content','J\'ai très chaud']},
+];
+const DICTEE=['hola','gracias','escuela','música','ciudad','información','farmacia','doctor','estudiante','universidad','corazón','mañana','español','trabajo','teléfono','canción'];
+const CONJ_SE=[
+ {fr:'Je suis français.',es:'Yo ___ francés.',verbs:['ser','estar','tener'],v:'ser',ans:'soy',e:'Nationalité = identité → <b>SER</b>. Yo soy.'},
+ {fr:'Nous sommes fatigués.',es:'Nosotros ___ cansados.',verbs:['ser','estar','tener'],v:'estar',ans:'estamos',e:'État temporaire → <b>ESTAR</b>. Nosotros estamos.'},
+ {fr:'Elle a vingt ans.',es:'Ella ___ veinte años.',verbs:['ser','estar','tener'],v:'tener',ans:'tiene',e:'⚠️ L\'âge → <b>TENER</b> (« elle a 20 ans », comme en français). Ella tiene.'},
+ {fr:'Où es-tu maintenant ?',es:'¿Dónde ___ (tú) ahora?',verbs:['ser','estar','tener'],v:'estar',ans:'estás',e:'Lieu → toujours <b>ESTAR</b>. Tú estás — avec l\'accent !'},
+ {fr:'Ils ont une maison à Madrid.',es:'Ellos ___ una casa en Madrid.',verbs:['ser','estar','tener'],v:'tener',ans:'tienen',e:'Possession → <b>TENER</b>. Ellos tienen (marqueur -n).'},
+ {fr:'Je suis à Paris.',es:'Yo ___ en París.',verbs:['ser','estar','tener'],v:'estar',ans:'estoy',e:'Lieu → <b>ESTAR</b>, jamais ser. Yo estoy.'},
+ {fr:'Ma mère est professeure.',es:'Mi madre ___ profesora.',verbs:['ser','estar','tener'],v:'ser',ans:'es',e:'Profession = identité → <b>SER</b>. Ella es.'},
+ {fr:'Nous avons faim.',es:'Nosotros ___ hambre.',verbs:['ser','estar','tener'],v:'tener',ans:'tenemos',e:'Faim, soif, chaud, froid → <b>TENER</b>. Tenemos hambre.'},
+ {fr:'Tu es très intelligente.',es:'Tú ___ muy inteligente.',verbs:['ser','estar','tener'],v:'ser',ans:'eres',e:'Caractère permanent → <b>SER</b>. Tú eres.'},
+ {fr:'J\'ai froid.',es:'Yo ___ frío.',verbs:['ser','estar','tener'],v:'tener',ans:'tengo',e:'⚠️ « J\'ai froid » = <b>tengo frío</b>. Jamais <em>estoy caliente</em> pour « j\'ai chaud » (sens gênant !) : <em>tengo calor</em>.'},
+ {fr:'La soupe est bonne (là, maintenant — goûte !).',es:'La sopa ___ buena.',verbs:['ser','estar','tener'],v:'estar',ans:'está',e:'Jugement sur l\'instant → <b>ESTAR</b>. <em>Es buena</em> = bonne en général ; <em>está buena</em> = délicieuse maintenant.'},
+ {fr:'Vous (plusieurs) êtes en vacances.',es:'Ustedes ___ de vacaciones.',verbs:['ser','estar','tener'],v:'estar',ans:'están',e:'État temporaire → <b>ESTAR</b>. Ustedes están.'},
+];
+const CONJ_REG=[
+ {fr:'Je parle espagnol tous les jours.',es:'Yo ___ español todos los días.',verbs:['hablar','comer','vivir'],v:'hablar',ans:'hablo',e:'Verbe -AR, yo → <b>-o</b> : hablo. Le -o de « yo » vaut pour TOUS les verbes.'},
+ {fr:'Ils vivent à Barcelone.',es:'Ellos ___ en Barcelona.',verbs:['hablar','comer','vivir'],v:'vivir',ans:'viven',e:'Verbe -IR, ellos → <b>-en</b> : viven. Marqueur -n du pluriel.'},
+ {fr:'Tu manges beaucoup de chocolat.',es:'Tú ___ mucho chocolate.',verbs:['hablar','comer','vivir'],v:'comer',ans:'comes',e:'Verbe -ER, tú → <b>-es</b> : comes. Le -s final = marqueur universel du « tú ».'},
+ {fr:'Nous écrivons une lettre.',es:'Nosotros ___ una carta.',verbs:['escribir','escuchar','beber'],v:'escribir',ans:'escribimos',e:'Verbe -IR, nosotros → <b>-imos</b>. (Et carta = lettre, pas carte — faux ami !)'},
+ {fr:'Elle écoute de la musique classique.',es:'Ella ___ música clásica.',verbs:['escribir','escuchar','beber'],v:'escuchar',ans:'escucha',e:'Verbe -AR, ella → <b>-a</b> : escucha.'},
+ {fr:'Vous (plusieurs) buvez de l\'eau.',es:'Ustedes ___ agua.',verbs:['escribir','escuchar','beber'],v:'beber',ans:'beben',e:'Verbe -ER, ustedes (= ellos) → <b>-en</b> : beben.'},
+ {fr:'Nous étudions à l\'université.',es:'Nosotros ___ en la universidad.',verbs:['estudiar','aprender','abrir'],v:'estudiar',ans:'estudiamos',e:'Verbe -AR, nosotros → <b>-amos</b>. Et universidad : -ité → -idad !'},
+ {fr:'J\'apprends rapidement.',es:'Yo ___ rápidamente.',verbs:['estudiar','aprender','abrir'],v:'aprender',ans:'aprendo',e:'Verbe -ER, yo → <b>-o</b> : aprendo.'},
+ {fr:'Tu ouvres la porte.',es:'Tú ___ la puerta.',verbs:['estudiar','aprender','abrir'],v:'abrir',ans:'abres',e:'Verbe -IR, tú → <b>-es</b> : abres. (puerta : o latin bref → diphtongue ue.)'},
+ {fr:'Il travaille à la pharmacie.',es:'Él ___ en la farmacia.',verbs:['trabajar','vender','recibir'],v:'trabajar',ans:'trabaja',e:'Verbe -AR, él → <b>-a</b> : trabaja. Prononce : tra-ba-RHA (jota).'},
+ {fr:'Nous vendons la maison.',es:'Nosotros ___ la casa.',verbs:['trabajar','vender','recibir'],v:'vender',ans:'vendemos',e:'Verbe -ER, nosotros → <b>-emos</b> : vendemos.'},
+ {fr:'Ils reçoivent beaucoup d\'informations.',es:'Ellos ___ mucha información.',verbs:['trabajar','vender','recibir'],v:'recibir',ans:'reciben',e:'Verbe -IR, ellos → <b>-en</b> : reciben. Et información : -tion → -ción !'},
+];
+
+/* ═══════════ HELPERS ═══════════ */
+const strip=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const norm=s=>s.trim().toLowerCase();
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function pick(arr,n){return shuffle(arr).slice(0,n)}
+function bindAccents(scope,inputId){
+  scope.querySelectorAll('.acc').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const el=document.getElementById(inputId);
+      const s=el.selectionStart||el.value.length;
+      el.value=el.value.slice(0,s)+b.dataset.ch+el.value.slice(el.selectionEnd||s);
+      el.focus();el.setSelectionRange(s+1,s+1);
+    });
+  });
+}
+bindAccents(document.getElementById('conjArea'),'conjInput');
+bindAccents(document.getElementById('dicteeArea'),'dicInput');
+bindAccents(document.getElementById('view-exam'),'examInput');
+
+/* Générateurs de questions */
+function genSurvie(n){
+  return pick(SURVIE,n).map(it=>{
+    const others=pick(SURVIE.filter(x=>x!==it),2);
+    if(Math.random()<0.5){
+      return {q:'Comment dit-on « '+it.fr+' » ?',opts:[it.es,others[0].es,others[1].es],a:0,say:it.es,t:'SURVIE',e:'<b>'+it.es+'</b> = '+it.fr+'. Écoute et répète 🔊 !'};
+    }
+    return {q:'« '+it.es+' » signifie…',opts:[it.fr,others[0].fr,others[1].fr],a:0,say:it.es,t:'SURVIE',e:'<b>'+it.es+'</b> = '+it.fr+'.'};
+  });
+}
+function genNombres(n){
+  return pick(NUM,n).map(([num,word])=>{
+    const others=pick(NUM.filter(x=>x[0]!==num),2);
+    if(Math.random()<0.5){
+      return {q:'Comment dit-on <em>'+num+'</em> ?',opts:[word,others[0][1],others[1][1]],a:0,say:word,t:'NOMBRES',e:'<b>'+num+' = '+word+'</b>. '+(num>30&&num%10!==0?'Dizaine + y + unité.':num>15&&num<30&&num%10!==0?'Mode soudure : dieci-/veinti- + unité.':'')};
+    }
+    return {q:'« '+word+' » = ?',opts:[String(num),String(others[0][0]),String(others[1][0])],a:0,say:word,t:'NOMBRES',e:'<b>'+word+' = '+num+'</b>.'};
+  });
+}
+function genGenre(n){
+  return pick(GENRE_W,n).map(([w,art,e])=>({
+    q:'___ '+w,opts:['el','la'],a:art==='el'?0:1,say:art+' '+w,t:'EL OU LA',e:e
+  }));
+}
+function genEcoute(n){
+  return pick(ECOUTE,n).map(it=>({
+    q:'👂 Écoute la phrase et choisis sa traduction :',opts:[it.fr,...it.w],a:0,say:it.es,t:'ÉCOUTE 🔊',audio:true,
+    e:'La phrase était : <b>'+it.es+'</b> = '+it.fr+'.'
+  }));
+}
+function buildQuiz(mode){
+  if(mode==='patterns')return pick(PATTERN_Q,8).map(q=>({...q,t:'PATTERN'}));
+  if(mode==='fauxamis')return pick(FAUX_Q,8).map(q=>({...q,t:'FAUX AMI'}));
+  if(mode==='survie')return genSurvie(8);
+  if(mode==='nombres')return genNombres(8);
+  if(mode==='genre')return genGenre(8);
+  if(mode==='ecoute')return genEcoute(8);
+  return shuffle([...pick(PATTERN_Q,4).map(q=>({...q,t:'PATTERN'})),...pick(FAUX_Q,2).map(q=>({...q,t:'FAUX AMI'})),...genGenre(2)]);
+}
+
+/* ═══════════ MOTEUR QCM ═══════════ */
+let QZ={list:[],i:0,score:0,mode:'',level:null};
+document.querySelectorAll('[data-quiz]').forEach(b=>{
+  const go=()=>startQuiz(b.dataset.quiz,null);
+  b.addEventListener('click',go);
+  b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+});
+function hideJeuxAll(){
+  ['jeuxMenu','quizArea','dicteeArea','flashArea','conjArea','gameResult'].forEach(id=>document.getElementById(id).style.display='none');
+}
+function backToJeux(){hideJeuxAll();document.getElementById('jeuxMenu').style.display='block'}
+function startQuiz(mode,levelId){
+  goto('jeux');
+  QZ={list:buildQuiz(mode),i:0,score:0,mode,level:levelId};
+  hideJeuxAll();
+  document.getElementById('quizArea').style.display='block';
+  showQuizQ();
+}
+function showQuizQ(){
+  const q=QZ.list[QZ.i];
+  document.getElementById('quizCounter').textContent='Question '+(QZ.i+1)+'/'+QZ.list.length;
+  document.getElementById('quizScore').textContent='Score : '+QZ.score;
+  document.getElementById('quizProg').style.width=(QZ.i/QZ.list.length*100)+'%';
+  document.getElementById('quizType').textContent=q.t;
+  const qEl=document.getElementById('quizQuestion');
+  if(q.audio){
+    qEl.innerHTML='';
+    const btn=document.createElement('button');btn.className='spk big';btn.textContent='🔊';btn.setAttribute('aria-label','Écouter la phrase');
+    btn.addEventListener('click',e=>{e.stopPropagation();speak(q.say)});
+    const sp=document.createElement('span');sp.textContent=q.q;sp.style.fontSize='1rem';sp.style.fontWeight='600';
+    qEl.appendChild(btn);qEl.appendChild(sp);
+    setTimeout(()=>speak(q.say),350);
+  }else{
+    qEl.innerHTML=(q.t==='PATTERN'?'Comment dit-on <em>'+q.q+'</em> ?':q.q);
+  }
+  const box=document.getElementById('quizOptions');box.innerHTML='';
+  const order=shuffle(q.opts.map((o,idx)=>({o,idx})));
+  order.forEach(({o,idx})=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=o;
+    b.addEventListener('click',()=>answerQuiz(b,idx===q.a,q,box));
+    box.appendChild(b);
+  });
+  const ex=document.getElementById('quizExpl');ex.classList.remove('show');ex.innerHTML='';
+  document.getElementById('quizNext').style.display='none';
+}
+function answerQuiz(btn,good,q,box){
+  box.querySelectorAll('.opt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===q.opts[q.a])b.classList.add('correct');
+  });
+  if(!good)btn.classList.add('wrong');
+  if(good){QZ.score++;addXP(10)}
+  if(q.say&&!q.audio)speak(q.say);
+  S.quizAnswered++;save();render();
+  const ex=document.getElementById('quizExpl');
+  ex.innerHTML=(good?'✅ ':'❌ ')+q.e;ex.classList.add('show');
+  document.getElementById('quizNext').style.display='inline-block';
+  document.getElementById('quizNext').focus();
+}
+document.getElementById('quizNext').addEventListener('click',()=>{
+  QZ.i++;
+  if(QZ.i<QZ.list.length)showQuizQ();else endQuiz();
+});
+document.getElementById('quizQuit').addEventListener('click',backToJeux);
+function endQuiz(){
+  const n=QZ.list.length,pct=Math.round(QZ.score/n*100);
+  award('first');
+  if(QZ.score===n)award('perfect');
+  if(QZ.mode==='fauxamis'&&QZ.score>=7){/* piège détecté */}
+  if(QZ.level)recordLevel(QZ.level,pct);
+  showResult(QZ.score+'<small>/'+n+'</small>',pct,
+    ()=>startQuiz(QZ.mode,QZ.level),
+    QZ.level?(pct>=70?'Niveau validé ! Le suivant est déverrouillé dans le Parcours 🗺️':'Il faut 70 % pour valider le niveau. Relis la leçon et retente !'):null);
+}
+function showResult(scoreHTML,pct,retryFn,extra){
+  hideJeuxAll();
+  document.getElementById('gameResult').style.display='block';
+  document.getElementById('gameFinalScore').innerHTML=scoreHTML;
+  document.getElementById('gameFinalMsg').textContent=pct===100?'¡Perfecto! 🏆':pct>=75?'¡Muy bien! 🎉':pct>=50?'Bien, ça se construit 💪':'Retour aux leçons 📖';
+  document.getElementById('gameFinalTip').textContent=extra||(pct>=75?'Tu génères de l\'espagnol par la logique, pas par cœur. C\'est ça, l\'intuition.':'Chaque erreur = une règle pas encore automatisée, rien de plus.');
+  document.getElementById('gameRetry').onclick=retryFn;
+}
+document.getElementById('gameBack').addEventListener('click',backToJeux);
+
+/* ═══════════ DICTÉE ═══════════ */
+let DIC={list:[],i:0,score:0,attempt:0,level:null};
+document.getElementById('dicteeCard').addEventListener('click',()=>startDictee());
+document.getElementById('dicteeCard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();startDictee()}});
+function startDictee(){
+  DIC={list:pick(DICTEE,8),i:0,score:0,attempt:0};
+  hideJeuxAll();
+  document.getElementById('dicteeArea').style.display='block';
+  showDic();
+}
+function showDic(){
+  DIC.attempt=0;
+  document.getElementById('dicCounter').textContent='Mot '+(DIC.i+1)+'/'+DIC.list.length;
+  document.getElementById('dicScore').textContent='Score : '+DIC.score;
+  document.getElementById('dicProg').style.width=(DIC.i/DIC.list.length*100)+'%';
+  const inp=document.getElementById('dicInput');inp.value='';inp.disabled=false;
+  const f=document.getElementById('dicFeedback');f.className='feedback';f.innerHTML='';
+  document.getElementById('dicNext').style.display='none';
+  setTimeout(()=>{speak(DIC.list[DIC.i]);inp.focus()},350);
+}
+document.getElementById('dicPlay').addEventListener('click',()=>speak(DIC.list[DIC.i]));
+function checkDic(){
+  const w=DIC.list[DIC.i];
+  const val=norm(document.getElementById('dicInput').value);
+  if(!val)return;
+  const f=document.getElementById('dicFeedback');
+  if(val===w){
+    DIC.score++;addXP(10);
+    f.className='feedback ok';f.innerHTML='✅ ¡Exacto! <b>'+w+'</b>';
+    finishDic();
+  }else if(strip(val)===strip(w)){
+    if(DIC.attempt===0){DIC.attempt++;f.className='feedback almost';f.innerHTML='🟡 Presque ! Il manque un <b>accent écrit</b>. Réécoute 🔊 : la syllabe accentuée porte le ´.'}
+    else{f.className='feedback almost';f.innerHTML='🟡 C\'était <b>'+w+'</b> — bonne oreille, accent oublié.';finishDic()}
+  }else{
+    if(DIC.attempt===0){DIC.attempt++;f.className='feedback ko';f.innerHTML='❌ Pas tout à fait. Réécoute 🔊 et pense aux règles : j = son raclé, u = « ou », v = b… Encore un essai !'}
+    else{f.className='feedback ko';f.innerHTML='❌ C\'était <b>'+w+'</b>.';finishDic()}
+  }
+}
+function finishDic(){
+  document.getElementById('dicInput').disabled=true;
+  document.getElementById('dicNext').style.display='inline-block';
+  document.getElementById('dicNext').focus();
+}
+document.getElementById('dicCheck').addEventListener('click',checkDic);
+document.getElementById('dicInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkDic()});
+document.getElementById('dicNext').addEventListener('click',()=>{
+  DIC.i++;
+  if(DIC.i<DIC.list.length)showDic();
+  else{
+    award('first');
+    if(DIC.score===DIC.list.length)award('oreja');
+    showResult(DIC.score+'<small>/'+DIC.list.length+'</small>',DIC.score/DIC.list.length*100,startDictee,null);
+  }
+});
+document.getElementById('dicQuit').addEventListener('click',backToJeux);
+
+/* ═══════════ FLASHCARDS SRS ═══════════ */
+const DECK=[
+ ...SURVIE.map(x=>({fr:x.fr,es:x.es})),
+ {fr:'l\'école',es:'la escuela'},{fr:'l\'étudiant',es:'el estudiante'},
+ {fr:'le docteur',es:'el doctor'},{fr:'la couleur',es:'el color'},
+ {fr:'la pharmacie',es:'la farmacia'},{fr:'le téléphone',es:'el teléfono'},
+ {fr:'la ville',es:'la ciudad'},{fr:'la chanson',es:'la canción'},
+ {fr:'le travail',es:'el trabajo'},{fr:'la plage',es:'la playa'},
+ {fr:'sortir',es:'salir'},{fr:'monter',es:'subir'},
+ {fr:'comprendre',es:'entender'},{fr:'enlever',es:'quitar'},
+ {fr:'long',es:'largo'},{fr:'le chat',es:'el gato'},
+ {fr:'aujourd\'hui',es:'hoy'},{fr:'demain',es:'mañana'},
+ {fr:'toujours',es:'siempre'},{fr:'jamais',es:'nunca'},
+];
+let SRS=store.get('srs',{});   // clé es → box 0..3
+let FL={queue:[],cur:null,done:0};
+document.getElementById('flashCard').addEventListener('click',startFlash);
+document.getElementById('flashCard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();startFlash()}});
+function srsBox(es){return SRS[es]||0}
+function startFlash(){
+  /* priorité aux boîtes faibles : box0 x3, box1 x2, box2 x1, box3 exclu */
+  let pool=[];
+  DECK.forEach(c=>{
+    const b=srsBox(c.es);
+    if(b>=3)return;
+    for(let k=0;k<(3-b);k++)pool.push(c);
+  });
+  if(pool.length===0){SRS={};store.set('srs',SRS);pool=DECK.slice()} /* tout maîtrisé → on recommence */
+  FL={queue:pick(pool,10),cur:null,done:0};
+  hideJeuxAll();
+  document.getElementById('flashArea').style.display='block';
+  nextFlash();
+}
+function nextFlash(){
+  if(FL.done>=10||FL.queue.length===0){
+    const mastered=DECK.filter(c=>srsBox(c.es)>=3).length;
+    award('first');
+    showResult(FL.done+'<small> cartes</small>',100,startFlash,'Mots maîtrisés : '+mastered+'/'+DECK.length+'. Les mots ratés reviendront plus souvent — c\'est la révision espacée.');
+    return;
+  }
+  FL.cur=FL.queue.shift();
+  document.getElementById('flashCounter').textContent='Carte '+(FL.done+1)+'/10';
+  document.getElementById('flashFr').textContent=FL.cur.fr;
+  document.getElementById('flashEs').textContent=FL.cur.es;
+  document.getElementById('flashEl').classList.remove('flipped');
+  document.getElementById('flashGrade').style.visibility='hidden';
+  updFlashStats();
+}
+function updFlashStats(){
+  const m=DECK.filter(c=>srsBox(c.es)>=3).length;
+  const l=DECK.filter(c=>srsBox(c.es)===0).length;
+  document.getElementById('flashStats').textContent='📦 En apprentissage : '+l+' · 🌱 En cours : '+(DECK.length-m-l)+' · 🌳 Maîtrisés : '+m;
+}
+document.getElementById('flashEl').addEventListener('click',flipFlash);
+document.getElementById('flashEl').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flipFlash()}});
+function flipFlash(){
+  const el=document.getElementById('flashEl');
+  el.classList.toggle('flipped');
+  if(el.classList.contains('flipped')){
+    speak(FL.cur.es);
+    document.getElementById('flashGrade').style.visibility='visible';
+  }
+}
+document.getElementById('flashSpk').addEventListener('click',e=>{e.stopPropagation();speak(FL.cur.es)});
+document.getElementById('flashYes').addEventListener('click',()=>{
+  SRS[FL.cur.es]=Math.min(3,srsBox(FL.cur.es)+1);store.set('srs',SRS);
+  addXP(5);FL.done++;nextFlash();
+});
+document.getElementById('flashNo').addEventListener('click',()=>{
+  SRS[FL.cur.es]=0;store.set('srs',SRS);
+  FL.queue.push(FL.cur); /* la carte ratée revient dans la même série */
+  FL.done++;nextFlash();
+});
+document.getElementById('flashQuit').addEventListener('click',backToJeux);
+
+/* ═══════════ CONJUGAISON ═══════════ */
+let CJ={list:[],i:0,score:0,mode:'',verbOK:false,attempt:0,level:null};
+document.getElementById('conjCard').addEventListener('click',()=>{hideJeuxAll();document.getElementById('conjArea').style.display='block';document.getElementById('conjModes').style.display='flex';document.getElementById('conjGame').style.display='none'});
+document.getElementById('conjCard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();document.getElementById('conjCard').click()}});
+document.querySelectorAll('[data-conj]').forEach(b=>b.addEventListener('click',()=>startConj(b.dataset.conj,null)));
+function startConj(mode,levelId){
+  goto('jeux');
+  CJ={list:[],i:0,score:0,mode,verbOK:false,attempt:0,level:levelId};
+  if(mode==='serestar')CJ.list=pick(CONJ_SE,8);
+  else if(mode==='reguliers')CJ.list=pick(CONJ_REG,8);
+  else CJ.list=shuffle([...pick(CONJ_SE,4),...pick(CONJ_REG,4)]);
+  hideJeuxAll();
+  document.getElementById('conjArea').style.display='block';
+  document.getElementById('conjModes').style.display='none';
+  document.getElementById('conjGame').style.display='block';
+  showConjQ();
+}
+function showConjQ(){
+  const q=CJ.list[CJ.i];CJ.verbOK=false;CJ.attempt=0;
+  document.getElementById('conjCounter').textContent='Phrase '+(CJ.i+1)+'/'+CJ.list.length;
+  document.getElementById('conjScore').textContent='Score : '+CJ.score;
+  document.getElementById('conjProg').style.width=(CJ.i/CJ.list.length*100)+'%';
+  document.getElementById('conjFr').textContent='🇫🇷 '+q.fr;
+  document.getElementById('conjSentence').innerHTML=q.es.replace('___','<span class="blank" id="conjBlank">?</span>');
+  const vp=document.getElementById('conjVerbs');vp.innerHTML='';
+  shuffle(q.verbs).forEach(v=>{
+    const b=document.createElement('button');b.className='verb-btn';b.textContent=v;
+    b.addEventListener('click',()=>pickVerb(b,v,q,vp));
+    vp.appendChild(b);
+  });
+  document.getElementById('conjStep2').style.display='none';
+  const inp=document.getElementById('conjInput');inp.value='';inp.disabled=false;
+  const f=document.getElementById('conjFeedback');f.className='feedback';f.innerHTML='';
+  document.getElementById('conjNext').style.display='none';
+}
+function pickVerb(btn,v,q,vp){
+  if(CJ.verbOK)return;
+  const f=document.getElementById('conjFeedback');
+  if(v===q.v){
+    CJ.verbOK=true;btn.classList.add('good');
+    vp.querySelectorAll('.verb-btn').forEach(b=>b.disabled=true);
+    CJ.score+=1;addXP(5);
+    f.className='feedback ok';f.innerHTML='✅ Bon verbe ! Maintenant, conjugue-le pour le sujet de la phrase.';
+    document.getElementById('conjStep2').style.display='block';
+    document.getElementById('conjInput').focus();
+  }else{
+    btn.classList.add('bad');btn.disabled=true;
+    f.className='feedback ko';f.innerHTML='❌ Pas celui-là. Relis l\'indice : identité ? état/lieu ? possession ?';
+  }
+}
+function checkConj(){
+  if(!CJ.verbOK)return;
+  const q=CJ.list[CJ.i];
+  const val=norm(document.getElementById('conjInput').value);
+  const f=document.getElementById('conjFeedback');
+  if(!val)return;
+  if(val===q.ans){
+    CJ.score+=1;addXP(10);S.conjDone++;save();render();
+    document.getElementById('conjBlank').textContent=q.ans;
+    speak(q.es.replace('___',q.ans));
+    f.className='feedback ok';f.innerHTML='✅ ¡Exacto! '+q.e;
+    finishConjQ();
+  }else if(strip(val)===strip(q.ans)){
+    if(CJ.attempt===0){CJ.attempt++;
+      f.className='feedback almost';f.innerHTML='🟡 Presque ! Forme juste, mais il manque un <b>accent écrit</b> (boutons á é í ó ú).';
+    }else{
+      S.conjDone++;save();render();
+      document.getElementById('conjBlank').textContent=q.ans;
+      f.className='feedback almost';f.innerHTML='🟡 C\'était <b>'+q.ans+'</b> — accent oublié. '+q.e;
+      finishConjQ();
+    }
+  }else{
+    if(CJ.attempt===0){CJ.attempt++;
+      f.className='feedback ko';f.innerHTML='❌ Pas tout à fait. Indice : le <b>sujet</b> (yo → -o, tú → -s, nosotros → -mos, ellos → -n). Encore un essai !';
+    }else{
+      S.conjDone++;save();render();
+      document.getElementById('conjBlank').textContent=q.ans;
+      f.className='feedback ko';f.innerHTML='❌ La réponse était <b>'+q.ans+'</b>. '+q.e;
+      finishConjQ();
+    }
+  }
+}
+function finishConjQ(){
+  document.getElementById('conjInput').disabled=true;
+  document.getElementById('conjNext').style.display='inline-block';
+  document.getElementById('conjNext').focus();
+}
+document.getElementById('conjCheck').addEventListener('click',checkConj);
+document.getElementById('conjInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkConj()});
+document.getElementById('conjNext').addEventListener('click',()=>{
+  CJ.i++;
+  if(CJ.i<CJ.list.length)showConjQ();else endConj();
+});
+document.getElementById('conjQuit').addEventListener('click',backToJeux);
+function endConj(){
+  const max=CJ.list.length*2,pct=Math.round(CJ.score/max*100);
+  award('first');
+  if(CJ.score===max)award('perfect');
+  if(CJ.level)recordLevel(CJ.level,pct);
+  showResult(CJ.score+'<small>/'+max+'</small>',pct,
+    ()=>startConj(CJ.mode,CJ.level),
+    CJ.level?(pct>=70?'Niveau validé ! Le suivant est déverrouillé 🗺️':'Il faut 70 %. Revois la fiche 6 et retente !')
+    :(pct>=70?'Les marqueurs -o / -s / -mos / -n deviennent des réflexes.':'Concentre-toi sur : yo → -o, tú → -s, nosotros → -mos, ellos → -n.'));
+}
+
+/* ═══════════ PARCOURS ═══════════ */
+const LEVELS=[
+ {id:'survie',title:'Kit de survie',desc:'Saluer, remercier, se présenter, demander',lesson:'l0',launch:()=>startQuiz('survie','survie'),badge:'survivor'},
+ {id:'nombres',title:'Les nombres 0–100',desc:'3 règles au lieu de 100 mots',lesson:'l0b',launch:()=>startQuiz('nombres','nombres'),badge:'mate'},
+ {id:'patterns',title:'Les clés de conversion',desc:'-ción, -idad, -ico, -mente… ~4 000 mots',lesson:'l1',launch:()=>startQuiz('patterns','patterns'),badge:'llave'},
+ {id:'genre',title:'El ou La ?',desc:'Le genre en 4 règles + 7 exceptions',lesson:'lg',launch:()=>startQuiz('genre','genre'),badge:'genero'},
+ {id:'conjug',title:'SER · ESTAR · TENER',desc:'Choisir le verbe et le conjuguer en contexte',lesson:'l3',launch:()=>startConj('tout','conjug'),badge:'conj'},
+ {id:'final',title:'Examen final',desc:'15 questions · 12 min · il faut 12/20',lesson:'l4',launch:()=>{goto('exam');startExam('final')},badge:'diploma'},
+];
+function levelState(i){
+  const id=LEVELS[i].id;
+  const rec=S.levels[id]||{best:0,passed:false};
+  const unlocked=i===0||(S.levels[LEVELS[i-1].id]||{}).passed;
+  return {rec,unlocked};
+}
+function recordLevel(id,pct){
+  const rec=S.levels[id]||{best:0,passed:false};
+  if(pct>rec.best)rec.best=pct;
+  if(pct>=70){
+    if(!rec.passed){
+      rec.passed=true;
+      const lv=LEVELS.find(l=>l.id===id);
+      if(lv&&lv.badge)award(lv.badge);
+      toast('🗺️ Niveau « '+lv.title+' » validé !');
+    }
+  }
+  S.levels[id]=rec;save();render();renderLevels();
+}
+function renderLevels(){
+  const box=document.getElementById('levelList');box.innerHTML='';
+  LEVELS.forEach((lv,i)=>{
+    const {rec,unlocked}=levelState(i);
+    const d=document.createElement('div');
+    d.className='level'+(unlocked?'':' locked')+(rec.passed?' passed':'');
+    d.innerHTML='<div class="level-num">'+(rec.passed?'✓':unlocked?(i+1):'🔒')+'</div>'+
+      '<div class="level-info"><h3>Niveau '+(i+1)+' · '+lv.title+'</h3><p>'+lv.desc+'</p>'+
+      (rec.best>0?'<div class="level-best">Meilleur score : '+rec.best+' %'+(rec.passed?' · validé ✅':' · objectif 70 %')+'</div>':'')+
+      '</div><div class="level-actions"></div>';
+    const actions=d.querySelector('.level-actions');
+    const learn=document.createElement('button');
+    learn.className='btn ghost small';learn.textContent='📖 Apprendre';
+    learn.disabled=!unlocked;
+    learn.addEventListener('click',()=>openLesson(lv.lesson));
+    const test=document.createElement('button');
+    test.className='btn small '+(rec.passed?'sun':'');test.textContent=rec.passed?'🔁 Refaire':'🎯 Valider';
+    test.disabled=!unlocked;
+    test.addEventListener('click',lv.launch);
+    actions.appendChild(learn);actions.appendChild(test);
+    box.appendChild(d);
+  });
+}
+
+/* ═══════════ LEÇONS / REVEALS ═══════════ */
+document.querySelectorAll('.lesson-head').forEach(h=>{
+  h.addEventListener('click',()=>{
+    const l=h.parentElement;
+    l.classList.toggle('open');
+    h.setAttribute('aria-expanded',l.classList.contains('open'));
+  });
+});
+document.querySelectorAll('.reveal').forEach(r=>{
+  r.addEventListener('click',()=>{
+    r.classList.add('on');
+    const a=r.querySelector('.ans');
+    if(a)speak(a.textContent.split('/')[0]);
+  });
+});
+
+/* ═══════════ DIALOGUES ═══════════ */
+const DIALOGUES=[
+ {id:'cafe',title:'☕ Au café',lines:[
+   {who:'Camarero',text:'¡Hola! ¿Qué desea?',tr:'Bonjour ! Vous désirez ?'},
+   {who:'Toi',text:'___, un café con leche, por favor.',tr:'…, un café au lait, s\'il vous plaît.',opts:['Buenos días','Buenas noches','Adiós'],a:0,note:'On salue selon le moment : le matin → <b>buenos días</b>.'},
+   {who:'Camarero',text:'¿Algo más?',tr:'Autre chose ?'},
+   {who:'Toi',text:'No, ___.',tr:'Non, merci.',opts:['por favor','gracias','de nada'],a:1,note:'<b>gracias</b> = merci. <em>De nada</em> = de rien (c\'est la réponse à merci !).'},
+   {who:'Camarero',text:'Son dos euros con cincuenta.',tr:'Ça fait deux euros cinquante.'},
+   {who:'Toi',text:'Aquí tiene. ¡___!',tr:'Voilà. À plus tard !',opts:['Hasta luego','Lo siento','Por qué'],a:0,note:'<b>hasta luego</b> : la façon la plus courante de dire au revoir.'},
+ ]},
+ {id:'hotel',title:'🏨 À l\'hôtel',lines:[
+   {who:'Recepcionista',text:'Buenas tardes, ¿en qué puedo ayudarle?',tr:'Bonjour, comment puis-je vous aider ?'},
+   {who:'Toi',text:'Hola, ___ una reserva.',tr:'Bonjour, j\'ai une réservation.',opts:['soy','estoy','tengo'],a:2,note:'Possession → <b>TENER</b> : tengo una reserva.'},
+   {who:'Recepcionista',text:'Perfecto. ¿Cómo se llama?',tr:'Parfait. Quel est votre nom ?'},
+   {who:'Toi',text:'___ Léo Martin.',tr:'Je m\'appelle Léo Martin.',opts:['Me llamo','Estoy','Tengo'],a:0,note:'<b>Me llamo</b> = litt. « je me nomme ».'},
+   {who:'Recepcionista',text:'La habitación 204. ¿Necesita algo más?',tr:'Chambre 204. Autre chose ?'},
+   {who:'Toi',text:'Sí, ¿dónde ___ el restaurante?',tr:'Oui, où est le restaurant ?',opts:['es','está','tiene'],a:1,note:'Localisation → toujours <b>ESTAR</b> : ¿dónde está…?'},
+   {who:'Recepcionista',text:'Al lado de la recepción.',tr:'À côté de la réception.'},
+   {who:'Toi',text:'¡Muchas ___!',tr:'Merci beaucoup !',opts:['gracias','perdón','nada'],a:0,note:'<b>muchas gracias</b> — gracias est féminin pluriel, donc <em>muchas</em>.'},
+ ]},
+ {id:'rencontre',title:'👋 Une rencontre',lines:[
+   {who:'Ana',text:'¡Hola! ¿Cómo te llamas?',tr:'Salut ! Comment tu t\'appelles ?'},
+   {who:'Toi',text:'___ Léo. ¿Y tú?',tr:'Je m\'appelle Léo. Et toi ?',opts:['Me llamo','Soy llamo','Tengo'],a:0},
+   {who:'Ana',text:'Soy Ana. ¿De dónde eres?',tr:'Je suis Ana. D\'où viens-tu ?'},
+   {who:'Toi',text:'___ de Francia, de París.',tr:'Je viens de France, de Paris.',opts:['Estoy','Soy','Tengo'],a:1,note:'Origine = identité → <b>SER</b> : soy de Francia. (<em>Estoy en Francia</em> = je me trouve en France.)'},
+   {who:'Ana',text:'¡Qué bien! ¿Cuántos años tienes?',tr:'Super ! Quel âge as-tu ?'},
+   {who:'Toi',text:'___ veintidós años.',tr:'J\'ai vingt-deux ans.',opts:['Soy','Estoy','Tengo'],a:2,note:'L\'âge → <b>TENER</b> : tengo veintidós años.'},
+   {who:'Ana',text:'¡Hablas muy bien español!',tr:'Tu parles très bien espagnol !'},
+   {who:'Toi',text:'Gracias, pero no ___ todo todavía.',tr:'Merci, mais je ne comprends pas encore tout.',opts:['entiendo','escucho','tengo'],a:0,note:'<b>entender</b> = comprendre (faux ami : pas « entendre » !).'},
+ ]},
+];
+let DLG={sc:null,i:0};
+(function initDlg(){
+  const pickBox=document.getElementById('dlgPick');
+  DIALOGUES.forEach(d=>{
+    const b=document.createElement('button');b.className='btn';b.textContent=d.title;
+    b.addEventListener('click',()=>startDlg(d));
+    pickBox.appendChild(b);
+  });
+})();
+function startDlg(d){
+  DLG={sc:d,i:0};
+  document.getElementById('dlgBox').innerHTML='';
+  advanceDlg();
+}
+function advanceDlg(){
+  const box=document.getElementById('dlgBox');
+  while(DLG.i<DLG.sc.lines.length){
+    const ln=DLG.sc.lines[DLG.i];
+    if(!ln.opts){
+      appendDlgLine(ln,ln.text);
+      speak(ln.text);
+      DLG.i++;
+    }else{
+      /* ligne à trou : afficher bulle + options */
+      const line=appendDlgLine(ln,ln.text.replace('___','<span class="gap">___</span>'));
+      const optBox=document.createElement('div');optBox.className='dlg-opts';
+      shuffle(ln.opts.map((o,idx)=>({o,idx}))).forEach(({o,idx})=>{
+        const b=document.createElement('button');b.className='verb-btn';b.textContent=o;
+        b.addEventListener('click',()=>{
+          if(idx===ln.a){
+            optBox.remove();
+            const full=ln.text.replace('___',ln.opts[ln.a]);
+            line.querySelector('.txt').innerHTML=full;
+            speak(full);addXP(8);
+            if(ln.note){
+              const n=document.createElement('div');n.className='dlg-note';n.innerHTML='💡 '+ln.note;
+              box.appendChild(n);
+            }
+            DLG.i++;
+            setTimeout(advanceDlg,400);
+          }else{
+            b.classList.add('bad');b.disabled=true;
+          }
+        });
+        optBox.appendChild(b);
+      });
+      box.appendChild(optBox);
+      optBox.scrollIntoView({behavior:'smooth',block:'nearest'});
+      return; /* attendre la réponse */
+    }
+  }
+  /* dialogue terminé */
+  const done=document.createElement('div');
+  done.className='dlg-note';done.style.marginLeft='0';
+  done.innerHTML='🎉 <b>Dialogue terminé !</b> +8 XP par bonne réplique. Réécoute chaque bulle en cliquant dessus, ou choisis une autre scène ci-dessus.';
+  box.appendChild(done);
+  award('first');
+}
+function appendDlgLine(ln,html){
+  const box=document.getElementById('dlgBox');
+  const d=document.createElement('div');
+  d.className='dlg-line'+(ln.who==='Toi'?' me':'');
+  d.innerHTML='<div class="bubble sayable" data-say="'+ln.text.replace('___','')+'"><span class="who">'+ln.who+'</span><span class="txt">'+html+'</span><span class="tr">'+ln.tr+'</span></div>';
+  box.appendChild(d);
+  d.scrollIntoView({behavior:'smooth',block:'nearest'});
+  return d;
+}
+
+/* ═══════════ EXAMEN ═══════════ */
+let EX={list:[],i:0,pts:0,max:0,timer:null,time:720,review:[],verbOK:false,level:null};
+document.getElementById('examStart').addEventListener('click',()=>startExam(null));
+document.getElementById('examRetry').addEventListener('click',()=>startExam(EX.level));
+function startExam(levelId){
+  goto('exam');
+  const qs=[
+    ...genSurvie(2).map(q=>({...q,kind:'mcq',pts:1})),
+    ...genNombres(2).map(q=>({...q,kind:'mcq',pts:1})),
+    ...pick(PATTERN_Q,4).map(q=>({...q,kind:'mcq',t:'PATTERN',pts:1})),
+    ...genGenre(2).map(q=>({...q,kind:'mcq',pts:1})),
+    ...pick(FAUX_Q,2).map(q=>({...q,kind:'mcq',t:'FAUX AMI',pts:1})),
+    ...pick([...CONJ_SE,...CONJ_REG],3).map(q=>({...q,kind:'conj',t:'CONJUGAISON',pts:2})),
+  ];
+  EX={list:shuffle(qs),i:0,pts:0,review:[],time:720,timer:null,verbOK:false,level:levelId};
+  EX.max=EX.list.reduce((s,q)=>s+q.pts,0);
+  document.getElementById('examIntro').style.display='none';
+  document.getElementById('examResultZone').style.display='none';
+  document.getElementById('examArea').style.display='block';
+  clearInterval(EX.timer);
+  EX.timer=setInterval(tickExam,1000);
+  tickExamDisplay();
+  showExamQ();
+}
+function tickExam(){
+  EX.time--;tickExamDisplay();
+  if(EX.time<=0){clearInterval(EX.timer);endExam(true)}
+}
+function tickExamDisplay(){
+  const m=Math.floor(EX.time/60),s=EX.time%60;
+  const t=document.getElementById('examTimer');
+  t.textContent=m+':'+String(s).padStart(2,'0');
+  t.classList.toggle('low',EX.time<=60);
+}
+function showExamQ(){
+  const q=EX.list[EX.i];EX.verbOK=false;
+  document.getElementById('examCounter').textContent='Question '+(EX.i+1)+'/'+EX.list.length;
+  document.getElementById('examProg').style.width=(EX.i/EX.list.length*100)+'%';
+  document.getElementById('examType').textContent=q.t+' · '+q.pts+' pt'+(q.pts>1?'s':'');
+  const opt=document.getElementById('examOptions'),cz=document.getElementById('examConjZone'),fr=document.getElementById('examFr');
+  if(q.kind==='mcq'){
+    fr.style.display='none';cz.style.display='none';opt.style.display='grid';
+    const qEl=document.getElementById('examQuestion');
+    if(q.audio){
+      qEl.innerHTML='';
+      const btn=document.createElement('button');btn.className='spk big';btn.textContent='🔊';
+      btn.addEventListener('click',e=>{e.stopPropagation();speak(q.say)});
+      qEl.appendChild(btn);
+      setTimeout(()=>speak(q.say),300);
+    }else{
+      qEl.innerHTML=(q.t==='PATTERN'?'Comment dit-on <em>'+q.q+'</em> ?':q.q);
+    }
+    opt.innerHTML='';
+    shuffle(q.opts.map((o,idx)=>({o,idx}))).forEach(({o,idx})=>{
+      const b=document.createElement('button');b.className='opt';b.textContent=o;
+      b.addEventListener('click',()=>{
+        const good=idx===q.a;
+        if(good)EX.pts+=1;
+        EX.review.push({good,label:(q.t==='PATTERN'?q.q.replace(/<[^>]+>/g,''):q.q),user:o,corr:q.opts[q.a],e:q.e});
+        nextExamQ();
+      });
+      opt.appendChild(b);
+    });
+  }else{
+    opt.style.display='none';cz.style.display='block';
+    fr.style.display='block';fr.textContent='🇫🇷 '+q.fr;
+    document.getElementById('examQuestion').innerHTML=q.es.replace('___','<span class="blank">?</span>');
+    document.getElementById('examStep2').style.display='none';
+    document.getElementById('examInput').value='';
+    const vp=document.getElementById('examVerbs');vp.innerHTML='';
+    shuffle(q.verbs).forEach(v=>{
+      const b=document.createElement('button');b.className='verb-btn';b.textContent=v;
+      b.addEventListener('click',()=>{
+        if(EX.verbOK!==false)return;
+        vp.querySelectorAll('.verb-btn').forEach(x=>x.disabled=true);
+        const good=v===q.v;
+        b.classList.add(good?'good':'bad');
+        if(good)EX.pts+=1;
+        EX.verbOK={goodVerb:good,verb:v};
+        document.getElementById('examStep2').style.display='block';
+        document.getElementById('examInput').focus();
+      });
+      vp.appendChild(b);
+    });
+  }
+}
+function examCheckConj(){
+  const q=EX.list[EX.i];
+  if(!EX.verbOK)return;
+  const val=norm(document.getElementById('examInput').value);
+  if(!val)return;
+  let formPts=0,verdict;
+  if(val===q.ans){formPts=1;verdict='exact'}
+  else if(strip(val)===strip(q.ans)){formPts=0.5;verdict='accent'}
+  else verdict='faux';
+  EX.pts+=formPts;
+  EX.review.push({
+    good:EX.verbOK.goodVerb&&verdict==='exact',
+    half:verdict==='accent'||(!EX.verbOK.goodVerb&&verdict==='exact'),
+    label:q.fr+' → '+q.es,
+    user:EX.verbOK.verb+' → '+val,
+    corr:q.v+' → '+q.ans,
+    e:q.e
+  });
+  nextExamQ();
+}
+document.getElementById('examCheck').addEventListener('click',examCheckConj);
+document.getElementById('examInput').addEventListener('keydown',e=>{if(e.key==='Enter')examCheckConj()});
+function nextExamQ(){
+  EX.i++;
+  if(EX.i<EX.list.length)showExamQ();else endExam(false);
+}
+function endExam(timeout){
+  clearInterval(EX.timer);
+  document.getElementById('examArea').style.display='none';
+  document.getElementById('examResultZone').style.display='block';
+  const note=Math.round(EX.pts/EX.max*20*10)/10;
+  if(S.bestExam===null||note>S.bestExam)S.bestExam=note;
+  addXP(Math.round(note*2));
+  if(note>=12){award('diploma');recordLevel('final',Math.round(note/20*100))}
+  if(note>=16)award('honor');
+  document.getElementById('examNote').innerHTML=note+'<small>/20</small>';
+  const m=note>=18?'Mention Excellent 🏆':note>=16?'Mention Très Bien 🥇':note>=14?'Mention Bien 🥈':note>=12?'Mention Assez Bien 🥉':note>=10?'Admis ✅':'Ajourné — repasse-le ! 📖';
+  document.getElementById('examMention').textContent=m;
+  document.getElementById('examComment').textContent=
+    (timeout?'⏱️ Temps écoulé ! ':'')+
+    (note>=14?'Tu convertis le français en espagnol par la logique, pas par cœur. Objectif atteint.'
+    :note>=12?'Niveau final validé ! Retravaille les points rouges pour viser la mention.'
+    :'Chaque erreur ci-dessous pointe UNE règle précise à revoir dans les leçons. 12/20 pour valider le niveau final.');
+  const rv=document.getElementById('examReview');rv.innerHTML='';
+  EX.review.forEach(r=>{
+    const d=document.createElement('div');
+    d.className='review-item'+(r.good?' good':'');
+    d.innerHTML='<b>'+(r.good?'✅':r.half?'🟡':'❌')+' '+r.label+'</b><br>'+
+      'Ta réponse : <em>'+r.user+'</em>'+(r.good?'':' · Attendu : <b>'+r.corr+'</b>')+
+      '<br><span style="color:#4A5578">'+r.e+'</span>';
+    rv.appendChild(d);
+  });
+  if(EX.review.length<EX.list.length){
+    const d=document.createElement('div');d.className='review-item';
+    d.innerHTML='<b>⏱️ '+(EX.list.length-EX.review.length)+' question(s) non répondue(s)</b> — le temps s\'est écoulé.';
+    rv.appendChild(d);
+  }
+  save();render();
+}
+
+/* ═══════════ INIT ═══════════ */
+render();renderBadges();renderLevels();
+</script>
+</body>
+</html>

@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puente · Français → Español</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F2EA;
+  --tile:#FFFFFF;
+  --cobalt:#1E3BA8;
+  --deep:#0D1B4D;
+  --sun:#F2B705;
+  --sun-soft:#FDEBB2;
+  --carmin:#C8102E;
+  --ok:#1B7F4E;
+  --ok-soft:#DCEFE4;
+  --err-soft:#FADDE1;
+  --line:#C9CDE0;
+  --mono:'Space Mono',monospace;
+  --sans:'Archivo',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--deep);
+  min-height:100vh;
+  font-size:16px;
+  line-height:1.55;
+}
+/* Azulejo band */
+.azulejo{
+  height:14px;
+  background:
+    repeating-linear-gradient(45deg,var(--cobalt) 0 10px,var(--tile) 10px 20px,var(--sun) 20px 24px,var(--tile) 24px 34px);
+  border-bottom:3px solid var(--deep);
+}
+header{
+  background:var(--tile);
+  border-bottom:3px solid var(--deep);
+  position:sticky;top:0;z-index:50;
+}
+.header-inner{
+  max-width:1080px;margin:0 auto;padding:14px 20px;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.logo{
+  font-weight:900;font-size:1.55rem;letter-spacing:-0.02em;
+  color:var(--cobalt);text-transform:uppercase;
+  display:flex;align-items:baseline;gap:8px;
+}
+.logo span{font-family:var(--mono);font-size:.7rem;font-weight:400;color:var(--deep);letter-spacing:0;text-transform:none}
+nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.tab-btn{
+  font-family:var(--sans);font-weight:600;font-size:.86rem;
+  padding:8px 14px;border:2px solid transparent;background:none;
+  cursor:pointer;color:var(--deep);border-radius:6px;
+}
+.tab-btn:hover{border-color:var(--cobalt);color:var(--cobalt)}
+.tab-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.tab-btn.active{background:var(--cobalt);color:#fff;border-color:var(--cobalt)}
+.xp-badge{
+  font-family:var(--mono);font-size:.8rem;font-weight:700;
+  background:var(--sun);border:2px solid var(--deep);border-radius:999px;
+  padding:5px 14px;white-space:nowrap;
+}
+main{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+section.view{display:none}
+section.view.active{display:block;animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:900;line-height:1.05;letter-spacing:-0.02em}
+h2{font-size:1.5rem;font-weight:800;margin:0 0 14px;color:var(--cobalt)}
+h3{font-size:1.08rem;font-weight:800;margin:0 0 8px}
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--carmin);margin-bottom:10px;
+}
+/* HERO */
+.hero{
+  background:var(--tile);border:3px solid var(--deep);border-radius:14px;
+  padding:40px 32px;margin-bottom:26px;position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;right:-30px;top:-30px;width:150px;height:150px;
+  background:
+   conic-gradient(from 45deg,var(--cobalt) 0 25%,var(--sun) 0 50%,var(--cobalt) 0 75%,var(--sun) 0);
+  border-radius:50%;opacity:.12;
+}
+.converter{
+  margin:26px 0 8px;font-weight:900;font-size:clamp(1.6rem,5.5vw,3rem);
+  letter-spacing:-0.01em;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.converter .arrow{color:var(--carmin);font-size:.8em}
+.converter .fr b,.converter .es b{color:var(--sun);-webkit-text-stroke:1px var(--deep);text-stroke:1px var(--deep)}
+.converter .es{color:var(--cobalt)}
+.hero p.sub{max-width:560px;font-size:1.02rem;margin-top:8px}
+.stat-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
+.chip{
+  font-family:var(--mono);font-size:.78rem;font-weight:700;
+  border:2px solid var(--deep);border-radius:8px;padding:6px 12px;background:var(--sun-soft);
+}
+/* GRID CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.card{
+  background:var(--tile);border:2px solid var(--deep);border-radius:12px;
+  padding:22px;position:relative;
+}
+.card.clickable{cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
+.card.clickable:hover{transform:translateY(-3px);box-shadow:0 6px 0 var(--cobalt)}
+.card.clickable:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.card .corner{
+  position:absolute;top:0;right:0;width:26px;height:26px;
+  background:linear-gradient(135deg,transparent 50%,var(--cobalt) 50%);
+  border-radius:0 10px 0 0;
+}
+.pattern-key{
+  font-family:var(--mono);font-weight:700;font-size:1.15rem;
+  background:var(--deep);color:#fff;display:inline-block;
+  padding:4px 12px;border-radius:6px;margin-bottom:10px;
+}
+.pattern-key em{color:var(--sun);font-style:normal}
+.rendement{font-family:var(--mono);font-size:.75rem;color:var(--carmin);font-weight:700}
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--tile);font-size:.92rem}
+th{background:var(--cobalt);color:#fff;text-align:left;padding:8px 12px;font-weight:700;font-size:.82rem;letter-spacing:.04em}
+td{padding:8px 12px;border-bottom:1px solid var(--line)}
+tr:nth-child(even) td{background:#F7F8FC}
+td.es{color:var(--cobalt);font-weight:600}
+td.mono{font-family:var(--mono);font-size:.85rem}
+/* BUTTONS */
+.btn{
+  font-family:var(--sans);font-weight:800;font-size:.95rem;
+  background:var(--cobalt);color:#fff;border:2px solid var(--deep);
+  border-radius:8px;padding:11px 22px;cursor:pointer;
+  box-shadow:0 4px 0 var(--deep);transition:transform .08s,box-shadow .08s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--deep)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--deep)}
+.btn:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.btn.sun{background:var(--sun);color:var(--deep)}
+.btn.ghost{background:var(--tile);color:var(--cobalt)}
+.btn.small{padding:7px 14px;font-size:.82rem;box-shadow:0 3px 0 var(--deep)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+/* QUIZ */
+.quiz-shell{max-width:680px;margin:0 auto}
+.progress-track{height:12px;background:var(--tile);border:2px solid var(--deep);border-radius:999px;overflow:hidden;margin:14px 0 22px}
+.progress-fill{height:100%;background:repeating-linear-gradient(45deg,var(--sun) 0 10px,var(--cobalt) 10px 20px);width:0%;transition:width .3s ease}
+.qcard{background:var(--tile);border:3px solid var(--deep);border-radius:14px;padding:28px}
+.qcard .qword{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:900;margin:10px 0 4px}
+.qcard .qword .hl{color:var(--carmin)}
+.qmeta{font-family:var(--mono);font-size:.75rem;color:var(--cobalt);font-weight:700}
+.options{display:grid;gap:10px;margin-top:20px}
+.opt{
+  text-align:left;font-family:var(--sans);font-size:1.05rem;font-weight:600;
+  background:var(--paper);border:2px solid var(--deep);border-radius:10px;
+  padding:13px 16px;cursor:pointer;transition:background .1s;
+}
+.opt:hover{background:var(--sun-soft)}
+.opt:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.opt.correct{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.opt.wrong{background:var(--err-soft);border-color:var(--carmin);color:var(--carmin)}
+.opt:disabled{cursor:default}
+.expl{
+  margin-top:18px;padding:14px 16px;border-left:5px solid var(--sun);
+  background:var(--sun-soft);border-radius:0 8px 8px 0;font-size:.92rem;display:none;
+}
+.expl.show{display:block}
+.expl b{color:var(--cobalt)}
+/* CONJUGATION */
+.sentence{
+  font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:700;line-height:1.5;margin:16px 0;
+}
+.sentence .blank{
+  display:inline-block;min-width:110px;border-bottom:3px dashed var(--carmin);
+  text-align:center;color:var(--cobalt);font-weight:900;padding:0 6px;
+}
+.fr-hint{font-style:italic;color:#4A5578;font-size:.95rem;margin-bottom:6px}
+.verb-picker{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.verb-btn{
+  font-family:var(--mono);font-weight:700;font-size:1rem;
+  background:var(--tile);border:2px solid var(--deep);border-radius:999px;
+  padding:9px 20px;cursor:pointer;
+}
+.verb-btn:hover{background:var(--sun-soft)}
+.verb-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.verb-btn.picked{background:var(--cobalt);color:#fff}
+.verb-btn.good{background:var(--ok);border-color:var(--ok);color:#fff}
+.verb-btn.bad{background:var(--carmin);border-color:var(--carmin);color:#fff}
+.conj-input-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.conj-input{
+  font-family:var(--mono);font-size:1.15rem;font-weight:700;
+  border:2px solid var(--deep);border-radius:8px;padding:10px 14px;
+  width:200px;background:var(--tile);color:var(--deep);
+}
+.conj-input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.accent-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.acc{
+  font-family:var(--mono);font-size:1rem;font-weight:700;
+  border:1px solid var(--line);background:var(--tile);border-radius:6px;
+  padding:4px 10px;cursor:pointer;
+}
+.acc:hover{background:var(--sun-soft);border-color:var(--deep)}
+.feedback{margin-top:16px;font-weight:700;font-size:1rem;display:none;border-radius:8px;padding:12px 16px}
+.feedback.ok{display:block;background:var(--ok-soft);color:var(--ok);border:2px solid var(--ok)}
+.feedback.almost{display:block;background:var(--sun-soft);color:#8a6400;border:2px solid var(--sun)}
+.feedback.ko{display:block;background:var(--err-soft);color:var(--carmin);border:2px solid var(--carmin)}
+/* LESSONS accordion */
+.lesson{background:var(--tile);border:2px solid var(--deep);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.lesson-head{
+  width:100%;display:flex;align-items:center;gap:14px;padding:18px 22px;
+  background:none;border:none;cursor:pointer;text-align:left;font-family:var(--sans);
+}
+.lesson-head:focus-visible{outline:3px solid var(--sun);outline-offset:-3px}
+.lesson-num{
+  font-family:var(--mono);font-weight:700;background:var(--sun);border:2px solid var(--deep);
+  border-radius:8px;padding:4px 10px;font-size:.85rem;flex-shrink:0;
+}
+.lesson-title{font-weight:800;font-size:1.1rem;flex:1}
+.lesson-arrow{font-size:1.2rem;color:var(--cobalt);transition:transform .2s}
+.lesson.open .lesson-arrow{transform:rotate(90deg)}
+.lesson-body{display:none;padding:0 22px 24px;border-top:2px dashed var(--line)}
+.lesson.open .lesson-body{display:block}
+.lesson-body h4{margin:20px 0 8px;color:var(--cobalt);font-size:1rem}
+.lesson-body p{margin:8px 0;max-width:70ch}
+.lesson-body ul{margin:8px 0 8px 22px}
+.lesson-body li{margin:4px 0}
+.reveal{
+  display:inline-block;font-family:var(--mono);font-weight:700;font-size:.9rem;
+  background:var(--paper);border:2px dashed var(--cobalt);border-radius:8px;
+  padding:6px 14px;cursor:pointer;margin:4px 6px 4px 0;
+}
+.reveal:hover{background:var(--sun-soft)}
+.reveal:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.reveal .ans{display:none;color:var(--cobalt)}
+.reveal.on .q-mark{display:none}
+.reveal.on .ans{display:inline}
+.tip{
+  background:var(--sun-soft);border-left:5px solid var(--sun);
+  padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:.93rem;
+}
+.warn{
+  background:var(--err-soft);border-left:5px solid var(--carmin);
+  padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:.93rem;
+}
+/* EXAM */
+.exam-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.timer{
+  font-family:var(--mono);font-weight:700;font-size:1.3rem;
+  background:var(--deep);color:var(--sun);padding:8px 18px;border-radius:8px;
+}
+.timer.low{background:var(--carmin);color:#fff}
+.result-card{
+  background:var(--tile);border:3px solid var(--deep);border-radius:14px;
+  padding:36px;text-align:center;max-width:560px;margin:0 auto;
+}
+.result-note{font-size:4rem;font-weight:900;color:var(--cobalt);line-height:1}
+.result-note small{font-size:1.5rem;color:var(--deep)}
+.mention{
+  display:inline-block;font-family:var(--mono);font-weight:700;
+  background:var(--sun);border:2px solid var(--deep);border-radius:999px;
+  padding:6px 20px;margin:14px 0;
+}
+.review-item{
+  background:var(--tile);border:2px solid var(--line);border-left:5px solid var(--carmin);
+  border-radius:8px;padding:14px 18px;margin:10px 0;text-align:left;font-size:.92rem;
+}
+.review-item.good{border-left-color:var(--ok)}
+/* FICHES */
+.fiche{background:var(--tile);border:2px solid var(--deep);border-radius:12px;padding:24px;margin-bottom:20px;break-inside:avoid}
+.fiche h3{display:flex;align-items:center;gap:10px}
+.fiche h3::before{content:"▰";color:var(--sun)}
+.fiche-tools{display:flex;gap:10px;margin-bottom:18px}
+footer{
+  border-top:3px solid var(--deep);background:var(--tile);
+  padding:20px;text-align:center;font-family:var(--mono);font-size:.75rem;
+}
+.home-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.mode-pick{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.score-line{font-family:var(--mono);font-size:.85rem;font-weight:700;margin-top:8px}
+@media print{
+  header,footer,nav,.fiche-tools,.hero,.home-cta{display:none!important}
+  body{background:#fff}
+  section.view{display:none}
+  #view-fiches{display:block!important}
+  .fiche{border:1px solid #000;page-break-inside:avoid}
+}
+@media (max-width:640px){
+  .header-inner{padding:10px 14px;gap:10px}
+  nav{width:100%;overflow-x:auto;padding-bottom:4px}
+  .tab-btn{white-space:nowrap;font-size:.8rem;padding:7px 10px}
+  main{padding:20px 14px 60px}
+  .hero{padding:26px 20px}
+}
+</style>
+</head>
+<body>
+<div class="azulejo" aria-hidden="true"></div>
+<header>
+  <div class="header-inner">
+    <div class="logo">Puente <span>fr → es</span></div>
+    <nav aria-label="Navigation principale">
+      <button class="tab-btn active" data-view="home">Accueil</button>
+      <button class="tab-btn" data-view="lecons">Leçons</button>
+      <button class="tab-btn" data-view="fiches">Fiches</button>
+      <button class="tab-btn" data-view="quiz">Quiz</button>
+      <button class="tab-btn" data-view="conjug">Conjugaison</button>
+      <button class="tab-btn" data-view="exam">Examen</button>
+    </nav>
+    <div class="xp-badge" id="xpBadge">⚡ 0 XP</div>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════ ACCUEIL ══════════════ -->
+<section class="view active" id="view-home">
+  <div class="hero">
+    <div class="eyebrow">Méthode des patterns · pas de listes par cœur</div>
+    <h1>Tu connais déjà<br>15 000 mots d'espagnol.</h1>
+    <div class="converter" aria-live="polite">
+      <span class="fr" id="convFr">informa<b>tion</b></span>
+      <span class="arrow">→</span>
+      <span class="es" id="convEs">informa<b>ción</b></span>
+    </div>
+    <p class="sub">Le français et l'espagnol partagent ~75 % de leur vocabulaire. Apprends les <strong>clés de conversion</strong>, pas les listes : 1 règle = des centaines de mots débloqués.</p>
+    <div class="stat-row">
+      <span class="chip">-tion → -ción ≈ 1 250 mots</span>
+      <span class="chip">-ité → -idad ≈ 800 mots</span>
+      <span class="chip">-ment → -mente ≈ 2 000 mots</span>
+    </div>
+    <div class="home-cta">
+      <button class="btn" data-goto="lecons">📖 Commencer les leçons</button>
+      <button class="btn sun" data-goto="quiz">🎯 Lancer un quiz</button>
+      <button class="btn ghost" data-goto="exam">🎓 Passer l'examen</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card clickable" data-goto="lecons" tabindex="0" role="button">
+      <div class="corner"></div>
+      <div class="pattern-key">4 <em>leçons</em></div>
+      <h3>Leçons interactives</h3>
+      <p>Les transformations FR→ES, les faux amis, SER/ESTAR/TENER et la prononciation — avec mini-défis « devine » intégrés.</p>
+    </div>
+    <div class="card clickable" data-goto="fiches" tabindex="0" role="button">
+      <div class="corner"></div>
+      <div class="pattern-key">5 <em>fiches</em></div>
+      <h3>Fiches de révision</h3>
+      <p>Tout l'essentiel en tableaux compacts. Imprimables pour réviser hors écran.</p>
+    </div>
+    <div class="card clickable" data-goto="quiz" tabindex="0" role="button">
+      <div class="corner"></div>
+      <div class="pattern-key">3 <em>modes</em></div>
+      <h3>Quiz de patterns</h3>
+      <p>Devine la conversion, repère le faux ami. Feedback + logique expliquée à chaque question.</p>
+    </div>
+    <div class="card clickable" data-goto="conjug" tabindex="0" role="button">
+      <div class="corner"></div>
+      <div class="pattern-key">2 <em>étapes</em></div>
+      <h3>Conjugaison en contexte</h3>
+      <p>Une phrase, un trou : choisis le bon verbe <em>puis</em> conjugue-le. Le vrai réflexe SER/ESTAR/TENER.</p>
+    </div>
+    <div class="card clickable" data-goto="exam" tabindex="0" role="button">
+      <div class="corner"></div>
+      <div class="pattern-key">/20 <em>· 10 min</em></div>
+      <h3>Examen blanc</h3>
+      <p>12 questions mixtes, chronométrées, note sur 20 avec mention et correction détaillée.</p>
+    </div>
+    <div class="card">
+      <div class="corner"></div>
+      <div class="pattern-key" id="statKey">⚡ <em>0</em> XP</div>
+      <h3>Ta progression</h3>
+      <p id="statLine">Quiz : 0 réponses · Conjugaison : 0 phrases · Meilleur examen : —</p>
+      <p style="font-family:var(--mono);font-size:.72rem;margin-top:10px;color:#666">Progression conservée pendant la session.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ LEÇONS ══════════════ -->
+<section class="view" id="view-lecons">
+  <div class="eyebrow">Le raccourci d'abord, la logique toujours</div>
+  <h2>Leçons</h2>
+
+  <div class="lesson open">
+    <button class="lesson-head" aria-expanded="true">
+      <span class="lesson-num">L1</span>
+      <span class="lesson-title">Les 4 grandes transformations — ~2 800 mots débloqués</span>
+      <span class="lesson-arrow">▸</span>
+    </button>
+    <div class="lesson-body">
+      <h4>🔑 -tion → -ción (~1 250 mots)</h4>
+      <p><strong>La logique :</strong> les deux langues héritent du latin <em>-tionem</em>. Le français garde le <em>t</em>, l'espagnol l'adoucit en <em>c</em>. Tous ces mots sont <strong>féminins</strong>, comme en français : <em>la información</em>.</p>
+      <table>
+        <tr><th>Français</th><th>Español</th><th>Français</th><th>Español</th></tr>
+        <tr><td>information</td><td class="es">información</td><td>attention</td><td class="es">atención</td></tr>
+        <tr><td>nation</td><td class="es">nación</td><td>solution</td><td class="es">solución</td></tr>
+        <tr><td>situation</td><td class="es">situación</td><td>tradition</td><td class="es">tradición</td></tr>
+        <tr><td>éducation</td><td class="es">educación</td><td>émotion</td><td class="es">emoción</td></tr>
+      </table>
+      <div class="warn">⚠️ Quand le français a <strong>-ction</strong>, l'espagnol double : ac<strong>ción</strong>, produc<strong>ción</strong>, tradu<strong>cción</strong>. L'espagnol prononce les deux consonnes : ak-thión.</div>
+      <h4>🔑 -ité → -idad (~800 mots)</h4>
+      <p><strong>La logique :</strong> latin <em>-itatem</em>. L'espagnol a gardé le <em>d</em> latin que le français a perdu. Féminin aussi.</p>
+      <table>
+        <tr><th>Français</th><th>Español</th><th>Français</th><th>Español</th></tr>
+        <tr><td>réalité</td><td class="es">realidad</td><td>université</td><td class="es">universidad</td></tr>
+        <tr><td>qualité</td><td class="es">calidad</td><td>sécurité</td><td class="es">seguridad</td></tr>
+        <tr><td>liberté</td><td class="es">libertad</td><td>vérité</td><td class="es">verdad</td></tr>
+      </table>
+      <h4>🔑 -ique → -ico / -ica (~600 mots)</h4>
+      <p><strong>La logique :</strong> suffixe grec <em>-ikos</em>. L'espagnol garde la voyelle finale que le français a effacée. Accent écrit sur l'antépénultième : <em>polí-ti-ca, mú-si-ca</em>.</p>
+      <table>
+        <tr><th>Français</th><th>Español</th><th>Français</th><th>Español</th></tr>
+        <tr><td>politique</td><td class="es">política</td><td>magique</td><td class="es">mágico</td></tr>
+        <tr><td>musique</td><td class="es">música</td><td>fantastique</td><td class="es">fantástico</td></tr>
+        <tr><td>économique</td><td class="es">económico</td><td>technique</td><td class="es">técnica</td></tr>
+      </table>
+      <h4>🔑 -ment → -mente (~2 000 adverbes)</h4>
+      <p><strong>Formule :</strong> adjectif au féminin + <em>mente</em>. <em>Mente</em> = « esprit » en latin ; « d'un esprit rapide » → <em>rápidamente</em>. Le <em>-ment</em> français vient exactement de la même source !</p>
+      <div class="tip">🧠 <strong>Défi — clique pour vérifier :</strong><br>
+        <button class="reveal">révolution → <span class="q-mark">?</span><span class="ans">revolución</span></button>
+        <button class="reveal">félicité → <span class="q-mark">?</span><span class="ans">felicidad</span></button>
+        <button class="reveal">automatique → <span class="q-mark">?</span><span class="ans">automático</span></button>
+        <button class="reveal">finalement → <span class="q-mark">?</span><span class="ans">finalmente</span></button>
+        <button class="reveal">perfection → <span class="q-mark">?</span><span class="ans">perfección</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">L2</span>
+      <span class="lesson-title">é- → es-, -eur → -or, ph → f, -aire → -ario — ~1 200 mots</span>
+      <span class="lesson-arrow">▸</span>
+    </button>
+    <div class="lesson-body">
+      <h4>🔑 é- initial → es-</h4>
+      <p><strong>La logique :</strong> le latin commençait par <em>s + consonne</em> (<em>schola, studium, status</em>). L'espagnol a ajouté un <em>e</em> d'appui devant (<em>escuela</em>), le français a fait pareil puis a <em>avalé le s</em> en le remplaçant par un accent (école). L'accent aigu français = un <strong>s fantôme</strong> : remets-le !</p>
+      <table>
+        <tr><th>Français</th><th>Español</th><th>Latin (la mère)</th></tr>
+        <tr><td>école</td><td class="es">escuela</td><td class="mono">schola</td></tr>
+        <tr><td>étudiant</td><td class="es">estudiante</td><td class="mono">studens</td></tr>
+        <tr><td>état</td><td class="es">estado</td><td class="mono">status</td></tr>
+        <tr><td>étrange</td><td class="es">extraño</td><td class="mono">extraneus</td></tr>
+        <tr><td>épice</td><td class="es">especia</td><td class="mono">species</td></tr>
+        <tr><td>étoile</td><td class="es">estrella</td><td class="mono">stella</td></tr>
+      </table>
+      <div class="tip">💡 Même règle pour le circonflexe : hôpital → ho<strong>s</strong>pital, forêt → fore<strong>s</strong>ta… le chapeau ^ cache aussi un <em>s</em> perdu.</div>
+      <h4>🔑 -eur → -or (~400 mots)</h4>
+      <table>
+        <tr><th>Français</th><th>Español</th><th>Français</th><th>Español</th></tr>
+        <tr><td>docteur</td><td class="es">doctor</td><td>couleur</td><td class="es">color</td></tr>
+        <tr><td>professeur</td><td class="es">profesor</td><td>erreur</td><td class="es">error</td></tr>
+        <tr><td>acteur</td><td class="es">actor</td><td>honneur</td><td class="es">honor</td></tr>
+      </table>
+      <div class="warn">⚠️ Piège de genre : <em>la</em> couleur mais <em>el</em> color, <em>la</em> chaleur mais <em>el</em> calor. Les mots en -or sont <strong>masculins</strong> en espagnol (sauf <em>la flor</em>, la fleur).</div>
+      <h4>🔑 ph → f</h4>
+      <p>L'espagnol écrit ce qu'il prononce : pharmacie → <span style="color:var(--cobalt);font-weight:700">farmacia</span>, téléphone → <span style="color:var(--cobalt);font-weight:700">teléfono</span>, photo → <span style="color:var(--cobalt);font-weight:700">foto</span>, philosophie → <span style="color:var(--cobalt);font-weight:700">filosofía</span>.</p>
+      <h4>🔑 -aire → -ario</h4>
+      <p>vocabulaire → <span style="color:var(--cobalt);font-weight:700">vocabulario</span>, ordinaire → <span style="color:var(--cobalt);font-weight:700">ordinario</span>, salaire → <span style="color:var(--cobalt);font-weight:700">salario</span>, anniversaire → <span style="color:var(--cobalt);font-weight:700">aniversario</span>.</p>
+      <div class="tip">🧠 <strong>Défi :</strong>
+        <button class="reveal">éponge → <span class="q-mark">?</span><span class="ans">esponja</span></button>
+        <button class="reveal">chanteur → <span class="q-mark">?</span><span class="ans">cantor / cantante</span></button>
+        <button class="reveal">phrase → <span class="q-mark">?</span><span class="ans">frase</span></button>
+        <button class="reveal">dictionnaire → <span class="q-mark">?</span><span class="ans">diccionario</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">L3</span>
+      <span class="lesson-title">SER / ESTAR / TENER — le cœur de 50 % des phrases</span>
+      <span class="lesson-arrow">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p>Le français a UN verbe « être ». L'espagnol en a DEUX, et il utilise « avoir » (<em>tener</em>) là où tu ne l'attends pas. C'est LA difficulté n°1 du francophone — et une fois comprise, c'est un réflexe.</p>
+      <h4>SER = l'identité (la carte d'identité)</h4>
+      <ul>
+        <li>Nationalité, origine : <em>Soy francés.</em></li>
+        <li>Profession : <em>Es profesora.</em></li>
+        <li>Caractère permanent : <em>Eres inteligente.</em></li>
+        <li>L'heure et la date : <em>Son las tres.</em></li>
+      </ul>
+      <h4>ESTAR = l'état & le lieu (le GPS et l'humeur)</h4>
+      <ul>
+        <li>Localisation : <em>Estoy en París.</em> (toujours ESTAR pour un lieu !)</li>
+        <li>État temporaire : <em>Estamos cansados.</em> (fatigués)</li>
+        <li>Émotions du moment : <em>Está contenta.</em></li>
+      </ul>
+      <div class="tip">🧠 <strong>Mnémotechnique :</strong> SER = ce qui est écrit sur ta carte d'identité. ESTAR = ce que dirait ton GPS ou ton médecin aujourd'hui.<br>Test ultime : <em>La sopa <strong>es</strong> buena</em> (c'est une bonne soupe, en général) vs <em>La sopa <strong>está</strong> buena</em> (elle est bonne, là, maintenant, goûte !).</div>
+      <h4>TENER = avoir… et bien plus</h4>
+      <p>Là où le français dit « être », l'espagnol dit souvent « avoir » :</p>
+      <table>
+        <tr><th>Français</th><th>Español</th><th>Littéralement</th></tr>
+        <tr><td>J'ai 20 ans</td><td class="es">Tengo 20 años</td><td>✅ comme en français</td></tr>
+        <tr><td>J'ai faim / soif</td><td class="es">Tengo hambre / sed</td><td>✅ comme en français</td></tr>
+        <tr><td>J'ai chaud / froid</td><td class="es">Tengo calor / frío</td><td>⚠️ pas « estoy caliente » ! (contresens gênant)</td></tr>
+        <tr><td>J'ai raison</td><td class="es">Tengo razón</td><td>✅</td></tr>
+        <tr><td>J'ai sommeil</td><td class="es">Tengo sueño</td><td>« j'ai du sommeil »</td></tr>
+      </table>
+      <h4>Conjugaison au présent</h4>
+      <table>
+        <tr><th></th><th>SER</th><th>ESTAR</th><th>TENER</th></tr>
+        <tr><td class="mono">yo</td><td class="es">soy</td><td class="es">estoy</td><td class="es">tengo</td></tr>
+        <tr><td class="mono">tú</td><td class="es">eres</td><td class="es">estás</td><td class="es">tienes</td></tr>
+        <tr><td class="mono">él / ella / usted</td><td class="es">es</td><td class="es">está</td><td class="es">tiene</td></tr>
+        <tr><td class="mono">nosotros</td><td class="es">somos</td><td class="es">estamos</td><td class="es">tenemos</td></tr>
+        <tr><td class="mono">vosotros</td><td class="es">sois</td><td class="es">estáis</td><td class="es">tenéis</td></tr>
+        <tr><td class="mono">ellos / ustedes</td><td class="es">son</td><td class="es">están</td><td class="es">tienen</td></tr>
+      </table>
+      <h4>Les verbes réguliers : 3 moules, des milliers de verbes</h4>
+      <p>Tous les verbes réguliers suivent 3 patrons selon leur terminaison. Apprends 3 moules → tu conjugues 90 % des verbes.</p>
+      <table>
+        <tr><th></th><th>-AR · hablar</th><th>-ER · comer</th><th>-IR · vivir</th></tr>
+        <tr><td class="mono">yo</td><td class="es">habl<b>o</b></td><td class="es">com<b>o</b></td><td class="es">viv<b>o</b></td></tr>
+        <tr><td class="mono">tú</td><td class="es">habl<b>as</b></td><td class="es">com<b>es</b></td><td class="es">viv<b>es</b></td></tr>
+        <tr><td class="mono">él / ella</td><td class="es">habl<b>a</b></td><td class="es">com<b>e</b></td><td class="es">viv<b>e</b></td></tr>
+        <tr><td class="mono">nosotros</td><td class="es">habl<b>amos</b></td><td class="es">com<b>emos</b></td><td class="es">viv<b>imos</b></td></tr>
+        <tr><td class="mono">ellos</td><td class="es">habl<b>an</b></td><td class="es">com<b>en</b></td><td class="es">viv<b>en</b></td></tr>
+      </table>
+      <div class="tip">💡 <strong>Le pattern caché :</strong> yo = toujours <b>-o</b>. tú = toujours <b>-s</b>. nosotros = toujours <b>-mos</b>. ellos = toujours <b>-n</b>. Ces 4 marqueurs sont les mêmes pour TOUS les verbes espagnols, réguliers ou non (tengo, tienes, tenemos, tienen…). Repère le marqueur, tu sais qui parle.</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">L4</span>
+      <span class="lesson-title">Faux amis & prononciation — éviter les pièges, parler juste</span>
+      <span class="lesson-arrow">▸</span>
+    </button>
+    <div class="lesson-body">
+      <h4>⚠️ Les faux amis : des cousins qui ont mal tourné</h4>
+      <p>Ces mots viennent du <em>même</em> mot latin, mais le sens a dérivé différemment. Ce ne sont pas des étrangers — ce sont des cousins, d'où le piège.</p>
+      <table>
+        <tr><th>Español</th><th>Ça ressemble à…</th><th>Ça veut dire</th><th>Pour dire le mot FR</th></tr>
+        <tr><td class="es">embarazada</td><td>embarrassée</td><td><b>enceinte</b> 🤰</td><td>avergonzada</td></tr>
+        <tr><td class="es">constipado</td><td>constipé</td><td><b>enrhumé</b> 🤧</td><td>estreñido</td></tr>
+        <tr><td class="es">salir</td><td>salir</td><td><b>sortir</b></td><td>ensuciar</td></tr>
+        <tr><td class="es">subir</td><td>subir</td><td><b>monter</b> ⬆️</td><td>sufrir</td></tr>
+        <tr><td class="es">largo</td><td>large</td><td><b>long</b></td><td>ancho</td></tr>
+        <tr><td class="es">entender</td><td>entendre</td><td><b>comprendre</b></td><td>oír</td></tr>
+        <tr><td class="es">quitar</td><td>quitter</td><td><b>enlever</b></td><td>dejar</td></tr>
+        <tr><td class="es">demandar</td><td>demander</td><td><b>poursuivre en justice</b> ⚖️</td><td>pedir / preguntar</td></tr>
+        <tr><td class="es">carta</td><td>carte</td><td><b>lettre</b> ✉️</td><td>tarjeta / mapa</td></tr>
+        <tr><td class="es">gato</td><td>gâteau</td><td><b>chat</b> 🐱</td><td>pastel</td></tr>
+      </table>
+      <div class="warn">🚨 La gaffe classique : <em>« estoy embarazado »</em> pour « je suis embarrassé » = tu viens d'annoncer une grossesse. Et <em>« pido un gato »</em> à la pâtisserie = tu commandes un chat.</div>
+      <h4>🗣️ Les 6 règles de prononciation qui suffisent</h4>
+      <table>
+        <tr><th>Règle</th><th>Exemple</th></tr>
+        <tr><td><b>Tout se prononce</b> (sauf le h)</td><td class="es">chocolate = tcho-ko-la-TÉ</td></tr>
+        <tr><td><b>J</b> = « rh » raclé (jota)</td><td class="es">trabajo = tra-ba-RHO</td></tr>
+        <tr><td><b>Z, CE, CI</b> = « th » anglais (ou « s » en Am. latine)</td><td class="es">cerveza = ther-VÉ-tha</td></tr>
+        <tr><td><b>V = B</b> (aucune différence)</td><td class="es">vino = BI-no</td></tr>
+        <tr><td><b>U</b> = « ou » (le « u » français n'existe pas)</td><td class="es">universidad = OU-ni-…</td></tr>
+        <tr><td><b>Ñ</b> = « gn »</td><td class="es">España = es-PA-gna</td></tr>
+      </table>
+      <div class="tip">🎯 <strong>L'accent tonique — la règle d'or :</strong> mot finissant par voyelle, <b>n</b> ou <b>s</b> → accent sur l'avant-dernière syllabe (<em>ha-BLA-mos</em>). Autre consonne → dernière syllabe (<em>ha-BLAR</em>). Un accent écrit (´) gagne toujours (<em>informa-CIÓN</em>). Erreur n°1 du francophone : tout accentuer à la fin, à la française.</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:24px">
+    <button class="btn sun" data-goto="quiz">Je teste ce que j'ai appris →</button>
+  </div>
+</section>
+
+<!-- ══════════════ FICHES ══════════════ -->
+<section class="view" id="view-fiches">
+  <div class="eyebrow">Tout l'essentiel, format compact</div>
+  <h2>Fiches de révision</h2>
+  <div class="fiche-tools">
+    <button class="btn small ghost" onclick="window.print()">🖨️ Imprimer les fiches</button>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 1 · Les clés de conversion FR → ES</h3>
+    <table>
+      <tr><th>Clé</th><th>Exemple</th><th>Rendement</th><th>Fiabilité</th></tr>
+      <tr><td class="mono">-tion → -ción</td><td class="es">nation → nación</td><td>~1 250 mots</td><td>★★★★★</td></tr>
+      <tr><td class="mono">-ction → -cción</td><td class="es">action → acción</td><td>~150 mots</td><td>★★★★☆</td></tr>
+      <tr><td class="mono">-ité → -idad</td><td class="es">réalité → realidad</td><td>~800 mots</td><td>★★★★★</td></tr>
+      <tr><td class="mono">-ique → -ico/-ica</td><td class="es">musique → música</td><td>~600 mots</td><td>★★★★☆</td></tr>
+      <tr><td class="mono">-ment → -mente</td><td class="es">rapidement → rápidamente</td><td>~2 000 mots</td><td>★★★★★</td></tr>
+      <tr><td class="mono">é- → es-</td><td class="es">école → escuela</td><td>~300 mots</td><td>★★★★☆</td></tr>
+      <tr><td class="mono">-eur → -or</td><td class="es">docteur → doctor</td><td>~400 mots</td><td>★★★★☆</td></tr>
+      <tr><td class="mono">ph → f</td><td class="es">photo → foto</td><td>~200 mots</td><td>★★★★★</td></tr>
+      <tr><td class="mono">-aire → -ario</td><td class="es">salaire → salario</td><td>~250 mots</td><td>★★★★☆</td></tr>
+    </table>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 2 · Top 10 des faux amis</h3>
+    <table>
+      <tr><th>Español</th><th>≠</th><th>Sens réel</th></tr>
+      <tr><td class="es">embarazada</td><td>embarrassée</td><td>enceinte</td></tr>
+      <tr><td class="es">constipado</td><td>constipé</td><td>enrhumé</td></tr>
+      <tr><td class="es">salir</td><td>salir</td><td>sortir</td></tr>
+      <tr><td class="es">subir</td><td>subir</td><td>monter</td></tr>
+      <tr><td class="es">largo</td><td>large</td><td>long</td></tr>
+      <tr><td class="es">entender</td><td>entendre</td><td>comprendre</td></tr>
+      <tr><td class="es">quitar</td><td>quitter</td><td>enlever</td></tr>
+      <tr><td class="es">demandar</td><td>demander</td><td>poursuivre en justice</td></tr>
+      <tr><td class="es">carta</td><td>carte</td><td>lettre</td></tr>
+      <tr><td class="es">gato</td><td>gâteau</td><td>chat</td></tr>
+    </table>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 3 · Conjugaison présent — les 3 irréguliers vitaux + les 3 moules</h3>
+    <table>
+      <tr><th></th><th>SER</th><th>ESTAR</th><th>TENER</th><th>-AR (hablar)</th><th>-ER (comer)</th><th>-IR (vivir)</th></tr>
+      <tr><td class="mono">yo</td><td class="es">soy</td><td class="es">estoy</td><td class="es">tengo</td><td class="es">hablo</td><td class="es">como</td><td class="es">vivo</td></tr>
+      <tr><td class="mono">tú</td><td class="es">eres</td><td class="es">estás</td><td class="es">tienes</td><td class="es">hablas</td><td class="es">comes</td><td class="es">vives</td></tr>
+      <tr><td class="mono">él/ella</td><td class="es">es</td><td class="es">está</td><td class="es">tiene</td><td class="es">habla</td><td class="es">come</td><td class="es">vive</td></tr>
+      <tr><td class="mono">nosotros</td><td class="es">somos</td><td class="es">estamos</td><td class="es">tenemos</td><td class="es">hablamos</td><td class="es">comemos</td><td class="es">vivimos</td></tr>
+      <tr><td class="mono">vosotros</td><td class="es">sois</td><td class="es">estáis</td><td class="es">tenéis</td><td class="es">habláis</td><td class="es">coméis</td><td class="es">vivís</td></tr>
+      <tr><td class="mono">ellos</td><td class="es">son</td><td class="es">están</td><td class="es">tienen</td><td class="es">hablan</td><td class="es">comen</td><td class="es">viven</td></tr>
+    </table>
+    <p style="font-size:.85rem"><b>SER</b> = identité, profession, nationalité, heure · <b>ESTAR</b> = lieu, état temporaire, émotion · <b>TENER</b> = possession + âge, faim, soif, chaud, froid, raison, sommeil.</p>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 4 · Prononciation — les 6 règles + accent tonique</h3>
+    <table>
+      <tr><th>Lettre</th><th>Son</th><th>Exemple</th></tr>
+      <tr><td class="mono">J / GE / GI</td><td>« rh » raclé</td><td class="es">trabajo, gente</td></tr>
+      <tr><td class="mono">Z / CE / CI</td><td>« th » anglais (Esp.) ou « s » (Am. lat.)</td><td class="es">cerveza, gracias</td></tr>
+      <tr><td class="mono">V</td><td>= B</td><td class="es">vino → « bino »</td></tr>
+      <tr><td class="mono">U</td><td>« ou »</td><td class="es">tú → « tou »</td></tr>
+      <tr><td class="mono">H</td><td>muet</td><td class="es">hola → « ola »</td></tr>
+      <tr><td class="mono">Ñ</td><td>« gn »</td><td class="es">mañana</td></tr>
+      <tr><td class="mono">LL / Y</td><td>« y » de yoga</td><td class="es">llamar, playa</td></tr>
+      <tr><td class="mono">R / RR</td><td>battu / roulé</td><td class="es">pero ≠ perro</td></tr>
+    </table>
+    <p style="font-size:.85rem"><b>Accent tonique :</b> finale en voyelle/n/s → avant-dernière syllabe. Autre consonne → dernière. Accent écrit (´) → il gagne toujours.</p>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 5 · Les 20 mots-outils qui portent 80 % des phrases</h3>
+    <table>
+      <tr><th>ES</th><th>FR</th><th>ES</th><th>FR</th></tr>
+      <tr><td class="es">pero</td><td>mais</td><td class="es">también</td><td>aussi</td></tr>
+      <tr><td class="es">porque</td><td>parce que</td><td class="es">ahora</td><td>maintenant</td></tr>
+      <tr><td class="es">muy</td><td>très</td><td class="es">aquí</td><td>ici</td></tr>
+      <tr><td class="es">más</td><td>plus</td><td class="es">siempre</td><td>toujours</td></tr>
+      <tr><td class="es">nada</td><td>rien</td><td class="es">nunca</td><td>jamais</td></tr>
+      <tr><td class="es">todo</td><td>tout</td><td class="es">algo</td><td>quelque chose</td></tr>
+      <tr><td class="es">hoy</td><td>aujourd'hui</td><td class="es">mañana</td><td>demain / matin</td></tr>
+      <tr><td class="es">antes</td><td>avant</td><td class="es">después</td><td>après</td></tr>
+      <tr><td class="es">mucho</td><td>beaucoup</td><td class="es">poco</td><td>peu</td></tr>
+      <tr><td class="es">sí / no</td><td>oui / non</td><td class="es">quizás</td><td>peut-être</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════ QUIZ ══════════════ -->
+<section class="view" id="view-quiz">
+  <div class="eyebrow">Devine, ne récite jamais</div>
+  <h2>Quiz</h2>
+  <div id="quizMenu">
+    <div class="mode-pick">
+      <button class="btn" data-quiz="patterns">🔑 Patterns FR → ES</button>
+      <button class="btn" style="background:var(--carmin)" data-quiz="fauxamis">⚠️ Faux amis</button>
+      <button class="btn sun" data-quiz="mix">🎲 Mélange</button>
+    </div>
+    <p>8 questions par série · feedback immédiat · la logique est expliquée à chaque réponse. +10 XP par bonne réponse.</p>
+  </div>
+  <div class="quiz-shell" id="quizArea" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span class="qmeta" id="quizCounter">Question 1/8</span>
+      <span class="qmeta" id="quizScore">Score : 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="quizProg"></div></div>
+    <div class="qcard">
+      <div class="qmeta" id="quizType">PATTERN</div>
+      <div class="qword" id="quizQuestion"></div>
+      <div class="options" id="quizOptions"></div>
+      <div class="expl" id="quizExpl"></div>
+      <div style="margin-top:20px;display:flex;gap:10px">
+        <button class="btn sun" id="quizNext" style="display:none">Question suivante →</button>
+        <button class="btn ghost small" id="quizQuit">Quitter</button>
+      </div>
+    </div>
+  </div>
+  <div class="quiz-shell" id="quizResult" style="display:none">
+    <div class="result-card">
+      <div class="eyebrow">Série terminée</div>
+      <div class="result-note" id="quizFinalScore">0<small>/8</small></div>
+      <div class="mention" id="quizFinalMsg"></div>
+      <p id="quizFinalTip" style="margin:12px 0"></p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+        <button class="btn" id="quizRetry">🔁 Rejouer</button>
+        <button class="btn ghost" data-goto="lecons">📖 Revoir les leçons</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CONJUGAISON ══════════════ -->
+<section class="view" id="view-conjug">
+  <div class="eyebrow">Étape 1 : choisis le verbe · Étape 2 : conjugue-le</div>
+  <h2>Conjugaison en contexte</h2>
+  <div id="conjMenu">
+    <div class="mode-pick">
+      <button class="btn" data-conj="serestar">⚖️ SER / ESTAR / TENER</button>
+      <button class="btn sun" data-conj="reguliers">🔧 Verbes réguliers</button>
+      <button class="btn" style="background:var(--carmin)" data-conj="tout">🎲 Tout mélangé</button>
+    </div>
+    <p>Une phrase à trou : d'abord choisis le <strong>bon verbe</strong> (+5 XP), puis tape sa forme <strong>conjuguée</strong> (+10 XP). Les accents comptent — mais je te préviens gentiment si c'est ta seule erreur.</p>
+  </div>
+  <div class="quiz-shell" id="conjArea" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span class="qmeta" id="conjCounter">Phrase 1/8</span>
+      <span class="qmeta" id="conjScore">Score : 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="conjProg"></div></div>
+    <div class="qcard">
+      <div class="fr-hint" id="conjFr"></div>
+      <div class="sentence" id="conjSentence"></div>
+      <div class="qmeta" style="margin-top:14px">① Quel verbe ?</div>
+      <div class="verb-picker" id="conjVerbs"></div>
+      <div id="conjStep2" style="display:none">
+        <div class="qmeta">② Conjugue-le :</div>
+        <div class="conj-input-row">
+          <input type="text" class="conj-input" id="conjInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ta réponse…" aria-label="Forme conjuguée">
+          <button class="btn small sun" id="conjCheck">Vérifier</button>
+        </div>
+        <div class="accent-bar" aria-label="Insérer un caractère accentué">
+          <button class="acc" data-ch="á">á</button><button class="acc" data-ch="é">é</button>
+          <button class="acc" data-ch="í">í</button><button class="acc" data-ch="ó">ó</button>
+          <button class="acc" data-ch="ú">ú</button><button class="acc" data-ch="ñ">ñ</button>
+        </div>
+      </div>
+      <div class="feedback" id="conjFeedback"></div>
+      <div style="margin-top:20px;display:flex;gap:10px">
+        <button class="btn sun" id="conjNext" style="display:none">Phrase suivante →</button>
+        <button class="btn ghost small" id="conjQuit">Quitter</button>
+      </div>
+    </div>
+  </div>
+  <div class="quiz-shell" id="conjResult" style="display:none">
+    <div class="result-card">
+      <div class="eyebrow">Série terminée</div>
+      <div class="result-note" id="conjFinalScore">0<small>/16</small></div>
+      <div class="mention" id="conjFinalMsg"></div>
+      <p id="conjFinalTip" style="margin:12px 0"></p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+        <button class="btn" id="conjRetry">🔁 Rejouer</button>
+        <button class="btn ghost" data-goto="fiches">📋 Revoir la fiche conjugaison</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ EXAMEN ══════════════ -->
+<section class="view" id="view-exam">
+  <div class="eyebrow">12 questions · 10 minutes · note sur 20</div>
+  <h2>Examen blanc</h2>
+  <div id="examIntro">
+    <div class="card" style="max-width:640px">
+      <h3>Règles de l'examen</h3>
+      <ul style="margin:12px 0 12px 22px;line-height:2">
+        <li>🔑 5 questions de <strong>patterns</strong> (QCM)</li>
+        <li>⚠️ 3 questions de <strong>faux amis</strong> (QCM)</li>
+        <li>✍️ 4 phrases de <strong>conjugaison</strong> (verbe + forme)</li>
+        <li>⏱️ <strong>10 minutes</strong> — l'examen se termine automatiquement</li>
+        <li>📊 Note /20, mention, et correction détaillée à la fin</li>
+      </ul>
+      <button class="btn" id="examStart" style="margin-top:10px">🎓 Commencer l'examen</button>
+    </div>
+  </div>
+  <div class="quiz-shell" id="examArea" style="display:none">
+    <div class="exam-header">
+      <span class="qmeta" id="examCounter">Question 1/12</span>
+      <div class="timer" id="examTimer">10:00</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="examProg"></div></div>
+    <div class="qcard">
+      <div class="qmeta" id="examType"></div>
+      <div class="fr-hint" id="examFr" style="display:none"></div>
+      <div class="qword" id="examQuestion"></div>
+      <div class="options" id="examOptions" style="display:none"></div>
+      <div id="examConjZone" style="display:none">
+        <div class="qmeta" style="margin-top:14px">① Quel verbe ?</div>
+        <div class="verb-picker" id="examVerbs"></div>
+        <div id="examStep2" style="display:none">
+          <div class="qmeta">② Conjugue-le :</div>
+          <div class="conj-input-row">
+            <input type="text" class="conj-input" id="examInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ta réponse…" aria-label="Forme conjuguée">
+            <button class="btn small sun" id="examCheck">Valider</button>
+          </div>
+          <div class="accent-bar">
+            <button class="acc" data-ch="á">á</button><button class="acc" data-ch="é">é</button>
+            <button class="acc" data-ch="í">í</button><button class="acc" data-ch="ó">ó</button>
+            <button class="acc" data-ch="ú">ú</button><button class="acc" data-ch="ñ">ñ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="examResultZone" style="display:none">
+    <div class="result-card">
+      <div class="eyebrow">Résultat de l'examen</div>
+      <div class="result-note" id="examNote">0<small>/20</small></div>
+      <div class="mention" id="examMention"></div>
+      <p id="examComment"></p>
+      <button class="btn" id="examRetry" style="margin-top:14px">🔁 Repasser l'examen</button>
+    </div>
+    <h3 style="margin:28px 0 6px">Correction détaillée</h3>
+    <div id="examReview"></div>
+  </div>
+</section>
+
+</main>
+<footer>PUENTE · méthode des patterns · 1 règle &gt; 500 mots par cœur</footer>
+
+<script>
+/* ═══════════ STATE ═══════════ */
+const S={xp:0,quizAnswered:0,conjDone:0,bestExam:null};
+function addXP(n){S.xp+=n;render()}
+function render(){
+  document.getElementById('xpBadge').textContent='⚡ '+S.xp+' XP';
+  document.getElementById('statKey').innerHTML='⚡ <em>'+S.xp+'</em> XP';
+  document.getElementById('statLine').textContent=
+   'Quiz : '+S.quizAnswered+' réponses · Conjugaison : '+S.conjDone+' phrases · Meilleur examen : '+(S.bestExam===null?'—':S.bestExam+'/20');
+}
+
+/* ═══════════ NAV ═══════════ */
+const views=document.querySelectorAll('.view');
+const tabs=document.querySelectorAll('.tab-btn');
+function goto(v){
+  views.forEach(x=>x.classList.toggle('active',x.id==='view-'+v));
+  tabs.forEach(t=>t.classList.toggle('active',t.dataset.view===v));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+tabs.forEach(t=>t.addEventListener('click',()=>goto(t.dataset.view)));
+document.querySelectorAll('[data-goto]').forEach(b=>{
+  b.addEventListener('click',()=>goto(b.dataset.goto));
+  b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();goto(b.dataset.goto)}});
+});
+
+/* ═══════════ HERO CONVERTER ═══════════ */
+const convPairs=[
+ ['informa<b>tion</b>','informa<b>ción</b>'],
+ ['univers<b>ité</b>','univers<b>idad</b>'],
+ ['fantast<b>ique</b>','fantást<b>ico</b>'],
+ ['rapide<b>ment</b>','rápida<b>mente</b>'],
+ ['<b>é</b>cole','<b>es</b>cuela'],
+ ['doct<b>eur</b>','doct<b>or</b>'],
+ ['<b>ph</b>armacie','<b>f</b>armacia'],
+];
+let ci=0;
+const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduced){
+  setInterval(()=>{
+    ci=(ci+1)%convPairs.length;
+    document.getElementById('convFr').innerHTML=convPairs[ci][0];
+    document.getElementById('convEs').innerHTML=convPairs[ci][1];
+  },2600);
+}
+
+/* ═══════════ LESSONS ═══════════ */
+document.querySelectorAll('.lesson-head').forEach(h=>{
+  h.addEventListener('click',()=>{
+    const l=h.parentElement;
+    l.classList.toggle('open');
+    h.setAttribute('aria-expanded',l.classList.contains('open'));
+  });
+});
+document.querySelectorAll('.reveal').forEach(r=>{
+  r.addEventListener('click',()=>r.classList.add('on'));
+});
+
+/* ═══════════ DATA ═══════════ */
+const PATTERN_Q=[
+ {q:'révolu<span class="hl">tion</span>',opts:['revolution','revolución','revolutión'],a:1,e:'<b>-tion → -ción</b>. Le t latin s\'adoucit en c espagnol. Et l\'accent écrit sur le ó est obligatoire.'},
+ {q:'quali<span class="hl">té</span>',opts:['calidad','calité','cualitad'],a:0,e:'<b>-ité → -idad</b>. L\'espagnol garde le d du latin <em>qualitatem</em>. Note : qua- devient souvent ca- (calidad, calor).'},
+ {q:'automa<span class="hl">tique</span>',opts:['automatique','automatico','automático'],a:2,e:'<b>-ique → -ico</b> + accent écrit obligatoire sur l\'antépénultième : au-to-MÁ-ti-co (mot <em>esdrújula</em>).'},
+ {q:'a<span class="hl">ction</span>',opts:['ación','acción','actión'],a:1,e:'<b>-ction → -cción</b> : le français fusionne, l\'espagnol prononce les deux c : ak-thión.'},
+ {q:'rapide<span class="hl">ment</span>',opts:['rápidamente','rapidomente','rápidment'],a:0,e:'<b>adjectif au féminin + mente</b> : rápida + mente. <em>Mente</em> = « esprit » en latin — même origine que notre -ment !'},
+ {q:'<span class="hl">é</span>tudiant',opts:['etudiante','estudiante','étudiante'],a:1,e:'<b>é- → es-</b> : l\'accent aigu français cache un s latin perdu (<em>studens</em>). Remets le s !'},
+ {q:'doct<span class="hl">eur</span>',opts:['docteur','doctor','doctador'],a:1,e:'<b>-eur → -or</b>. Latin <em>doctor</em> : l\'espagnol n\'a rien changé, c\'est le français qui a déformé.'},
+ {q:'<span class="hl">ph</span>armacie',opts:['pharmacia','farmacía','farmacia'],a:2,e:'<b>ph → f</b> : l\'espagnol écrit ce qu\'il prononce. Attention, pas d\'accent ici : far-MA-cia.'},
+ {q:'vocabul<span class="hl">aire</span>',opts:['vocabulario','vocabulaire','vocabulero'],a:0,e:'<b>-aire → -ario</b>, du latin <em>-arium</em>. Idem : salario, aniversario, diccionario.'},
+ {q:'perfe<span class="hl">ction</span>',opts:['perfectión','perfección','perfeción'],a:1,e:'<b>-ction → -cción</b> : deux c, prononcés k + th. perfek-THIÓN.'},
+ {q:'univers<span class="hl">ité</span>',opts:['universitad','université','universidad'],a:2,e:'<b>-ité → -idad</b>. Le i reste, le d latin revient : universidad.'},
+ {q:'mus<span class="hl">ique</span>',opts:['música','musica','musique'],a:0,e:'<b>-ique → -ica</b> + accent écrit : MÚ-si-ca. Tous les mots en -ico/-ica portent l\'accent écrit sur l\'antépénultième.'},
+ {q:'<span class="hl">é</span>cole',opts:['ecola','escuela','écola'],a:1,e:'<b>é- → es-</b> (latin <em>schola</em>). Bonus : le o latin bref devient souvent la diphtongue <b>ue</b> en espagnol (escuela, puerta, bueno).'},
+ {q:'coul<span class="hl">eur</span>',opts:['coulor','colora','color'],a:2,e:'<b>-eur → -or</b>. ⚠️ Et le genre change : <em>la</em> couleur mais <em>el</em> color (masculin).'},
+ {q:'télé<span class="hl">ph</span>one',opts:['teléfono','telephono','telefón'],a:0,e:'<b>ph → f</b> + accent esdrújula : te-LÉ-fo-no.'},
+ {q:'liber<span class="hl">té</span>',opts:['liberté','libertad','libertidad'],a:1,e:'<b>-té → -tad</b> : variante de -ité → -idad quand il n\'y a pas de i (libertad, verdad, dificultad).'},
+];
+const FAUX_Q=[
+ {q:'« embarazada » signifie…',opts:['embarrassée','enceinte 🤰','embêtée'],a:1,e:'LE piège classique. Pour « embarrassée » : <b>avergonzada</b>. Dire <em>estoy embarazado</em> = annoncer une grossesse.'},
+ {q:'« constipado » signifie…',opts:['constipé','fatigué','enrhumé 🤧'],a:2,e:'Faux ami médical : constipado = enrhumé. Pour « constipé » : <b>estreñido</b>.'},
+ {q:'« salir » signifie…',opts:['salir','sortir','saler'],a:1,e:'Du latin <em>salire</em> (bondir) → « bondir dehors ». Pour « salir » : <b>ensuciar</b>.'},
+ {q:'« subir » signifie…',opts:['monter ⬆️','subir','descendre'],a:0,e:'Latin <em>subire</em> = aller vers le haut. Pour « subir » : <b>sufrir</b>.'},
+ {q:'« largo » signifie…',opts:['large','long','grand'],a:1,e:'Un camino largo = un LONG chemin. Pour « large » : <b>ancho</b>.'},
+ {q:'« entender » signifie…',opts:['entendre','attendre','comprendre'],a:2,e:'Comme « entendement » en vieux français ! Pour « entendre » : <b>oír</b>.'},
+ {q:'« quitar » signifie…',opts:['quitter','enlever','acquitter'],a:1,e:'Quitar la mesa = débarrasser la table. Pour « quitter quelqu\'un » : <b>dejar</b>.'},
+ {q:'« demandar » signifie…',opts:['demander','commander','poursuivre en justice ⚖️'],a:2,e:'Demandar = attaquer au tribunal ! Pour « demander » : <b>pedir</b> (un objet) ou <b>preguntar</b> (une question).'},
+ {q:'« una carta » signifie…',opts:['une lettre ✉️','une carte','une charte'],a:0,e:'Carta = lettre (courrier). Carte bancaire = <b>tarjeta</b>, carte géo = <b>mapa</b>, carte du resto = <b>carta</b> (ah, quand même !).'},
+ {q:'« un gato » signifie…',opts:['un gâteau','un chat 🐱','un gars'],a:1,e:'Gato = chat (latin <em>cattus</em>). Pour « gâteau » : <b>pastel</b> ou <b>tarta</b>.'},
+];
+const CONJ_SE=[ // ser/estar/tener
+ {fr:'Je suis français.',es:'Yo ___ francés.',verbs:['ser','estar','tener'],v:'ser',ans:'soy',e:'Nationalité = identité permanente → <b>SER</b>. Yo soy.'},
+ {fr:'Nous sommes fatigués.',es:'Nosotros ___ cansados.',verbs:['ser','estar','tener'],v:'estar',ans:'estamos',e:'État temporaire (la fatigue passe) → <b>ESTAR</b>. Nosotros estamos.'},
+ {fr:'Elle a vingt ans.',es:'Ella ___ veinte años.',verbs:['ser','estar','tener'],v:'tener',ans:'tiene',e:'⚠️ L\'âge se dit avec <b>TENER</b> en espagnol (« elle a 20 ans » — comme en français, contrairement à l\'anglais). Ella tiene.'},
+ {fr:'Où es-tu maintenant ?',es:'¿Dónde ___ (tú) ahora?',verbs:['ser','estar','tener'],v:'estar',ans:'estás',e:'Localisation → toujours <b>ESTAR</b>. Tú estás — avec l\'accent sur le á !'},
+ {fr:'Ils ont une maison à Madrid.',es:'Ellos ___ una casa en Madrid.',verbs:['ser','estar','tener'],v:'tener',ans:'tienen',e:'Possession → <b>TENER</b>. Ellos tienen (marqueur -n du pluriel).'},
+ {fr:'Je suis à Paris.',es:'Yo ___ en París.',verbs:['ser','estar','tener'],v:'estar',ans:'estoy',e:'Lieu → <b>ESTAR</b>, jamais ser. Yo estoy.'},
+ {fr:'Ma mère est professeure.',es:'Mi madre ___ profesora.',verbs:['ser','estar','tener'],v:'ser',ans:'es',e:'Profession = identité → <b>SER</b>. Ella es.'},
+ {fr:'Nous avons faim.',es:'Nosotros ___ hambre.',verbs:['ser','estar','tener'],v:'tener',ans:'tenemos',e:'Faim, soif, chaud, froid, sommeil → <b>TENER</b>. Nosotros tenemos hambre.'},
+ {fr:'Tu es très intelligente.',es:'Tú ___ muy inteligente.',verbs:['ser','estar','tener'],v:'ser',ans:'eres',e:'Trait de caractère permanent → <b>SER</b>. Tú eres.'},
+ {fr:'J\'ai froid.',es:'Yo ___ frío.',verbs:['ser','estar','tener'],v:'tener',ans:'tengo',e:'⚠️ « J\'ai froid » = <b>tengo frío</b>. Ne JAMAIS dire <em>estoy caliente</em> pour « j\'ai chaud » (sens très gênant 😳) : c\'est <em>tengo calor</em>.'},
+ {fr:'La soupe est bonne (goûte, là maintenant !).',es:'La sopa ___ buena.',verbs:['ser','estar','tener'],v:'estar',ans:'está',e:'Jugement sur l\'instant → <b>ESTAR</b>. <em>Es buena</em> = c\'est une bonne soupe en général ; <em>está buena</em> = elle est délicieuse là, maintenant.'},
+ {fr:'Vous (plusieurs) êtes en vacances.',es:'Ustedes ___ de vacaciones.',verbs:['ser','estar','tener'],v:'estar',ans:'están',e:'État temporaire → <b>ESTAR</b>. Ustedes están (= 3e pers. pluriel).'},
+];
+const CONJ_REG=[
+ {fr:'Je parle espagnol tous les jours.',es:'Yo ___ español todos los días.',verbs:['hablar','comer','vivir'],v:'hablar',ans:'hablo',e:'Verbe -AR, yo → <b>-o</b> : hablo. Le marqueur -o de « yo » vaut pour TOUS les verbes.'},
+ {fr:'Ils vivent à Barcelone.',es:'Ellos ___ en Barcelona.',verbs:['hablar','comer','vivir'],v:'vivir',ans:'viven',e:'Verbe -IR, ellos → <b>-en</b> : viven. Marqueur -n du pluriel.'},
+ {fr:'Tu manges beaucoup de chocolat.',es:'Tú ___ mucho chocolate.',verbs:['hablar','comer','vivir'],v:'comer',ans:'comes',e:'Verbe -ER, tú → <b>-es</b> : comes. Le -s final = marqueur universel du « tú ».'},
+ {fr:'Nous écrivons une lettre.',es:'Nosotros ___ una carta.',verbs:['escribir','escuchar','beber'],v:'escribir',ans:'escribimos',e:'Verbe -IR, nosotros → <b>-imos</b> : escribimos. (Et carta = lettre, pas carte — faux ami !)'},
+ {fr:'Elle écoute de la musique classique.',es:'Ella ___ música clásica.',verbs:['escribir','escuchar','beber'],v:'escuchar',ans:'escucha',e:'Verbe -AR, ella → <b>-a</b> : escucha.'},
+ {fr:'Vous (plusieurs) buvez de l\'eau.',es:'Ustedes ___ agua.',verbs:['escribir','escuchar','beber'],v:'beber',ans:'beben',e:'Verbe -ER, ustedes (= ellos) → <b>-en</b> : beben.'},
+ {fr:'Nous étudions à l\'université.',es:'Nosotros ___ en la universidad.',verbs:['estudiar','aprender','abrir'],v:'estudiar',ans:'estudiamos',e:'Verbe -AR, nosotros → <b>-amos</b>. Et note : université → universidad (-ité → -idad) !'},
+ {fr:'J\'apprends rapidement.',es:'Yo ___ rápidamente.',verbs:['estudiar','aprender','abrir'],v:'aprender',ans:'aprendo',e:'Verbe -ER, yo → <b>-o</b> : aprendo. Aprender = apprendre (vrai ami, ouf).'},
+ {fr:'Tu ouvres la porte.',es:'Tú ___ la puerta.',verbs:['estudiar','aprender','abrir'],v:'abrir',ans:'abres',e:'Verbe -IR, tú → <b>-es</b> : abres. (puerta : le o latin bref → diphtongue ue, comme escuela.)'},
+ {fr:'Il travaille à la pharmacie.',es:'Él ___ en la farmacia.',verbs:['trabajar','vender','recibir'],v:'trabajar',ans:'trabaja',e:'Verbe -AR, él → <b>-a</b> : trabaja. Prononciation : tra-ba-RHA (jota raclée).'},
+ {fr:'Nous vendons la maison.',es:'Nosotros ___ la casa.',verbs:['trabajar','vender','recibir'],v:'vender',ans:'vendemos',e:'Verbe -ER, nosotros → <b>-emos</b> : vendemos.'},
+ {fr:'Ils reçoivent beaucoup d\'informations.',es:'Ellos ___ mucha información.',verbs:['trabajar','vender','recibir'],v:'recibir',ans:'reciben',e:'Verbe -IR, ellos → <b>-en</b> : reciben. Et información : -tion → -ción, féminin, accent sur ó.'},
+];
+
+/* ═══════════ HELPERS ═══════════ */
+const strip=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const norm=s=>s.trim().toLowerCase();
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function pick(arr,n){return shuffle(arr).slice(0,n)}
+function bindAccents(scope,input){
+  scope.querySelectorAll('.acc').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const el=document.getElementById(input);
+      const s=el.selectionStart||el.value.length;
+      el.value=el.value.slice(0,s)+b.dataset.ch+el.value.slice(el.selectionEnd||s);
+      el.focus();el.setSelectionRange(s+1,s+1);
+    });
+  });
+}
+bindAccents(document.getElementById('view-conjug'),'conjInput');
+bindAccents(document.getElementById('view-exam'),'examInput');
+
+/* ═══════════ QUIZ MODULE ═══════════ */
+let QZ={list:[],i:0,score:0,mode:''};
+document.querySelectorAll('[data-quiz]').forEach(b=>b.addEventListener('click',()=>startQuiz(b.dataset.quiz)));
+function startQuiz(mode){
+  QZ.mode=mode;QZ.i=0;QZ.score=0;
+  if(mode==='patterns')QZ.list=pick(PATTERN_Q,8).map(q=>({...q,t:'PATTERN'}));
+  else if(mode==='fauxamis')QZ.list=pick(FAUX_Q,8).map(q=>({...q,t:'FAUX AMI'}));
+  else QZ.list=shuffle([...pick(PATTERN_Q,5).map(q=>({...q,t:'PATTERN'})),...pick(FAUX_Q,3).map(q=>({...q,t:'FAUX AMI'}))]);
+  document.getElementById('quizMenu').style.display='none';
+  document.getElementById('quizResult').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  showQuizQ();
+}
+function showQuizQ(){
+  const q=QZ.list[QZ.i];
+  document.getElementById('quizCounter').textContent='Question '+(QZ.i+1)+'/'+QZ.list.length;
+  document.getElementById('quizScore').textContent='Score : '+QZ.score;
+  document.getElementById('quizProg').style.width=(QZ.i/QZ.list.length*100)+'%';
+  document.getElementById('quizType').textContent=q.t;
+  document.getElementById('quizQuestion').innerHTML=(q.t==='PATTERN'?'Comment dit-on <em>'+q.q+'</em> ?':q.q);
+  const box=document.getElementById('quizOptions');box.innerHTML='';
+  const order=shuffle(q.opts.map((o,idx)=>({o,idx})));
+  order.forEach(({o,idx})=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=o;
+    b.addEventListener('click',()=>answerQuiz(b,idx===q.a,q,box));
+    box.appendChild(b);
+  });
+  const ex=document.getElementById('quizExpl');ex.classList.remove('show');ex.innerHTML='';
+  document.getElementById('quizNext').style.display='none';
+}
+function answerQuiz(btn,good,q,box){
+  box.querySelectorAll('.opt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===q.opts[q.a])b.classList.add('correct');
+  });
+  if(!good)btn.classList.add('wrong');
+  if(good){QZ.score++;addXP(10)}
+  S.quizAnswered++;render();
+  const ex=document.getElementById('quizExpl');
+  ex.innerHTML=(good?'✅ ':'❌ ')+q.e;ex.classList.add('show');
+  document.getElementById('quizNext').style.display='inline-block';
+  document.getElementById('quizNext').focus();
+}
+document.getElementById('quizNext').addEventListener('click',()=>{
+  QZ.i++;
+  if(QZ.i<QZ.list.length)showQuizQ();else endQuiz();
+});
+document.getElementById('quizQuit').addEventListener('click',()=>{
+  document.getElementById('quizArea').style.display='none';
+  document.getElementById('quizMenu').style.display='block';
+});
+function endQuiz(){
+  document.getElementById('quizArea').style.display='none';
+  document.getElementById('quizResult').style.display='block';
+  const n=QZ.list.length;
+  document.getElementById('quizFinalScore').innerHTML=QZ.score+'<small>/'+n+'</small>';
+  const r=QZ.score/n;
+  document.getElementById('quizFinalMsg').textContent=r===1?'¡Perfecto! 🏆':r>=.75?'¡Muy bien! 🎉':r>=.5?'Bien, ça se construit 💪':'Retour aux leçons 📖';
+  document.getElementById('quizFinalTip').textContent=
+   r>=.75?'Tu génères de l\'espagnol sans l\'avoir appris. C\'est ça, l\'intuition des patterns.'
+   :'Relis la leçon correspondante : chaque erreur est une règle pas encore automatisée, rien de plus.';
+}
+document.getElementById('quizRetry').addEventListener('click',()=>startQuiz(QZ.mode));
+
+/* ═══════════ CONJUGATION MODULE ═══════════ */
+let CJ={list:[],i:0,score:0,mode:'',verbOK:false,attempt:0};
+document.querySelectorAll('[data-conj]').forEach(b=>b.addEventListener('click',()=>startConj(b.dataset.conj)));
+function startConj(mode){
+  CJ.mode=mode;CJ.i=0;CJ.score=0;
+  if(mode==='serestar')CJ.list=pick(CONJ_SE,8);
+  else if(mode==='reguliers')CJ.list=pick(CONJ_REG,8);
+  else CJ.list=shuffle([...pick(CONJ_SE,4),...pick(CONJ_REG,4)]);
+  document.getElementById('conjMenu').style.display='none';
+  document.getElementById('conjResult').style.display='none';
+  document.getElementById('conjArea').style.display='block';
+  showConjQ();
+}
+function showConjQ(){
+  const q=CJ.list[CJ.i];CJ.verbOK=false;CJ.attempt=0;
+  document.getElementById('conjCounter').textContent='Phrase '+(CJ.i+1)+'/'+CJ.list.length;
+  document.getElementById('conjScore').textContent='Score : '+CJ.score;
+  document.getElementById('conjProg').style.width=(CJ.i/CJ.list.length*100)+'%';
+  document.getElementById('conjFr').textContent='🇫🇷 '+q.fr;
+  document.getElementById('conjSentence').innerHTML=q.es.replace('___','<span class="blank" id="conjBlank">?</span>');
+  const vp=document.getElementById('conjVerbs');vp.innerHTML='';
+  shuffle(q.verbs).forEach(v=>{
+    const b=document.createElement('button');b.className='verb-btn';b.textContent=v;
+    b.addEventListener('click',()=>pickVerb(b,v,q,vp));
+    vp.appendChild(b);
+  });
+  document.getElementById('conjStep2').style.display='none';
+  document.getElementById('conjInput').value='';
+  const f=document.getElementById('conjFeedback');f.className='feedback';f.innerHTML='';
+  document.getElementById('conjNext').style.display='none';
+}
+function pickVerb(btn,v,q,vp){
+  if(CJ.verbOK)return;
+  const f=document.getElementById('conjFeedback');
+  if(v===q.v){
+    CJ.verbOK=true;btn.classList.add('good');
+    vp.querySelectorAll('.verb-btn').forEach(b=>b.disabled=true);
+    CJ.score+=1;addXP(5);
+    f.className='feedback ok';f.innerHTML='✅ Bon verbe ! Maintenant, conjugue-le pour le sujet de la phrase.';
+    document.getElementById('conjStep2').style.display='block';
+    document.getElementById('conjInput').focus();
+  }else{
+    btn.classList.add('bad');btn.disabled=true;
+    f.className='feedback ko';f.innerHTML='❌ Pas celui-là. Relis l\'indice français : identité ? état/lieu ? possession ?';
+  }
+}
+function checkConj(){
+  if(!CJ.verbOK)return;
+  const q=CJ.list[CJ.i];
+  const val=norm(document.getElementById('conjInput').value);
+  const f=document.getElementById('conjFeedback');
+  if(!val)return;
+  if(val===q.ans){
+    CJ.score+=1;addXP(10);S.conjDone++;render();
+    document.getElementById('conjBlank').textContent=q.ans;
+    f.className='feedback ok';f.innerHTML='✅ ¡Exacto! '+q.e;
+    finishConjQ();
+  }else if(strip(val)===strip(q.ans)){
+    if(CJ.attempt===0){
+      CJ.attempt++;
+      f.className='feedback almost';f.innerHTML='🟡 Presque ! La forme est bonne mais il manque un <b>accent écrit</b>. Utilise les boutons á é í ó ú.';
+    }else{
+      S.conjDone++;render();
+      document.getElementById('conjBlank').textContent=q.ans;
+      f.className='feedback almost';f.innerHTML='🟡 C\'était <b>'+q.ans+'</b> — forme juste, accent oublié. '+q.e;
+      finishConjQ();
+    }
+  }else{
+    if(CJ.attempt===0){
+      CJ.attempt++;
+      f.className='feedback ko';f.innerHTML='❌ Pas tout à fait. Indice : regarde le <b>sujet</b> de la phrase (yo → -o, tú → -s, nosotros → -mos, ellos → -n). Encore un essai !';
+    }else{
+      S.conjDone++;render();
+      document.getElementById('conjBlank').textContent=q.ans;
+      f.className='feedback ko';f.innerHTML='❌ La réponse était <b>'+q.ans+'</b>. '+q.e;
+      finishConjQ();
+    }
+  }
+}
+function finishConjQ(){
+  document.getElementById('conjInput').disabled=true;
+  document.getElementById('conjNext').style.display='inline-block';
+  document.getElementById('conjNext').focus();
+}
+document.getElementById('conjCheck').addEventListener('click',checkConj);
+document.getElementById('conjInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkConj()});
+document.getElementById('conjNext').addEventListener('click',()=>{
+  document.getElementById('conjInput').disabled=false;
+  CJ.i++;
+  if(CJ.i<CJ.list.length)showConjQ();else endConj();
+});
+document.getElementById('conjQuit').addEventListener('click',()=>{
+  document.getElementById('conjInput').disabled=false;
+  document.getElementById('conjArea').style.display='none';
+  document.getElementById('conjMenu').style.display='block';
+});
+function endConj(){
+  document.getElementById('conjArea').style.display='none';
+  document.getElementById('conjResult').style.display='block';
+  const max=CJ.list.length*2;
+  document.getElementById('conjFinalScore').innerHTML=CJ.score+'<small>/'+max+'</small>';
+  const r=CJ.score/max;
+  document.getElementById('conjFinalMsg').textContent=r>=.9?'¡Perfecto! 🏆':r>=.7?'¡Muy bien! 🎉':r>=.5?'Ça vient 💪':'Revois la fiche 3 📋';
+  document.getElementById('conjFinalTip').textContent=
+   r>=.7?'Les marqueurs -o / -s / -mos / -n deviennent des réflexes. C\'est exactement le but.'
+   :'Concentre-toi sur les 4 marqueurs universels : yo → -o, tú → -s, nosotros → -mos, ellos → -n.';
+}
+document.getElementById('conjRetry').addEventListener('click',()=>startConj(CJ.mode));
+
+/* ═══════════ EXAM MODULE ═══════════ */
+let EX={list:[],i:0,pts:0,max:0,timer:null,time:600,review:[],verbOK:false};
+document.getElementById('examStart').addEventListener('click',startExam);
+document.getElementById('examRetry').addEventListener('click',startExam);
+function startExam(){
+  const qs=[
+    ...pick(PATTERN_Q,5).map(q=>({...q,kind:'mcq',t:'PATTERN',pts:1})),
+    ...pick(FAUX_Q,3).map(q=>({...q,kind:'mcq',t:'FAUX AMI',pts:1})),
+    ...pick([...CONJ_SE,...CONJ_REG],4).map(q=>({...q,kind:'conj',t:'CONJUGAISON',pts:2})),
+  ];
+  EX.list=shuffle(qs);EX.i=0;EX.pts=0;EX.review=[];EX.time=600;
+  EX.max=EX.list.reduce((s,q)=>s+q.pts,0);
+  document.getElementById('examIntro').style.display='none';
+  document.getElementById('examResultZone').style.display='none';
+  document.getElementById('examArea').style.display='block';
+  clearInterval(EX.timer);
+  EX.timer=setInterval(tickExam,1000);
+  tickExamDisplay();
+  showExamQ();
+}
+function tickExam(){
+  EX.time--;
+  tickExamDisplay();
+  if(EX.time<=0){clearInterval(EX.timer);endExam(true)}
+}
+function tickExamDisplay(){
+  const m=Math.floor(EX.time/60),s=EX.time%60;
+  const t=document.getElementById('examTimer');
+  t.textContent=m+':'+String(s).padStart(2,'0');
+  t.classList.toggle('low',EX.time<=60);
+}
+function showExamQ(){
+  const q=EX.list[EX.i];EX.verbOK=false;
+  document.getElementById('examCounter').textContent='Question '+(EX.i+1)+'/'+EX.list.length;
+  document.getElementById('examProg').style.width=(EX.i/EX.list.length*100)+'%';
+  document.getElementById('examType').textContent=q.t+' · '+q.pts+' pt'+(q.pts>1?'s':'');
+  const opt=document.getElementById('examOptions'),cz=document.getElementById('examConjZone'),fr=document.getElementById('examFr');
+  if(q.kind==='mcq'){
+    fr.style.display='none';cz.style.display='none';opt.style.display='grid';
+    document.getElementById('examQuestion').innerHTML=(q.t==='PATTERN'?'Comment dit-on <em>'+q.q+'</em> ?':q.q);
+    opt.innerHTML='';
+    shuffle(q.opts.map((o,idx)=>({o,idx}))).forEach(({o,idx})=>{
+      const b=document.createElement('button');b.className='opt';b.textContent=o;
+      b.addEventListener('click',()=>{
+        const good=idx===q.a;
+        if(good)EX.pts+=1;
+        EX.review.push({good,label:(q.t==='PATTERN'?q.q.replace(/<[^>]+>/g,''):q.q),user:o,corr:q.opts[q.a],e:q.e});
+        nextExamQ();
+      });
+      opt.appendChild(b);
+    });
+  }else{
+    opt.style.display='none';cz.style.display='block';
+    fr.style.display='block';fr.textContent='🇫🇷 '+q.fr;
+    document.getElementById('examQuestion').innerHTML=q.es.replace('___','<span class="blank">?</span>');
+    document.getElementById('examStep2').style.display='none';
+    document.getElementById('examInput').value='';
+    const vp=document.getElementById('examVerbs');vp.innerHTML='';
+    shuffle(q.verbs).forEach(v=>{
+      const b=document.createElement('button');b.className='verb-btn';b.textContent=v;
+      b.addEventListener('click',()=>{
+        if(EX.verbOK!==false)return;
+        vp.querySelectorAll('.verb-btn').forEach(x=>x.disabled=true);
+        const good=v===q.v;
+        b.classList.add(good?'good':'bad');
+        if(good)EX.pts+=1;
+        EX.verbOK={goodVerb:good,verb:v};
+        document.getElementById('examStep2').style.display='block';
+        document.getElementById('examInput').focus();
+      });
+      vp.appendChild(b);
+    });
+  }
+}
+function examCheckConj(){
+  const q=EX.list[EX.i];
+  if(!EX.verbOK)return;
+  const val=norm(document.getElementById('examInput').value);
+  if(!val)return;
+  let formPts=0,verdict;
+  if(val===q.ans){formPts=1;verdict='exact'}
+  else if(strip(val)===strip(q.ans)){formPts=0.5;verdict='accent'}
+  else verdict='faux';
+  EX.pts+=formPts;
+  EX.review.push({
+    good:EX.verbOK.goodVerb&&verdict==='exact',
+    half:verdict==='accent'||(!EX.verbOK.goodVerb&&verdict==='exact'),
+    label:q.fr+' → '+q.es,
+    user:EX.verbOK.verb+' → '+val,
+    corr:q.v+' → '+q.ans,
+    e:q.e
+  });
+  nextExamQ();
+}
+document.getElementById('examCheck').addEventListener('click',examCheckConj);
+document.getElementById('examInput').addEventListener('keydown',e=>{if(e.key==='Enter')examCheckConj()});
+function nextExamQ(){
+  EX.i++;
+  if(EX.i<EX.list.length)showExamQ();else endExam(false);
+}
+function endExam(timeout){
+  clearInterval(EX.timer);
+  document.getElementById('examArea').style.display='none';
+  document.getElementById('examResultZone').style.display='block';
+  const note=Math.round(EX.pts/EX.max*20*10)/10;
+  if(S.bestExam===null||note>S.bestExam)S.bestExam=note;
+  addXP(Math.round(note*2));
+  document.getElementById('examNote').innerHTML=note+'<small>/20</small>';
+  const m=note>=18?'Mention Excellent 🏆':note>=16?'Mention Très Bien 🥇':note>=14?'Mention Bien 🥈':note>=12?'Mention Assez Bien 🥉':note>=10?'Admis ✅':'Ajourné — repasse-le ! 📖';
+  document.getElementById('examMention').textContent=m;
+  document.getElementById('examComment').textContent=
+    (timeout?'⏱️ Temps écoulé ! ':'')+
+    (note>=14?'Tu convertis le français en espagnol par la logique, pas par cœur. Objectif atteint.'
+    :note>=10?'Base solide. Retravaille les points rouges de la correction ci-dessous, puis repasse l\'examen.'
+    :'Aucun souci : chaque erreur ci-dessous pointe UNE règle précise à revoir dans les leçons.');
+  const rv=document.getElementById('examReview');rv.innerHTML='';
+  EX.review.forEach(r=>{
+    const d=document.createElement('div');
+    d.className='review-item'+(r.good?' good':'');
+    d.innerHTML='<b>'+(r.good?'✅':r.half?'🟡':'❌')+' '+r.label+'</b><br>'+
+      'Ta réponse : <em>'+r.user+'</em>'+(r.good?'':' · Attendu : <b>'+r.corr+'</b>')+
+      '<br><span style="color:#4A5578">'+r.e+'</span>';
+    rv.appendChild(d);
+  });
+  if(EX.review.length<EX.list.length){
+    const d=document.createElement('div');
+    d.className='review-item';
+    d.innerHTML='<b>⏱️ '+(EX.list.length-EX.review.length)+' question(s) non répondue(s)</b> — le temps s\'est écoulé.';
+    rv.appendChild(d);
+  }
+  render();
+}
+render();
+</script>
+</body>
+</html>
