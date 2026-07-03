@@ -1615,7 +1615,6 @@ function showQuizQ(){
     btn.addEventListener('click',e=>{e.stopPropagation();speak(q.say)});
     const sp=document.createElement('span');sp.textContent=q.q;sp.style.fontSize='1rem';sp.style.fontWeight='600';
     qEl.appendChild(btn);qEl.appendChild(sp);
-    setTimeout(()=>speak(q.say),350);
   }else{
     qEl.innerHTML=(q.t==='PATTERN'?'Comment dit-on <em>'+q.q+'</em> ?':q.q);
   }
@@ -1636,7 +1635,6 @@ function answerQuiz(btn,good,q,box){
   });
   if(!good)btn.classList.add('wrong');
   if(good){QZ.score++;addXP(10)}
-  if(q.say&&!q.audio)speak(q.say);
   S.quizAnswered++;save();render();
   const ex=document.getElementById('quizExpl');
   ex.innerHTML=(good?'✅ ':'❌ ')+q.e;ex.classList.add('show');
@@ -1686,7 +1684,7 @@ function showDic(){
   const inp=document.getElementById('dicInput');inp.value='';inp.disabled=false;
   const f=document.getElementById('dicFeedback');f.className='feedback';f.innerHTML='';
   document.getElementById('dicNext').style.display='none';
-  setTimeout(()=>{speak(DIC.list[DIC.i]);inp.focus()},350);
+  setTimeout(()=>inp.focus(),350);
 }
 document.getElementById('dicPlay').addEventListener('click',()=>speak(DIC.list[DIC.i]));
 function checkDic(){
@@ -1783,7 +1781,6 @@ function flipFlash(){
   const el=document.getElementById('flashEl');
   el.classList.toggle('flipped');
   if(el.classList.contains('flipped')){
-    speak(FL.cur.es);
     document.getElementById('flashGrade').style.visibility='visible';
   }
 }
@@ -1860,7 +1857,6 @@ function checkConj(){
   if(val===q.ans){
     CJ.score+=1;addXP(10);S.conjDone++;save();render();
     document.getElementById('conjBlank').textContent=q.ans;
-    speak(q.es.replace('___',q.ans));
     f.className='feedback ok';f.innerHTML='✅ ¡Exacto! '+q.e;
     finishConjQ();
   }else if(strip(val)===strip(q.ans)){
@@ -2025,7 +2021,6 @@ function advanceDlg(){
     const ln=DLG.sc.lines[DLG.i];
     if(!ln.opts){
       appendDlgLine(ln,ln.text);
-      speak(ln.text);
       DLG.i++;
     }else{
       /* ligne à trou : afficher bulle + options */
@@ -2038,7 +2033,7 @@ function advanceDlg(){
             optBox.remove();
             const full=ln.text.replace('___',ln.opts[ln.a]);
             line.querySelector('.txt').innerHTML=full;
-            speak(full);addXP(8);
+            addXP(8);
             if(ln.note){
               const n=document.createElement('div');n.className='dlg-note';n.innerHTML='💡 '+ln.note;
               box.appendChild(n);
@@ -2121,7 +2116,6 @@ function showExamQ(){
       const btn=document.createElement('button');btn.className='spk big';btn.textContent='🔊';
       btn.addEventListener('click',e=>{e.stopPropagation();speak(q.say)});
       qEl.appendChild(btn);
-      setTimeout(()=>speak(q.say),300);
     }else{
       qEl.innerHTML=(q.t==='PATTERN'?'Comment dit-on <em>'+q.q+'</em> ?':q.q);
     }
