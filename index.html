@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Puente — apprends l'espagnol depuis le français : leçons, jeux, dialogues, flashcards et examens de A1 à C2, avec audio.">
+<meta name="theme-color" content="#FF4E64">
 <title>Puente · Apprendre l'espagnol de zéro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -10,12 +12,13 @@
 <style>
 :root{
   --sand:#FFF6EC; --card:#FFFFFF;
-  --ink:#2E2440; --muted:#8B7F98;
+  --ink:#2E2440; --muted:#6E617E;
   --line:#EFE3D3; --line2:#E6D9C6;
-  --coral:#FF4E64; --coral-d:#D63A50;
+  --coral:#FF4E64; --coral-d:#D63A50; --coral-dd:#A82D40;
   --sun:#FFC93C; --sun-d:#E3A81C;
   --grape:#6C4AB6; --grape-d:#543795;
   --leaf:#58C86A; --leaf-d:#3EA84F; --ok:#3EA84F;
+  --ok-text:#2E7D3B; --warn-text:#8A6116; --ko-text:#B02A3D;
   --sky:#3AB0FF; --sky-d:#1E8FDB;
   --soft-sun:#FFF2CE; --soft-leaf:#E2F6E6; --soft-coral:#FFE1E6; --soft-sky:#E2F1FF; --soft-grape:#EEE7F8;
   --display:'Baloo 2',system-ui,sans-serif;
@@ -34,11 +37,12 @@ nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
 .tab-btn{font-family:var(--sans);font-weight:800;font-size:.82rem;padding:8px 14px;border:none;background:none;cursor:pointer;color:var(--muted);border-radius:999px}
 .tab-btn:hover{background:var(--soft-sun);color:var(--ink)}
 .tab-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
-.tab-btn.active{background:var(--coral);color:#fff}
+.tab-btn.active{background:var(--coral-d);color:#fff}
 .hud{display:flex;gap:8px;align-items:center}
 .xp-badge,.streak-badge{font-family:var(--sans);font-size:.82rem;font-weight:800;background:var(--soft-sun);color:var(--ink);border-radius:999px;padding:5px 12px;white-space:nowrap}
 .streak-badge{background:var(--soft-coral)}
-.gear-btn{font-size:1rem;background:var(--soft-sky);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gear-btn{font-size:1rem;background:var(--soft-sky);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.gear-btn::after{content:"";position:absolute;inset:-4px;border-radius:50%}
 .gear-btn:hover{filter:brightness(.96)}
 .gear-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 main{max-width:1000px;margin:0 auto;padding:28px 20px 90px}
@@ -48,11 +52,11 @@ section.view.active{display:block;animation:fadein .25s ease}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 @keyframes ring{0%{box-shadow:0 6px 0 var(--coral-d),0 0 0 0 rgba(255,78,100,.5)}70%{box-shadow:0 6px 0 var(--coral-d),0 0 0 16px rgba(255,78,100,0)}100%{box-shadow:0 6px 0 var(--coral-d),0 0 0 0 rgba(255,78,100,0)}}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
 h1{font-family:var(--display);font-size:clamp(1.9rem,5vw,2.9rem);font-weight:800;line-height:1.05;letter-spacing:-0.01em}
 h2{font-family:var(--display);font-size:1.6rem;font-weight:800;margin:0 0 14px;color:var(--ink)}
 h3{font-family:var(--display);font-size:1.12rem;font-weight:700;margin:0 0 8px}
-.eyebrow{font-family:var(--sans);font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);margin-bottom:10px}
+.eyebrow{font-family:var(--sans);font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--coral-dd);margin-bottom:10px}
 /* HERO (écran d'accueil secondaire / fallback) */
 .hero{background:var(--card);border-radius:26px;padding:34px 30px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:0 5px 0 var(--line)}
 .converter{margin:20px 0 8px;font-family:var(--display);font-weight:800;font-size:clamp(1.5rem,5vw,2.4rem);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
@@ -93,7 +97,8 @@ h3{font-family:var(--display);font-size:1.12rem;font-weight:700;margin:0 0 8px}
 .pattern-key{font-family:var(--display);font-weight:700;font-size:1rem;background:var(--soft-grape);color:var(--grape);display:inline-block;padding:5px 14px;border-radius:999px;margin-bottom:10px}
 .pattern-key em{color:var(--coral);font-style:normal}
 /* SPEAK */
-.spk{display:inline-flex;align-items:center;justify-content:center;background:var(--sky);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1rem;flex-shrink:0;color:#fff;box-shadow:0 3px 0 var(--sky-d)}
+.spk{display:inline-flex;align-items:center;justify-content:center;background:var(--sky);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1rem;flex-shrink:0;color:#fff;box-shadow:0 3px 0 var(--sky-d);position:relative}
+.spk::after{content:"";position:absolute;inset:-4px;border-radius:50%}
 .spk:hover{filter:brightness(1.05)}
 .spk:active{transform:translateY(2px);box-shadow:0 1px 0 var(--sky-d)}
 .spk:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
@@ -102,6 +107,8 @@ td.es,.sayable{cursor:pointer}
 td.es::after{content:" 🔊";opacity:.25;font-size:.7em}
 td.es:hover::after{opacity:1}
 /* TABLES */
+.table-wrap{overflow-x:auto;margin:14px 0;-webkit-overflow-scrolling:touch}
+.table-wrap table{margin:0}
 table{width:100%;border-collapse:separate;border-spacing:0;margin:14px 0;background:var(--card);font-size:.92rem;border-radius:16px;overflow:hidden;box-shadow:0 3px 0 var(--line)}
 th{background:var(--grape);color:#fff;text-align:left;padding:9px 12px;font-weight:800;font-size:.8rem;letter-spacing:.03em}
 td{padding:9px 12px;border-bottom:2px solid var(--sand)}
@@ -110,9 +117,9 @@ tr:nth-child(even) td{background:#FCFAF6}
 td.es{color:var(--grape);font-weight:800}
 td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--muted)}
 /* BUTTONS */
-.btn{font-family:var(--display);font-weight:700;font-size:1rem;background:var(--coral);color:#fff;border:none;border-radius:16px;padding:12px 22px;cursor:pointer;box-shadow:0 4px 0 var(--coral-d);transition:transform .08s,box-shadow .08s;letter-spacing:.01em}
-.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--coral-d)}
-.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--coral-d)}
+.btn{font-family:var(--display);font-weight:700;font-size:1rem;background:var(--coral-d);color:#fff;border:2px solid transparent;border-radius:16px;padding:10px 20px;cursor:pointer;box-shadow:0 4px 0 var(--coral-dd);transition:transform .08s,box-shadow .08s;letter-spacing:.01em}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--coral-dd)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--coral-dd)}
 .btn:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
 .btn.sun{background:var(--sun);color:var(--ink);box-shadow:0 4px 0 var(--sun-d)}
 .btn.sun:hover{box-shadow:0 6px 0 var(--sun-d)}
@@ -120,9 +127,9 @@ td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--mut
 .btn.red{background:var(--grape);box-shadow:0 4px 0 var(--grape-d)}
 .btn.red:hover{box-shadow:0 6px 0 var(--grape-d)}
 .btn.red:active{box-shadow:0 1px 0 var(--grape-d)}
-.btn.ghost{background:var(--card);color:var(--coral);box-shadow:0 4px 0 var(--line);border:2px solid var(--line)}
+.btn.ghost{background:var(--card);color:var(--coral-d);box-shadow:0 4px 0 var(--line);border-color:var(--line)}
 .btn.ghost:hover{box-shadow:0 6px 0 var(--line)}
-.btn.small{padding:8px 16px;font-size:.85rem;box-shadow:0 3px 0 var(--coral-d)}
+.btn.small{padding:8px 16px;font-size:.85rem;box-shadow:0 3px 0 var(--coral-dd)}
 .btn.small.ghost{box-shadow:0 3px 0 var(--line)}
 .btn.small.sun{box-shadow:0 3px 0 var(--sun-d)}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:0 4px 0 rgba(0,0,0,.12)}
@@ -135,7 +142,7 @@ td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--mut
 .level-info{flex:1;min-width:200px}
 .level-info h3{margin-bottom:2px}
 .level-info p{font-size:.88rem;color:var(--muted);font-weight:600}
-.level-best{font-family:var(--sans);font-size:.78rem;font-weight:800;color:var(--leaf-d)}
+.level-best{font-family:var(--sans);font-size:.78rem;font-weight:800;color:var(--ok-text)}
 .level-actions{display:flex;gap:8px;flex-wrap:wrap}
 /* QUIZ */
 .quiz-shell{max-width:660px;margin:0 auto}
@@ -147,12 +154,13 @@ td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--mut
 .qmeta{font-family:var(--sans);font-size:.75rem;color:var(--grape);font-weight:800;text-transform:uppercase;letter-spacing:.05em}
 .options{display:grid;gap:10px;margin-top:20px}
 .opt{text-align:left;font-family:var(--sans);font-size:1.02rem;font-weight:700;background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:14px 16px;cursor:pointer;transition:background .1s,transform .05s;color:var(--ink)}
-.opt:hover{background:var(--soft-sun)}
-.opt:active{transform:translateY(1px)}
+.opt:hover:not(:disabled){background:var(--soft-sun)}
+.opt:active:not(:disabled){transform:translateY(1px)}
 .opt:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
-.opt.correct{background:var(--soft-leaf);border-color:var(--leaf);color:var(--leaf-d)}
-.opt.wrong{background:var(--soft-coral);border-color:var(--coral);color:var(--coral-d)}
+.opt.correct{background:var(--soft-leaf);border-color:var(--leaf);color:var(--ok-text)}
+.opt.wrong{background:var(--soft-coral);border-color:var(--coral);color:var(--ko-text)}
 .opt:disabled{cursor:default}
+.opt:disabled:not(.correct):not(.wrong){opacity:.55}
 .expl{margin-top:18px;padding:14px 16px;border-radius:16px;background:var(--soft-sun);font-size:.92rem;font-weight:600;display:none}
 .expl.show{display:block}
 .expl b{color:var(--grape)}
@@ -162,29 +170,36 @@ td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--mut
 .fr-hint{font-style:italic;color:var(--muted);font-size:.95rem;margin-bottom:6px;font-weight:700}
 .verb-picker{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
 .verb-btn{font-family:var(--display);font-weight:700;font-size:1rem;background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:999px;padding:9px 20px;cursor:pointer;color:var(--ink)}
-.verb-btn:hover{background:var(--soft-sun)}
+.verb-btn:hover:not(:disabled){background:var(--soft-sun)}
+.verb-btn:active:not(:disabled){transform:translateY(1px)}
 .verb-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
-.verb-btn.good{background:var(--leaf);border-color:var(--leaf-d);color:#fff}
-.verb-btn.bad{background:var(--coral);border-color:var(--coral-d);color:#fff}
+.verb-btn.good{background:var(--soft-leaf);border-color:var(--leaf);color:var(--ok-text)}
+.verb-btn.bad{background:var(--soft-coral);border-color:var(--coral);color:var(--ko-text)}
+.verb-btn:disabled{cursor:default}
+.verb-btn:disabled:not(.good):not(.bad){opacity:.55}
 .conj-input-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
-.conj-input{font-family:var(--display);font-size:1.15rem;font-weight:700;border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:11px 14px;width:220px;background:var(--card);color:var(--ink)}
+.conj-input{font-family:var(--display);font-size:1.15rem;font-weight:700;border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:11px 14px;width:220px;max-width:100%;background:var(--card);color:var(--ink)}
 .conj-input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.conj-input:disabled{opacity:.6}
 .accent-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.acc{font-family:var(--display);font-size:1rem;font-weight:700;border:2px solid var(--line);background:var(--card);border-radius:10px;padding:4px 12px;cursor:pointer;color:var(--grape)}
+.acc{font-family:var(--display);font-size:1rem;font-weight:700;border:2px solid var(--line);background:var(--card);border-radius:12px;padding:4px 12px;min-width:44px;min-height:44px;cursor:pointer;color:var(--grape)}
 .acc:hover{background:var(--soft-sun)}
+.acc:active{transform:translateY(1px)}
+.acc:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 .feedback{margin-top:16px;font-weight:800;font-size:.98rem;display:none;border-radius:16px;padding:12px 16px}
-.feedback.ok{display:block;background:var(--soft-leaf);color:var(--leaf-d)}
-.feedback.almost{display:block;background:var(--soft-sun);color:var(--sun-d)}
-.feedback.ko{display:block;background:var(--soft-coral);color:var(--coral-d)}
+.feedback.ok{display:block;background:var(--soft-leaf);color:var(--ok-text)}
+.feedback.almost{display:block;background:var(--soft-sun);color:var(--warn-text)}
+.feedback.ko{display:block;background:var(--soft-coral);color:var(--ko-text)}
 /* FLASHCARDS */
 .flash-stage{perspective:1000px;max-width:440px;margin:24px auto}
-.flashcard{position:relative;width:100%;height:250px;transform-style:preserve-3d;transition:transform .45s;cursor:pointer}
+.flashcard{position:relative;width:100%;min-height:250px;display:grid;transform-style:preserve-3d;transition:transform .45s;cursor:pointer}
 .flashcard.flipped{transform:rotateY(180deg)}
-.flash-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;box-shadow:0 5px 0 var(--line)}
+.flashcard:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:26px}
+.flash-face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;box-shadow:0 5px 0 var(--line);min-width:0}
 .flash-front{background:var(--card)}
 .flash-back{background:var(--grape);color:#fff;transform:rotateY(180deg);box-shadow:0 5px 0 var(--grape-d)}
-.flash-word{font-family:var(--display);font-size:clamp(1.4rem,4vw,2rem);font-weight:800}
-.flash-tag{font-family:var(--sans);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;opacity:.7}
+.flash-word{font-family:var(--display);font-size:clamp(1.4rem,4vw,2rem);font-weight:800;overflow-wrap:break-word;max-width:100%}
+.flash-tag{font-family:var(--sans);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;opacity:.85}
 .flash-grade{display:flex;gap:12px;justify-content:center;margin-top:18px}
 .srs-stats{font-family:var(--sans);font-size:.78rem;text-align:center;margin-top:12px;color:var(--muted);font-weight:700}
 /* LESSONS */
@@ -220,7 +235,7 @@ td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--mut
 .bubble .who{font-family:var(--sans);font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--grape);display:block;margin-bottom:3px}
 .bubble .gap{display:inline-block;min-width:80px;border-bottom:3px dashed var(--coral);color:var(--grape);font-weight:800;text-align:center}
 .bubble .tr{display:block;font-size:.78rem;color:var(--muted);font-style:italic;margin-top:4px;font-weight:600}
-.dlg-opts{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px 44px}
+.dlg-opts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin:10px 0 4px 44px}
 .dlg-note{font-size:.85rem;background:var(--soft-sun);border-radius:14px;padding:9px 13px;margin:8px 0 8px 44px;font-weight:600}
 /* EXAM */
 .exam-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px}
@@ -247,22 +262,30 @@ td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--mut
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(46,36,64,.5);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
 .modal-overlay.show{display:flex;animation:fadein .18s ease}
-.modal{background:var(--card);border-radius:26px;padding:24px;max-width:440px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.modal{background:var(--card);border-radius:26px;padding:24px;max-width:440px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.25);max-height:calc(100vh - 40px);max-height:calc(100dvh - 40px);overflow-y:auto}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .modal-head h3{margin:0}
-.modal-close{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted);padding:4px 8px}
+.modal-close{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted);padding:4px 8px;min-width:44px;min-height:44px;border-radius:12px}
+.modal-close:hover{background:var(--soft-sun);color:var(--ink)}
 .modal-close:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 .vm-label{display:block;font-weight:800;font-size:.85rem;margin:16px 0 6px}
-.vm-select{width:100%;font-family:var(--sans);font-weight:700;font-size:.92rem;padding:10px 12px;border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;background:var(--card);color:var(--ink)}
+.vm-select{width:100%;font-family:var(--sans);font-weight:700;font-size:1rem;padding:10px 12px;border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;background:var(--card);color:var(--ink)}
 .vm-select:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 .vm-range{width:100%;accent-color:var(--coral);height:26px}
 .vm-hint{font-size:.78rem;color:var(--muted);margin:6px 0 0;font-weight:600}
+#voiceHint{min-height:2.4em}
 .vm-actions{display:flex;gap:10px;margin-top:18px}
 .vm-note{font-size:.76rem;color:var(--muted);margin-top:16px;padding-top:14px;border-top:2px solid var(--sand);line-height:1.5;font-weight:600}
 /* TOAST */
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--ink);color:#fff;border-radius:18px;padding:14px 22px;font-family:var(--display);font-weight:700;z-index:100;transition:transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.28);max-width:90vw;text-align:center}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--ink);color:#fff;border-radius:18px;padding:14px 22px;font-family:var(--display);font-weight:700;z-index:100;transition:transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.28);max-width:90vw;text-align:center;pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
 footer{background:var(--card);padding:22px;text-align:center;font-family:var(--sans);font-weight:700;font-size:.78rem;color:var(--muted);box-shadow:0 -2px 0 var(--line)}
+/* PHRASE DU JOUR */
+.pdj{background:var(--card);border-radius:22px;padding:20px;box-shadow:0 4px 0 var(--line)}
+.pdj-es{font-family:var(--display);font-size:1.2rem;font-weight:700;display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:var(--grape)}
+.pdj-fr{color:var(--muted);font-style:italic;font-weight:600;margin-top:6px}
+.pdj-note{font-size:.9rem;font-weight:600;background:var(--soft-sun);border-radius:14px;padding:10px 14px;margin-top:12px}
+.pdj-note b{color:var(--grape)}
 .mode-pick{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
 .jeux-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
 @media print{
@@ -271,16 +294,24 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
   section.view{display:none}
   #view-fiches{display:block!important}
   .fiche{box-shadow:none;border:1px solid #000;page-break-inside:avoid}
+  .table-wrap{overflow:visible}
   td.es::after{content:""}
 }
 @media (max-width:640px){
   .header-inner{padding:10px 12px;gap:8px}
-  nav{width:100%;overflow-x:auto;padding-bottom:4px}
+  .hud{margin-left:auto}
+  nav{order:3;width:100%;margin-left:0;flex-wrap:nowrap;overflow-x:auto;padding:4px 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  nav::-webkit-scrollbar{display:none}
   .tab-btn{white-space:nowrap;font-size:.78rem;padding:7px 11px}
   main{padding:20px 14px 70px}
   .hero{padding:24px 18px}
   .tbtn{width:84px;height:84px}
   .tbtn .tcode{font-size:1.3rem}
+  .dlg-opts,.dlg-note{margin-left:0}
+}
+@media (max-width:400px){
+  .logo span{display:none}
+  .bubble{max-width:88%}
 }
 </style>
 </head>
@@ -298,9 +329,9 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
       <button class="tab-btn" data-view="dialogues">Dialogues</button>
       <button class="tab-btn" data-view="exam">Examen</button>
     </nav>
-    <div class="hud">
-      <div class="streak-badge" id="streakBadge">🔥 0</div>
-      <div class="xp-badge" id="xpBadge">⚡ 0 XP</div>
+    <div class="hud" aria-live="polite">
+      <div class="streak-badge" id="streakBadge" title="Jours d'affilée">🔥 0</div>
+      <div class="xp-badge" id="xpBadge" title="Points d'expérience">⚡ 0 XP</div>
       <button class="gear-btn" id="gearBtn" aria-label="Réglages de la voix" title="Réglages de la voix">⚙️</button>
     </div>
   </div>
@@ -316,7 +347,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
     <p>Commence tout en bas, à <strong>A1</strong>. Réussis l'examen d'un niveau pour débloquer le suivant et monter d'un cran. Clique un mot espagnol 🔊 partout pour l'entendre.</p>
   </div>
 
-  <div class="trail" id="cefrTrail" aria-label="Chemin des niveaux"></div>
+  <div class="trail" id="cefrTrail" role="list" aria-label="Chemin des niveaux"></div>
 
   <div class="pdj" style="margin-top:26px">
     <div class="eyebrow">📅 La phrase du jour</div>
@@ -373,7 +404,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
     <button class="lesson-head" aria-expanded="true">
       <span class="lesson-num">L0</span>
       <span class="lesson-title">Kit de survie — parler dès la première heure</span>
-      <span class="lesson-arrow">▸</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
     </button>
     <div class="lesson-body">
       <p>Avant toute grammaire, voici les phrases qui te sauvent dans 90 % des situations. <strong>Clique sur chaque phrase espagnole pour l'écouter 🔊</strong>, et répète à voix haute — c'est non négociable pour la prononciation.</p>
@@ -428,7 +459,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
     <button class="lesson-head" aria-expanded="false">
       <span class="lesson-num">L1</span>
       <span class="lesson-title">Les nombres 0–100 — 3 règles, pas 100 mots</span>
-      <span class="lesson-arrow">▸</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
     </button>
     <div class="lesson-body">
       <p>Bonne nouvelle : il n'y a que <strong>~25 mots à connaître</strong>, le reste est de la combinaison logique. Et zéro folie à la « quatre-vingt-dix » : l'espagnol est régulier.</p>
@@ -468,7 +499,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
     <button class="lesson-head" aria-expanded="false">
       <span class="lesson-num">L2</span>
       <span class="lesson-title">Les 4 grandes transformations — ~2 800 mots débloqués</span>
-      <span class="lesson-arrow">▸</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
     </button>
     <div class="lesson-body">
       <h4>🔑 -tion → -ción (~1 250 mots)</h4>
@@ -518,7 +549,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
     <button class="lesson-head" aria-expanded="false">
       <span class="lesson-num">L3</span>
       <span class="lesson-title">El ou La ? — le genre en 4 règles</span>
-      <span class="lesson-arrow">▸</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
     </button>
     <div class="lesson-body">
       <p>Le réflexe <em>el/la</em> est indispensable — et bien plus régulier qu'en français. 4 règles couvrent ~90 % des mots :</p>
@@ -549,7 +580,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
     <button class="lesson-head" aria-expanded="false">
       <span class="lesson-num">L4</span>
       <span class="lesson-title">SER / ESTAR / TENER — le cœur de 50 % des phrases</span>
-      <span class="lesson-arrow">▸</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
     </button>
     <div class="lesson-body">
       <p>Le français a UN verbe « être ». L'espagnol en a DEUX, et il utilise « avoir » (<em>tener</em>) là où tu ne l'attends pas. C'est LA difficulté n°1 du francophone — et une fois comprise, c'est un réflexe.</p>
@@ -603,7 +634,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
     <button class="lesson-head" aria-expanded="false">
       <span class="lesson-num">L5</span>
       <span class="lesson-title">Faux amis & prononciation — éviter les pièges, parler juste</span>
-      <span class="lesson-arrow">▸</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
     </button>
     <div class="lesson-body">
       <h4>⚠️ Les faux amis : des cousins qui ont mal tourné</h4>
@@ -640,7 +671,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
     <button class="lesson-head" aria-expanded="false">
       <span class="lesson-num">L6</span>
       <span class="lesson-title">Parler du futur et du passé — sans effort</span>
-      <span class="lesson-arrow">▸</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
     </button>
     <div class="lesson-body">
       <p>Jusqu'ici, tout au présent. Deux constructions vont te faire parler du <strong>futur</strong> et du <strong>passé</strong> immédiatement — et la bonne nouvelle : elles fonctionnent <strong>exactement comme en français</strong>.</p>
@@ -966,7 +997,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
           <span class="flash-word" id="flashFr"></span>
         </div>
         <div class="flash-face flash-back">
-          <span class="flash-tag" style="color:#C7CEEA">🇪🇸 Español</span>
+          <span class="flash-tag" style="color:#E5E9F8">🇪🇸 Español</span>
           <span class="flash-word" id="flashEs"></span>
           <button class="spk" id="flashSpk" aria-label="Écouter">🔊</button>
         </div>
@@ -1063,7 +1094,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
   <div class="quiz-shell" id="examArea" style="display:none">
     <div class="exam-header">
       <span class="qmeta" id="examCounter"></span>
-      <div class="timer" id="examTimer">12:00</div>
+      <div class="timer" id="examTimer" role="timer" aria-label="Temps restant">12:00</div>
     </div>
     <div class="progress-track"><div class="progress-fill" id="examProg"></div></div>
     <div class="qcard">
@@ -1211,12 +1242,22 @@ function syncRateUI(){
 }
 (function initVoiceUI(){
   const modal=document.getElementById('voiceModal');if(!modal)return;
-  const open=()=>{populateVoiceSelect();syncRateUI();modal.classList.add('show')};
-  const close=()=>modal.classList.remove('show');
-  document.getElementById('gearBtn').addEventListener('click',open);
+  const gear=document.getElementById('gearBtn');
+  const open=()=>{populateVoiceSelect();syncRateUI();modal.classList.add('show');document.getElementById('vmClose').focus()};
+  const close=()=>{modal.classList.remove('show');gear.focus()};
+  gear.addEventListener('click',open);
   document.getElementById('vmClose').addEventListener('click',close);
   modal.addEventListener('click',e=>{if(e.target===modal)close()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+  document.addEventListener('keydown',e=>{
+    if(!modal.classList.contains('show'))return;
+    if(e.key==='Escape'){close();return}
+    if(e.key==='Tab'){
+      const f=modal.querySelectorAll('button,select,input');
+      const first=f[0],last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+    }
+  });
   document.getElementById('voiceSelect').addEventListener('change',e=>{setVoiceByURI(e.target.value);populateVoiceSelect();speak('Hola, así sueno yo.')});
   const r=document.getElementById('rateRange');
   r.addEventListener('input',e=>{setRate(parseFloat(e.target.value));syncRateUI()});
@@ -1539,8 +1580,10 @@ function bindAccents(scope,inputId){
   scope.querySelectorAll('.acc').forEach(b=>{
     b.addEventListener('click',()=>{
       const el=document.getElementById(inputId);
-      const s=el.selectionStart||el.value.length;
-      el.value=el.value.slice(0,s)+b.dataset.ch+el.value.slice(el.selectionEnd||s);
+      if(el.disabled)return;
+      const s=el.selectionStart!==null?el.selectionStart:el.value.length;
+      const e=el.selectionEnd!==null?el.selectionEnd:s;
+      el.value=el.value.slice(0,s)+b.dataset.ch+el.value.slice(e);
       el.focus();el.setSelectionRange(s+1,s+1);
     });
   });
@@ -1990,6 +2033,7 @@ function renderTrail(){
   for(let i=CEFR.length-1;i>=0;i--){
     const lv=CEFR[i],unlocked=cefrUnlocked(i),done=cefrDone(lv.code),isCur=(i===cur);
     const node=document.createElement('div');
+    node.setAttribute('role','listitem');
     node.className='tnode'+(done?' done':'')+(unlocked?'':' locked')+(isCur?' current':'');
     let sub;
     if(!unlocked)sub='🔒 Réussis l\'examen '+CEFR[i-1].code;
@@ -2000,6 +2044,7 @@ function renderTrail(){
     const btn=document.createElement('button');
     btn.className='tbtn';
     btn.setAttribute('aria-label',lv.code+' '+lv.name+(unlocked?'':' (verrouillé)'));
+    if(!unlocked)btn.setAttribute('aria-disabled','true');
     btn.innerHTML='<span class="tcode">'+lv.code+'</span><span class="temoji">'+(unlocked?lv.emoji:'🔒')+'</span>'+(done?'<span class="tflag">✓</span>':isCur?'<span class="tflag">★</span>':'');
     btn.addEventListener('click',()=>{
       if(!unlocked){toast('🔒 Réussis d\'abord l\'examen '+CEFR[i-1].code+' pour débloquer '+lv.code+'.');return;}
@@ -2184,7 +2229,7 @@ function showExamQ(){
     const qEl=document.getElementById('examQuestion');
     if(q.audio){
       qEl.innerHTML='';
-      const btn=document.createElement('button');btn.className='spk big';btn.textContent='🔊';
+      const btn=document.createElement('button');btn.className='spk big';btn.textContent='🔊';btn.setAttribute('aria-label','Écouter la phrase');
       btn.addEventListener('click',e=>{e.stopPropagation();speak(q.say)});
       qEl.appendChild(btn);
       setTimeout(()=>speak(q.say),300);
@@ -2288,6 +2333,11 @@ function endExam(timeout){
 }
 
 /* ═══════════ INIT ═══════════ */
+/* enveloppe chaque tableau dans un conteneur scrollable (mobile) */
+document.querySelectorAll('main table').forEach(t=>{
+  const w=document.createElement('div');w.className='table-wrap';
+  t.parentNode.insertBefore(w,t);w.appendChild(t);
+});
 render();renderBadges();renderLevels();renderTrail();
 /* on démarre en bas du chemin, sur le niveau en cours */
 setTimeout(()=>{
