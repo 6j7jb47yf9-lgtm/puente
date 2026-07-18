@@ -277,6 +277,20 @@ td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--mut
 .badge .bd{font-size:.72rem;color:var(--muted);font-weight:600}
 /* RÉGLAGES */
 .set-card{background:var(--card);border-radius:22px;padding:22px;margin-bottom:18px;box-shadow:0 4px 0 var(--line);max-width:640px}
+.acc-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.acc-row .conj-input{font-size:1rem;width:260px}
+.acc-sync{color:var(--ok-text);font-weight:800;font-size:.9rem}
+#btnGoogle{margin-bottom:6px}
+/* indicateur de synchro (HUD) */
+.sync-ind{width:12px;height:12px;border-radius:50%;flex-shrink:0;background:var(--muted)}
+.sync-ind.synced{background:var(--leaf-d)}
+.sync-ind.saving{background:var(--sun-d);animation:syncpulse 1s ease-in-out infinite}
+.sync-ind.offline{background:var(--coral-d)}
+@keyframes syncpulse{0%,100%{opacity:1}50%{opacity:.35}}
+/* choix de reprise cloud/local à la connexion */
+.sync-choice{position:fixed;inset:0;background:rgba(20,14,34,.6);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px}
+.sync-card{background:var(--card);border-radius:22px;padding:24px;max-width:460px;width:100%;box-shadow:0 6px 0 var(--line)}
+.sync-actions{display:flex;flex-direction:column;gap:12px;margin-top:16px}
 .pick-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:440px}
 .pick-opt{font-family:var(--display);font-weight:700;font-size:.95rem;background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:12px 8px;cursor:pointer;color:var(--ink);text-align:center;line-height:1.7}
 .pick-opt:hover{background:var(--soft-sun)}
@@ -372,6 +386,7 @@ input::placeholder{color:var(--muted);opacity:.8}
       <button class="tab-btn" data-view="reglages">Réglages</button>
     </nav>
     <div class="hud" aria-live="polite">
+      <span class="sync-ind" id="syncInd" role="img" hidden></span>
       <div class="streak-badge" id="streakBadge" title="Jours d'affilée">🔥 0</div>
       <div class="xp-badge" id="xpBadge" title="Points d'expérience">⚡ 0 XP</div>
       <button class="gear-btn" id="gearBtn" aria-label="Ouvrir les réglages" title="Réglages">⚙️</button>
@@ -1208,6 +1223,26 @@ input::placeholder{color:var(--muted);opacity:.8}
   <h2>Réglages</h2>
 
   <div class="set-card">
+    <h3>👤 Compte</h3>
+    <div id="accOut">
+      <p class="vm-hint" style="margin-bottom:12px">Connecte-toi pour retrouver ta progression sur tous tes appareils. Sans compte, tout reste enregistré sur cet appareil — rien ne change.</p>
+      <button class="btn small" id="btnGoogle">Continuer avec Google</button>
+      <label class="vm-label" for="magicEmail">Ou par e-mail (lien magique)</label>
+      <div class="acc-row">
+        <input type="email" id="magicEmail" class="conj-input" placeholder="ton@email.com" autocomplete="email" inputmode="email">
+        <button class="btn small sun" id="btnMagic">✉️ Recevoir un lien magique</button>
+      </div>
+      <p class="vm-hint" id="accMsg" role="status"></p>
+    </div>
+    <div id="accIn" hidden>
+      <p>Connecté : <b id="accEmail"></b><br><span class="acc-sync">Progression synchronisée ✓</span></p>
+      <button class="btn small ghost" id="btnLogout" style="margin-top:12px">Se déconnecter</button>
+      <p class="vm-hint" style="margin-top:8px">Après déconnexion, la copie locale reste sur cet appareil.</p>
+    </div>
+    <p class="vm-hint" id="accUnconfigured" hidden>⚠️ Synchronisation non configurée : renseigne l'URL et la clé anon Supabase dans index.html (constantes SUPABASE_URL / SUPABASE_ANON_KEY).</p>
+  </div>
+
+  <div class="set-card">
     <h3>🎨 Apparence</h3>
     <div class="pick-row" role="group" aria-label="Choix du thème">
       <button class="pick-opt theme-opt" data-theme="light" aria-pressed="false">☀️<br>Clair</button>
@@ -1256,6 +1291,7 @@ input::placeholder{color:var(--muted);opacity:.8}
 
 </main>
 <div id="toast" role="status" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <footer>PUENTE · A1 → C2 · méthode des patterns · avec audio 🔊 · 1 règle &gt; 500 mots par cœur</footer>
 
 <script>
@@ -1360,9 +1396,15 @@ function syncRateUI(){
 
 /* ═══════════ STOCKAGE (persiste si possible, sinon session) ═══════════ */
 const MEM={};
+/* état cloud (déclaré ici pour être visible du store ; logique plus bas) */
+let sbUser=null,applyingCloud=false;
+const SYNC_KEYS=['xp','qa','cd','be','badges','levels','streak','srs','xplog','goal'];
 const store={
   get(k,d){try{const v=localStorage.getItem('puente_'+k);return v!==null?JSON.parse(v):(k in MEM?MEM[k]:d)}catch(e){return k in MEM?MEM[k]:d}},
-  set(k,v){MEM[k]=v;try{localStorage.setItem('puente_'+k,JSON.stringify(v))}catch(e){}}
+  set(k,v){
+    MEM[k]=v;try{localStorage.setItem('puente_'+k,JSON.stringify(v))}catch(e){}
+    if(!applyingCloud&&sbUser&&(SYNC_KEYS.indexOf(k)>-1||k.indexOf('cefr_')===0))scheduleCloudSave();
+  }
 };
 
 /* ═══════════ SONS & RETOURS (Web Audio, aucun fichier) ═══════════ */
@@ -1420,14 +1462,15 @@ const S={
   levels:store.get('levels',{}),
   streak:store.get('streak',{last:null,count:0}),
 };
-(function initStreak(){
+function bumpStreak(){
   const today=new Date().toISOString().slice(0,10);
   const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
   if(S.streak.last===today){}
   else if(S.streak.last===y){S.streak.count++;S.streak.last=today}
   else{S.streak.count=1;S.streak.last=today}
   store.set('streak',S.streak);
-})();
+}
+bumpStreak();
 function save(){
   store.set('xp',S.xp);store.set('qa',S.quizAnswered);store.set('cd',S.conjDone);
   store.set('be',S.bestExam);store.set('badges',S.badges);store.set('levels',S.levels);
@@ -2591,10 +2634,154 @@ animToggle.addEventListener('change',()=>{store.set('anim',!animToggle.checked);
       clearTimeout(t);
       ['xp','qa','cd','be','badges','levels','streak','srs','xplog'].forEach(k=>{try{localStorage.removeItem('puente_'+k)}catch(e){}});
       CEFR.forEach(l=>{try{localStorage.removeItem('puente_cefr_'+l.code)}catch(e){}});
-      location.reload();
+      /* connecté : vide aussi la ligne cloud, sinon elle re-remplirait tout au prochain démarrage */
+      const done=()=>location.reload();
+      if(sbUser&&sb){
+        try{sb.from('progress').upsert({user_id:sbUser.id,data:{},updated_at:new Date().toISOString()}).then(done,done)}catch(e){done()}
+      }else done();
     }
   });
 })();
+
+/* ═══════════ COMPTE & SYNCHRO CLOUD (Supabase) ═══════════ */
+/* L'app reste 100 % fonctionnelle sans compte et sans réseau : tout est sous try/catch. */
+const SUPABASE_URL='https://XXXX.supabase.co';
+const SUPABASE_ANON_KEY='XXXX';
+const SYNC_CONFIGURED=!/XXXX/.test(SUPABASE_URL+SUPABASE_ANON_KEY);
+let sb=null,syncTimer=null;
+try{if(SYNC_CONFIGURED&&window.supabase)sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY)}catch(e){}
+
+function progressBlob(){
+  const cefr={};
+  CEFR.forEach(l=>{if(store.get('cefr_'+l.code,false))cefr[l.code]=true});
+  return {
+    xp:S.xp,qa:S.quizAnswered,cd:S.conjDone,be:S.bestExam,
+    badges:S.badges,levels:S.levels,streak:S.streak,
+    srs:SRS,xplog:store.get('xplog',{}),goal:store.get('goal',50),cefr:cefr
+  };
+}
+function applyBlob(d){
+  if(!d||typeof d!=='object')return;
+  applyingCloud=true;
+  try{
+    S.xp=d.xp||0;S.quizAnswered=d.qa||0;S.conjDone=d.cd||0;
+    S.bestExam=(d.be===undefined?null:d.be);
+    S.badges=Array.isArray(d.badges)?d.badges:[];
+    S.levels=(d.levels&&typeof d.levels==='object')?d.levels:{};
+    S.streak=(d.streak&&typeof d.streak==='object')?d.streak:{last:null,count:0};
+    SRS=(d.srs&&typeof d.srs==='object')?d.srs:{};store.set('srs',SRS);
+    store.set('xplog',(d.xplog&&typeof d.xplog==='object')?d.xplog:{});
+    if(d.goal)store.set('goal',d.goal);
+    CEFR.forEach(l=>store.set('cefr_'+l.code,!!(d.cefr&&d.cefr[l.code])));
+    bumpStreak();save();
+  }finally{applyingCloud=false}
+  render();renderBadges();renderLevels();renderTrail();syncGoalUI();
+}
+function setSync(state,msg){
+  const el=document.getElementById('syncInd');if(!el)return;
+  if(!sbUser){el.hidden=true;return}
+  el.hidden=false;
+  el.className='sync-ind '+state;
+  el.setAttribute('aria-label',msg);el.title=msg;
+}
+function scheduleCloudSave(){
+  if(!sbUser||!sb)return;
+  clearTimeout(syncTimer);
+  setSync('saving','Synchronisation en cours…');
+  syncTimer=setTimeout(pushCloud,3000);
+}
+async function pushCloud(){
+  if(!sb||!sbUser)return;
+  clearTimeout(syncTimer);syncTimer=null;
+  try{
+    setSync('saving','Synchronisation en cours…');
+    const {error}=await sb.from('progress').upsert({user_id:sbUser.id,data:progressBlob(),updated_at:new Date().toISOString()});
+    if(error)throw error;
+    setSync('synced','Progression synchronisée');
+  }catch(e){
+    setSync('offline','Hors ligne — nouvelle tentative à la prochaine activité');
+  }
+}
+function showSyncChoice(cloud,updatedAt){
+  const ov=document.createElement('div');
+  ov.className='sync-choice';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-labelledby','scTitle');
+  const when=updatedAt?new Date(updatedAt).toLocaleDateString('fr-FR',{day:'numeric',month:'long'}):'';
+  ov.innerHTML='<div class="sync-card"><h3 id="scTitle">☁️ Une progression existe déjà sur ton compte</h3>'+
+    '<p style="margin-top:8px">Cloud : <b>'+(cloud.xp||0)+' XP</b>'+(when?' (dernière synchro : '+when+')':'')+'<br>Cet appareil : <b>'+S.xp+' XP</b></p>'+
+    '<div class="sync-actions">'+
+    '<button class="btn" id="scCloud">☁️ Reprendre ma progression cloud</button>'+
+    '<button class="btn ghost" id="scLocal">📱 Envoyer la progression de cet appareil</button>'+
+    '</div><p class="vm-hint" style="margin-top:12px">L\'option choisie remplace l\'autre copie.</p></div>';
+  document.body.appendChild(ov);
+  ov.querySelector('#scCloud').focus();
+  ov.querySelector('#scCloud').addEventListener('click',()=>{applyBlob(cloud);setSync('synced','Progression synchronisée');toast('☁️ Progression cloud restaurée !');ov.remove()});
+  ov.querySelector('#scLocal').addEventListener('click',()=>{ov.remove();pushCloud()});
+}
+function renderAccount(){
+  const out=document.getElementById('accOut'),inn=document.getElementById('accIn'),unc=document.getElementById('accUnconfigured');
+  if(!out)return;
+  if(!SYNC_CONFIGURED){out.hidden=true;inn.hidden=true;unc.hidden=false;return}
+  out.hidden=!!sbUser;inn.hidden=!sbUser;
+  if(sbUser)document.getElementById('accEmail').textContent=sbUser.email||'compte connecté';
+}
+async function onLogin(user,startup){
+  sbUser=user;renderAccount();
+  try{
+    setSync('saving','Connexion…');
+    const {data,error}=await sb.from('progress').select('data,updated_at').eq('user_id',user.id).maybeSingle();
+    if(error)throw error;
+    const cloud=data&&data.data;
+    if(cloud&&Object.keys(cloud).length){
+      if(startup){applyBlob(cloud);setSync('synced','Progression synchronisée')}
+      else showSyncChoice(cloud,data.updated_at);
+    }else{
+      await pushCloud(); /* cloud vide → on pousse l'état local */
+    }
+  }catch(e){setSync('offline','Hors ligne — l\'app continue en local')}
+}
+async function initAccount(){
+  renderAccount();
+  if(!sb)return;
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    if(session)await onLogin(session.user,true);
+    sb.auth.onAuthStateChange((ev,sess)=>{
+      if(ev==='SIGNED_IN'&&sess&&(!sbUser||sbUser.id!==sess.user.id))onLogin(sess.user,false);
+      if(ev==='SIGNED_OUT'){sbUser=null;renderAccount();setSync('synced','')}
+    });
+  }catch(e){}
+}
+(function bindAccountUI(){
+  const g=document.getElementById('btnGoogle'),m=document.getElementById('btnMagic'),
+        lo=document.getElementById('btnLogout'),msg=document.getElementById('accMsg');
+  const redirect=location.origin+location.pathname;
+  g.addEventListener('click',async()=>{
+    if(!sb){msg.textContent='Connexion indisponible (hors ligne ?). Réessaie plus tard.';return}
+    try{await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirect}})}
+    catch(e){msg.textContent='Impossible de contacter Google pour le moment.'}
+  });
+  m.addEventListener('click',async()=>{
+    if(!sb){msg.textContent='Connexion indisponible (hors ligne ?). Réessaie plus tard.';return}
+    const email=(document.getElementById('magicEmail').value||'').trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.textContent='Entre une adresse e-mail valide.';return}
+    m.disabled=true;
+    try{
+      const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:redirect}});
+      if(error)throw error;
+      msg.textContent='✉️ Lien envoyé ! Ouvre l\'e-mail sur cet appareil pour te connecter.';
+    }catch(e){msg.textContent='Envoi impossible pour le moment. Réessaie plus tard.'}
+    m.disabled=false;
+  });
+  lo.addEventListener('click',async()=>{
+    try{if(syncTimer)await pushCloud();await sb.auth.signOut()}catch(e){}
+    sbUser=null;renderAccount();setSync('synced','');
+    toast('👋 Déconnecté — ta progression reste sur cet appareil.');
+  });
+})();
+/* onglet caché/fermé : on pousse tout de suite ce qui attendait le debounce */
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden'&&sbUser&&syncTimer)pushCloud();
+});
 
 /* ═══════════ INIT ═══════════ */
 /* enveloppe chaque tableau dans un conteneur scrollable (mobile) */
@@ -2604,6 +2791,7 @@ document.querySelectorAll('main table').forEach(t=>{
 });
 decorateSayables(document);
 render();renderBadges();renderLevels();renderTrail();
+initAccount();
 /* on démarre en bas du chemin, sur le niveau en cours */
 setTimeout(()=>{
   const cur=document.querySelector('#cefrTrail .tnode.current');
