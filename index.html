@@ -2645,8 +2645,8 @@ animToggle.addEventListener('change',()=>{store.set('anim',!animToggle.checked);
 
 /* ═══════════ COMPTE & SYNCHRO CLOUD (Supabase) ═══════════ */
 /* L'app reste 100 % fonctionnelle sans compte et sans réseau : tout est sous try/catch. */
-const SUPABASE_URL='https://XXXX.supabase.co';
-const SUPABASE_ANON_KEY='XXXX';
+const SUPABASE_URL='https://tzqetrdsfwtotvspezrf.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_7cMhBrHfQoyNKhUHDFxQvg_cejG0mYM';
 const SYNC_CONFIGURED=!/XXXX/.test(SUPABASE_URL+SUPABASE_ANON_KEY);
 let sb=null,syncTimer=null;
 try{if(SYNC_CONFIGURED&&window.supabase)sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY)}catch(e){}
