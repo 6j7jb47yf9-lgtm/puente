@@ -447,7 +447,7 @@ input::placeholder{color:var(--muted);opacity:.8}
     <div class="card clickable" data-goto="dialogues" tabindex="0" role="button">
       <div class="pattern-key">💬 <em>3 scènes</em></div>
       <h3>Dialogues à trous</h3>
-      <p>Café, hôtel, rencontre : complète les répliques et écoute la conversation.</p>
+      <p>Café, hôtel, rencontre : complète les répliques de la conversation.</p>
     </div>
     <div class="card">
       <div class="pattern-key" id="statKey">⚡ <em>0</em> XP</div>
@@ -1152,7 +1152,7 @@ input::placeholder{color:var(--muted);opacity:.8}
 
 <!-- ══════════════ DIALOGUES ══════════════ -->
 <section class="view" id="view-dialogues">
-  <div class="eyebrow">Complète tes répliques · chaque phrase se prononce 🔊</div>
+  <div class="eyebrow">Complète tes répliques dans trois scènes du quotidien</div>
   <h2>Dialogues à trous</h2>
   <div class="dlg-pick" id="dlgPick"></div>
   <div class="dlg-box" id="dlgBox"></div>
@@ -2357,7 +2357,6 @@ function advanceDlg(){
     const ln=DLG.sc.lines[DLG.i];
     if(!ln.opts){
       appendDlgLine(ln,ln.text);
-      speak(ln.text);
       DLG.i++;
     }else{
       /* ligne à trou : afficher bulle + options */
@@ -2371,7 +2370,7 @@ function advanceDlg(){
             optBox.remove();
             const full=ln.text.replace('___',ln.opts[ln.a]);
             line.querySelector('.txt').innerHTML=full;
-            speak(full);addXP(8);
+            addXP(8);
             if(ln.note){
               const n=document.createElement('div');n.className='dlg-note';n.innerHTML='💡 '+ln.note;
               box.appendChild(n);
@@ -2393,7 +2392,7 @@ function advanceDlg(){
   /* dialogue terminé */
   const done=document.createElement('div');
   done.className='dlg-note';done.style.marginLeft='0';
-  done.innerHTML='🎉 <b>Dialogue terminé !</b> +8 XP par bonne réplique. Réécoute chaque bulle en cliquant dessus, ou choisis une autre scène ci-dessus.';
+  done.innerHTML='🎉 <b>Dialogue terminé !</b> +8 XP par bonne réplique. Relis la conversation, ou choisis une autre scène ci-dessus.';
   box.appendChild(done);
   award('first');
 }
@@ -2401,9 +2400,8 @@ function appendDlgLine(ln,html){
   const box=document.getElementById('dlgBox');
   const d=document.createElement('div');
   d.className='dlg-line'+(ln.who==='Toi'?' me':'');
-  d.innerHTML='<div class="bubble sayable" data-say="'+ln.text.replace('___','')+'"><span class="who">'+ln.who+'</span><span class="txt">'+html+'</span><span class="tr">'+ln.tr+'</span></div>';
+  d.innerHTML='<div class="bubble" lang="es"><span class="who">'+ln.who+'</span><span class="txt">'+html+'</span><span class="tr" lang="fr">'+ln.tr+'</span></div>';
   box.appendChild(d);
-  decorateSayables(d);
   d.scrollIntoView({behavior:'smooth',block:'nearest'});
   return d;
 }
