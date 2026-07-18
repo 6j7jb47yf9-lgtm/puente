@@ -51,7 +51,7 @@ html{scroll-behavior:smooth}
 body{font-family:var(--sans);background:var(--sand);color:var(--ink);min-height:100vh;font-size:16px;line-height:1.55;font-weight:600}
 .azulejo{height:8px;background:linear-gradient(90deg,var(--coral) 0 20%,var(--sun) 20% 40%,var(--leaf) 40% 60%,var(--sky) 60% 80%,var(--grape) 80% 100%)}
 header{background:var(--card);position:sticky;top:0;z-index:50;box-shadow:0 2px 0 var(--line)}
-.header-inner{max-width:1000px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.header-inner{max-width:1120px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .logo{font-family:var(--display);font-weight:800;font-size:1.6rem;letter-spacing:-0.01em;color:var(--coral);display:flex;align-items:baseline;gap:8px}
 .logo span{font-family:var(--sans);font-size:.66rem;font-weight:800;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;background:var(--soft-coral);padding:3px 8px;border-radius:999px}
 nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
@@ -315,6 +315,30 @@ td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--mut
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--ink);color:var(--sand);border-radius:18px;padding:14px 22px;font-family:var(--display);font-weight:700;z-index:100;transition:transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.28);max-width:90vw;text-align:center;pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
 footer{background:var(--card);padding:22px;text-align:center;font-family:var(--sans);font-weight:700;font-size:.78rem;color:var(--muted);box-shadow:0 -2px 0 var(--line)}
+/* CARNET DE NOTES */
+.carnet-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.carnet-bar .conj-input{flex:1;min-width:200px;font-size:1rem;width:auto}
+.note-group{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-family:var(--display);font-weight:700;font-size:1.05rem;margin:24px 0 4px;color:var(--ink)}
+.note-card{background:var(--card);border-radius:18px;padding:14px 16px;margin:10px 0;box-shadow:0 3px 0 var(--line)}
+.note-card.pinned{border-left:6px solid var(--sun)}
+.note-card.compact{padding:10px 14px;font-size:.9rem}
+.note-text{white-space:pre-wrap;overflow-wrap:break-word;font-weight:600}
+.note-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:.74rem;color:var(--muted);font-weight:700}
+.note-lesson-link{font-family:var(--sans);background:var(--soft-grape);color:var(--grape-text);border:none;border-radius:999px;padding:4px 11px;font-weight:800;font-size:.72rem;cursor:pointer}
+.note-lesson-link:hover{filter:brightness(.95)}
+.note-lesson-link:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.note-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.note-btn{font-family:var(--sans);font-weight:800;font-size:.78rem;background:var(--card);border:2px solid var(--line);border-bottom-width:3px;border-radius:12px;padding:8px 13px;cursor:pointer;color:var(--ink)}
+.note-btn:hover{background:var(--soft-sun)}
+.note-btn:active{transform:translateY(1px)}
+.note-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.note-btn.pin[aria-pressed="true"]{background:var(--soft-sun);border-color:var(--sun-d);color:var(--warn-text)}
+.note-input{width:100%;font-family:var(--sans);font-weight:600;font-size:.95rem;background:var(--card);color:var(--ink);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:10px 12px;resize:none;overflow:hidden;min-height:60px;line-height:1.5}
+.note-input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.note-empty{text-align:center;color:var(--muted);font-weight:700;padding:26px 18px}
+.lnotes{margin-top:22px;border-top:2px solid var(--sand);padding-top:6px}
+.lnotes .note-input{margin-top:8px}
+.lnotes-ok{font-size:.8rem;font-weight:800;color:var(--ok-text)}
 /* TABLEAU DE BORD "AUJOURD'HUI" */
 .dash{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:26px}
 .dash h3{font-size:1rem}
@@ -346,7 +370,7 @@ input::placeholder{color:var(--muted);opacity:.8}
 .mode-pick{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
 .jeux-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
 @media print{
-  header,footer,nav,.fiche-tools,.pdj,.dash,.trail,.trail-intro{display:none!important}
+  header,footer,nav,.fiche-tools,.pdj,.dash,.trail,.trail-intro,.lnotes{display:none!important}
   body{background:#fff}
   section.view{display:none}
   #view-fiches{display:block!important}
@@ -383,6 +407,7 @@ input::placeholder{color:var(--muted);opacity:.8}
       <button class="tab-btn" data-view="jeux">Jeux</button>
       <button class="tab-btn" data-view="dialogues">Dialogues</button>
       <button class="tab-btn" data-view="exam">Examen</button>
+      <button class="tab-btn" data-view="carnet">Carnet</button>
       <button class="tab-btn" data-view="reglages">Réglages</button>
     </nav>
     <div class="hud" aria-live="polite">
@@ -1217,6 +1242,17 @@ input::placeholder{color:var(--muted);opacity:.8}
   </div>
 </section>
 
+<!-- ══════════════ CARNET DE NOTES ══════════════ -->
+<section class="view" id="view-carnet">
+  <div class="eyebrow">Tes exemples, tes rappels, tes déclics</div>
+  <h2>Carnet de notes</h2>
+  <div class="carnet-bar">
+    <input type="search" id="noteSearch" class="conj-input" placeholder="Rechercher dans les notes…" aria-label="Rechercher dans les notes">
+    <button class="btn small" id="noteNew">+ Nouvelle note</button>
+  </div>
+  <div id="notesList"></div>
+</section>
+
 <!-- ══════════════ RÉGLAGES ══════════════ -->
 <section class="view" id="view-reglages">
   <div class="eyebrow">Personnalise Puente</div>
@@ -1285,6 +1321,7 @@ input::placeholder{color:var(--muted);opacity:.8}
   <div class="set-card">
     <h3>🗃️ Données</h3>
     <p class="vm-hint" style="margin-bottom:12px">XP, badges, niveaux validés, flashcards et journal des jours actifs sont stockés uniquement sur cet appareil. Tes réglages (thème, voix, sons) seront conservés.</p>
+    <label class="switch" style="margin-bottom:14px"><input type="checkbox" id="resetNotes"><span class="sw-track" aria-hidden="true"></span><span>Effacer aussi mon carnet de notes</span></label>
     <button class="btn small ghost" id="resetBtn">🧹 Réinitialiser ma progression</button>
   </div>
 </section>
@@ -1398,7 +1435,7 @@ function syncRateUI(){
 const MEM={};
 /* état cloud (déclaré ici pour être visible du store ; logique plus bas) */
 let sbUser=null,applyingCloud=false;
-const SYNC_KEYS=['xp','qa','cd','be','badges','levels','streak','srs','xplog','goal'];
+const SYNC_KEYS=['xp','qa','cd','be','badges','levels','streak','srs','xplog','goal','notes'];
 const store={
   get(k,d){try{const v=localStorage.getItem('puente_'+k);return v!==null?JSON.parse(v):(k in MEM?MEM[k]:d)}catch(e){return k in MEM?MEM[k]:d}},
   set(k,v){
@@ -2406,6 +2443,180 @@ function appendDlgLine(ln,html){
   return d;
 }
 
+/* ═══════════ CARNET DE NOTES ═══════════ */
+let NOTE_EDIT=null,NOTE_NEW=false;
+function getNotes(){const n=store.get('notes',[]);return Array.isArray(n)?n:[]}
+function setNotes(n){store.set('notes',n);renderNotes();renderLessonNotes()}
+function addNote(text,lessonId){
+  text=(text||'').trim();if(!text)return null;
+  const now=new Date().toISOString();
+  const n={id:'n'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),text,lessonId:lessonId||null,pinned:false,created:now,updated:now};
+  const list=getNotes();list.unshift(n);setNotes(list);return n;
+}
+function updateNote(id,patch){
+  const list=getNotes();const n=list.find(x=>x.id===id);if(!n)return;
+  Object.assign(n,patch);n.updated=new Date().toISOString();setNotes(list);
+}
+function deleteNote(id){setNotes(getNotes().filter(x=>x.id!==id))}
+function lessonsMeta(){
+  if(lessonsMeta._c)return lessonsMeta._c;
+  const m={};
+  document.querySelectorAll('.lesson').forEach(l=>{
+    const id=l.id.replace('lesson-','');
+    const num=l.querySelector('.lesson-num'),ti=l.querySelector('.lesson-title');
+    m[id]={label:(num?num.textContent+' · ':'')+(ti?ti.textContent:id)};
+  });
+  return lessonsMeta._c=m;
+}
+function fmtLesson(id){const m=lessonsMeta()[id];return m?m.label:id}
+function noteDate(n){try{return new Date(n.updated||n.created).toLocaleDateString('fr-FR',{day:'numeric',month:'long'})}catch(e){return ''}}
+function autoGrow(ta){ta.style.height='auto';ta.style.height=(ta.scrollHeight+2)+'px'}
+function noteEditor(box,n,lessonId){
+  const ta=document.createElement('textarea');
+  ta.className='note-input';ta.rows=3;ta.value=n?n.text:'';
+  ta.placeholder='Écris ta note…';
+  ta.setAttribute('aria-label',n?'Modifier la note':'Nouvelle note');
+  ta.addEventListener('input',()=>autoGrow(ta));
+  const row=document.createElement('div');row.className='note-actions';
+  const ok=document.createElement('button');ok.className='btn small sun';ok.textContent='✓ Enregistrer';
+  const no=document.createElement('button');no.className='btn small ghost';no.textContent='Annuler';
+  const commit=()=>{
+    const v=ta.value.trim();
+    NOTE_EDIT=null;NOTE_NEW=false;
+    if(n&&v)updateNote(n.id,{text:v});
+    else if(!n&&v)addNote(v,lessonId||null);
+    else renderNotes();
+  };
+  ok.addEventListener('click',commit);
+  no.addEventListener('click',()=>{NOTE_EDIT=null;NOTE_NEW=false;renderNotes()});
+  ta.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();commit()}});
+  row.appendChild(ok);row.appendChild(no);
+  box.appendChild(ta);box.appendChild(row);
+  setTimeout(()=>{autoGrow(ta);ta.focus()},0);
+}
+function noteCard(n,compact){
+  const d=document.createElement('div');
+  d.className='note-card'+(n.pinned?' pinned':'')+(compact?' compact':'');
+  if(NOTE_EDIT===n.id&&!compact){noteEditor(d,n,null);return d}
+  const t=document.createElement('div');t.className='note-text';t.textContent=n.text;d.appendChild(t);
+  const meta=document.createElement('div');meta.className='note-meta';
+  if(!compact){
+    if(n.lessonId&&lessonsMeta()[n.lessonId]){
+      const lk=document.createElement('button');lk.className='note-lesson-link';
+      lk.textContent='📖 '+fmtLesson(n.lessonId);
+      lk.setAttribute('aria-label','Ouvrir la leçon : '+fmtLesson(n.lessonId));
+      lk.addEventListener('click',()=>openLesson(n.lessonId));
+      meta.appendChild(lk);
+    }else{
+      const s=document.createElement('span');s.textContent='Note libre';meta.appendChild(s);
+    }
+  }
+  const dt=document.createElement('span');dt.textContent=noteDate(n);meta.appendChild(dt);
+  d.appendChild(meta);
+  const act=document.createElement('div');act.className='note-actions';
+  const pin=document.createElement('button');pin.className='note-btn pin';
+  pin.setAttribute('aria-pressed',String(!!n.pinned));
+  pin.setAttribute('aria-label',n.pinned?'Désépingler cette note':'Épingler cette note');
+  pin.textContent=n.pinned?'📌 Épinglée':'📌 Épingler';
+  pin.addEventListener('click',()=>updateNote(n.id,{pinned:!n.pinned}));
+  act.appendChild(pin);
+  if(!compact){
+    const ed=document.createElement('button');ed.className='note-btn';
+    ed.textContent='✏️ Modifier';ed.setAttribute('aria-label','Modifier la note');
+    ed.addEventListener('click',()=>{NOTE_EDIT=n.id;NOTE_NEW=false;renderNotes()});
+    const del=document.createElement('button');del.className='note-btn';
+    del.textContent='🗑️ Supprimer';del.setAttribute('aria-label','Supprimer la note');
+    del.addEventListener('click',()=>{
+      if(del.dataset.armed){deleteNote(n.id);return}
+      del.dataset.armed='1';del.textContent='⚠️ Confirmer ?';del.setAttribute('aria-label','Confirmer la suppression de la note');
+      setTimeout(()=>{if(del.isConnected){delete del.dataset.armed;del.textContent='🗑️ Supprimer';del.setAttribute('aria-label','Supprimer la note')}},4000);
+    });
+    act.appendChild(ed);act.appendChild(del);
+  }
+  d.appendChild(act);
+  return d;
+}
+function renderNotes(){
+  const box=document.getElementById('notesList');if(!box)return;
+  const q=strip(norm(document.getElementById('noteSearch').value||''));
+  const all=getNotes().slice().sort((a,b)=>String(b.updated||'').localeCompare(String(a.updated||'')));
+  const match=n=>!q||strip(norm(n.text||'')).indexOf(q)>-1;
+  box.innerHTML='';
+  if(NOTE_NEW){const c=document.createElement('div');c.className='note-card';noteEditor(c,null,null);box.appendChild(c)}
+  if(!all.length){
+    if(!NOTE_NEW){
+      const e=document.createElement('div');e.className='note-card note-empty';
+      e.textContent='📓 Ton carnet est vide — prends ta première note depuis une leçon, ou clique « + Nouvelle note ».';
+      box.appendChild(e);
+    }
+    return;
+  }
+  const filtered=all.filter(match);
+  if(!filtered.length){
+    const e=document.createElement('div');e.className='note-card note-empty';
+    e.textContent='Aucune note ne correspond à ta recherche.';
+    box.appendChild(e);return;
+  }
+  const addGroup=(title,notes,lessonId)=>{
+    if(!notes.length)return;
+    const h=document.createElement('div');h.className='note-group';
+    const s=document.createElement('span');s.textContent=title;h.appendChild(s);
+    if(lessonId){
+      const b=document.createElement('button');b.className='note-lesson-link';
+      b.textContent='Ouvrir la leçon →';b.setAttribute('aria-label','Ouvrir la leçon : '+title);
+      b.addEventListener('click',()=>openLesson(lessonId));h.appendChild(b);
+    }
+    box.appendChild(h);
+    notes.forEach(n=>box.appendChild(noteCard(n,false)));
+  };
+  addGroup('📌 Épinglées',filtered.filter(n=>n.pinned),null);
+  const rest=filtered.filter(n=>!n.pinned);
+  Object.keys(lessonsMeta()).forEach(id=>addGroup(fmtLesson(id),rest.filter(n=>n.lessonId===id),id));
+  addGroup('Notes libres',rest.filter(n=>!n.lessonId||!lessonsMeta()[n.lessonId]),null);
+}
+function renderLessonNotes(){
+  document.querySelectorAll('.lnotes').forEach(el=>{
+    const id=el.dataset.lesson,list=el.querySelector('.lnotes-list');
+    list.innerHTML='';
+    getNotes().filter(n=>n.lessonId===id)
+      .sort((a,b)=>String(b.updated||'').localeCompare(String(a.updated||'')))
+      .forEach(n=>list.appendChild(noteCard(n,true)));
+  });
+}
+(function initCarnetUI(){
+  document.getElementById('noteSearch').addEventListener('input',()=>renderNotes());
+  document.getElementById('noteNew').addEventListener('click',()=>{NOTE_NEW=true;NOTE_EDIT=null;renderNotes()});
+})();
+(function initLessonNotes(){
+  document.querySelectorAll('.lesson').forEach(l=>{
+    const id=l.id.replace('lesson-','');
+    const body=l.querySelector('.lesson-body');if(!body)return;
+    const box=document.createElement('div');box.className='lnotes';box.dataset.lesson=id;
+    const h=document.createElement('h4');h.textContent='📝 Mes notes sur cette leçon';box.appendChild(h);
+    const list=document.createElement('div');list.className='lnotes-list';box.appendChild(list);
+    const ta=document.createElement('textarea');
+    ta.className='note-input';ta.rows=2;
+    ta.placeholder='Ajouter une note… (Ctrl+Entrée pour enregistrer)';
+    ta.setAttribute('aria-label','Ajouter une note sur cette leçon');
+    ta.addEventListener('input',()=>autoGrow(ta));
+    const row=document.createElement('div');row.className='note-actions';
+    const b=document.createElement('button');b.className='btn small sun';b.textContent='📝 Enregistrer la note';
+    const okMsg=document.createElement('span');okMsg.className='lnotes-ok';okMsg.setAttribute('role','status');
+    const saveIt=()=>{
+      if(!ta.value.trim())return;
+      addNote(ta.value,id);
+      ta.value='';ta.style.height='auto';
+      okMsg.textContent='✓ Note enregistrée';
+      clearTimeout(okMsg._t);okMsg._t=setTimeout(()=>{okMsg.textContent=''},2500);
+    };
+    b.addEventListener('click',saveIt);
+    ta.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();saveIt()}});
+    row.appendChild(b);row.appendChild(okMsg);
+    box.appendChild(ta);box.appendChild(row);
+    body.appendChild(box);
+  });
+})();
+
 /* ═══════════ EXAMEN ═══════════ */
 let EX={list:[],i:0,pts:0,max:0,timer:null,time:720,review:[],verbOK:false,level:null};
 document.getElementById('examStart').addEventListener('click',()=>startExam(null));
@@ -2632,6 +2843,8 @@ animToggle.addEventListener('change',()=>{store.set('anim',!animToggle.checked);
       clearTimeout(t);
       ['xp','qa','cd','be','badges','levels','streak','srs','xplog'].forEach(k=>{try{localStorage.removeItem('puente_'+k)}catch(e){}});
       CEFR.forEach(l=>{try{localStorage.removeItem('puente_cefr_'+l.code)}catch(e){}});
+      const rn=document.getElementById('resetNotes');
+      if(rn&&rn.checked){try{localStorage.removeItem('puente_notes')}catch(e){}}
       /* connecté : vide aussi la ligne cloud, sinon elle re-remplirait tout au prochain démarrage */
       const done=()=>location.reload();
       if(sbUser&&sb){
@@ -2655,7 +2868,8 @@ function progressBlob(){
   return {
     xp:S.xp,qa:S.quizAnswered,cd:S.conjDone,be:S.bestExam,
     badges:S.badges,levels:S.levels,streak:S.streak,
-    srs:SRS,xplog:store.get('xplog',{}),goal:store.get('goal',50),cefr:cefr
+    srs:SRS,xplog:store.get('xplog',{}),goal:store.get('goal',50),cefr:cefr,
+    notes:getNotes()
   };
 }
 function applyBlob(d){
@@ -2671,9 +2885,10 @@ function applyBlob(d){
     store.set('xplog',(d.xplog&&typeof d.xplog==='object')?d.xplog:{});
     if(d.goal)store.set('goal',d.goal);
     CEFR.forEach(l=>store.set('cefr_'+l.code,!!(d.cefr&&d.cefr[l.code])));
+    store.set('notes',Array.isArray(d.notes)?d.notes:[]);
     bumpStreak();save();
   }finally{applyingCloud=false}
-  render();renderBadges();renderLevels();renderTrail();syncGoalUI();
+  render();renderBadges();renderLevels();renderTrail();syncGoalUI();renderNotes();renderLessonNotes();
 }
 function setSync(state,msg){
   const el=document.getElementById('syncInd');if(!el)return;
@@ -2789,6 +3004,7 @@ document.querySelectorAll('main table').forEach(t=>{
 });
 decorateSayables(document);
 render();renderBadges();renderLevels();renderTrail();
+renderNotes();renderLessonNotes();
 initAccount();
 /* on démarre en bas du chemin, sur le niveau en cours */
 setTimeout(()=>{
