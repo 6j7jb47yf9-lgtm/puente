@@ -241,6 +241,19 @@ td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--mut
 .tip{background:var(--soft-leaf);border-radius:16px;padding:12px 16px;margin:14px 0;font-size:.93rem;font-weight:600}
 .warn{background:var(--soft-coral);border-radius:16px;padding:12px 16px;margin:14px 0;font-size:.93rem;font-weight:600}
 /* DIALOGUES */
+/* TRADUCTIONS MASQUÉES (dialogues + phrase du jour) */
+.tr-btn{display:inline-block;font-family:var(--sans);font-weight:800;font-size:.68rem;background:var(--soft-sun);border:2px dashed var(--sun-d);border-radius:10px;padding:4px 10px;margin-top:6px;cursor:pointer;color:var(--ink)}
+.tr-btn:hover{background:var(--sun);color:var(--on-sun)}
+.tr-btn:active{transform:translateY(1px)}
+.tr-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.tr-btn.used{display:none}
+.tr.masked{display:none!important}
+.tr.shown{animation:trfade .25s ease}
+@keyframes trfade{from{opacity:0}to{opacity:1}}
+html.tr-visible .tr-btn{display:none}
+html.tr-visible .tr.masked{display:block!important}
+.dlg-tools{max-width:640px;margin:0 auto 10px;text-align:right}
+.pick-row.two{grid-template-columns:repeat(2,1fr);max-width:340px}
 .dlg-pick{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
 .dlg-box{max-width:640px;margin:0 auto}
 .dlg-line{display:flex;gap:10px;margin:12px 0;align-items:flex-end}
@@ -459,7 +472,8 @@ input::placeholder{color:var(--muted);opacity:.8}
   <div class="pdj" style="margin-top:26px">
     <div class="eyebrow">📅 La phrase du jour</div>
     <div class="pdj-es"><button class="spk" id="pdjSpk" aria-label="Écouter la phrase">🔊</button><span id="pdjEs"></span></div>
-    <div class="pdj-fr" id="pdjFr"></div>
+    <button class="tr-btn" id="pdjTrBtn" lang="fr" aria-expanded="false" aria-controls="pdjFr">🇫🇷 Voir la traduction</button>
+    <div class="pdj-fr tr masked" id="pdjFr" lang="fr"></div>
     <div class="pdj-note" id="pdjNote"></div>
   </div>
 
@@ -1180,6 +1194,7 @@ input::placeholder{color:var(--muted);opacity:.8}
   <div class="eyebrow">Complète tes répliques dans trois scènes du quotidien</div>
   <h2>Dialogues à trous</h2>
   <div class="dlg-pick" id="dlgPick"></div>
+  <div class="dlg-tools" id="dlgTools" hidden><button class="tr-btn" id="dlgRevealAll" lang="fr">🇫🇷 Tout dévoiler</button></div>
   <div class="dlg-box" id="dlgBox"></div>
 </section>
 
@@ -1284,6 +1299,15 @@ input::placeholder{color:var(--muted);opacity:.8}
       <button class="pick-opt theme-opt" data-theme="light" aria-pressed="false">☀️<br>Clair</button>
       <button class="pick-opt theme-opt" data-theme="dark" aria-pressed="false">🌙<br>Sombre</button>
       <button class="pick-opt theme-opt" data-theme="system" aria-pressed="false">🖥️<br>Système</button>
+    </div>
+  </div>
+
+  <div class="set-card">
+    <h3>🎓 Apprentissage</h3>
+    <p class="vm-hint" style="margin-bottom:10px">Traductions françaises dans les dialogues et la phrase du jour. Masquées, elles se dévoilent au clic — ton cerveau essaie d'abord de comprendre l'espagnol.</p>
+    <div class="pick-row two" role="group" aria-label="Traductions dans les dialogues">
+      <button class="pick-opt tr-opt" data-tr="hidden" aria-pressed="false">🙈<br>Masquées (recommandé)</button>
+      <button class="pick-opt tr-opt" data-tr="visible" aria-pressed="false">👀<br>Toujours visibles</button>
     </div>
   </div>
 
@@ -1644,6 +1668,8 @@ const PDJ=[
   document.getElementById('pdjFr').textContent=p.fr;
   document.getElementById('pdjNote').innerHTML=p.note;
   document.getElementById('pdjSpk').addEventListener('click',()=>speak(p.es));
+  const b=document.getElementById('pdjTrBtn');
+  b.addEventListener('click',()=>revealTr(b,document.getElementById('pdjFr')));
 })();
 
 /* ═══════════ DONNÉES ═══════════ */
@@ -2386,6 +2412,7 @@ let DLG={sc:null,i:0};
 function startDlg(d){
   DLG={sc:d,i:0};
   document.getElementById('dlgBox').innerHTML='';
+  document.getElementById('dlgTools').hidden=false;
   advanceDlg();
 }
 function advanceDlg(){
@@ -2433,15 +2460,33 @@ function advanceDlg(){
   box.appendChild(done);
   award('first');
 }
+/* traduction masquée → dévoilée au clic (jamais pénalisé ni récompensé) */
+function revealTr(btn,tr){
+  btn.setAttribute('aria-expanded','true');
+  btn.classList.add('used');
+  tr.classList.remove('masked');
+  tr.classList.add('shown');
+}
 function appendDlgLine(ln,html){
   const box=document.getElementById('dlgBox');
   const d=document.createElement('div');
   d.className='dlg-line'+(ln.who==='Toi'?' me':'');
-  d.innerHTML='<div class="bubble" lang="es"><span class="who">'+ln.who+'</span><span class="txt">'+html+'</span><span class="tr" lang="fr">'+ln.tr+'</span></div>';
+  d.innerHTML='<div class="bubble" lang="es"><span class="who">'+ln.who+'</span><span class="txt">'+html+'</span></div>';
+  const bub=d.querySelector('.bubble');
+  const btn=document.createElement('button');
+  btn.className='tr-btn';btn.setAttribute('lang','fr');btn.setAttribute('aria-expanded','false');
+  btn.textContent='🇫🇷 Voir la traduction';
+  const tr=document.createElement('span');
+  tr.className='tr masked';tr.setAttribute('lang','fr');tr.textContent=ln.tr;
+  btn.addEventListener('click',e=>{e.stopPropagation();revealTr(btn,tr)});
+  bub.appendChild(btn);bub.appendChild(tr);
   box.appendChild(d);
   d.scrollIntoView({behavior:'smooth',block:'nearest'});
   return d;
 }
+document.getElementById('dlgRevealAll').addEventListener('click',()=>{
+  document.querySelectorAll('#dlgBox .tr-btn:not(.used)').forEach(b=>b.click());
+});
 
 /* ═══════════ CARNET DE NOTES ═══════════ */
 let NOTE_EDIT=null,NOTE_NEW=false;
@@ -2823,6 +2868,14 @@ function applyTheme(p,anim){
 document.querySelectorAll('.theme-opt').forEach(b=>b.addEventListener('click',()=>{themePref=b.dataset.theme;store.set('theme',themePref);applyTheme(themePref,true)}));
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(themePref==='system')applyTheme('system',true)})}catch(e){}
 applyTheme(themePref,false);
+/* traductions dans les dialogues : préférence LOCALE (comme le thème), non synchronisée */
+function applyTrPref(){
+  const vis=!!store.get('trvis',false);
+  document.documentElement.classList.toggle('tr-visible',vis);
+  document.querySelectorAll('.tr-opt').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.tr==='visible')===vis)));
+}
+document.querySelectorAll('.tr-opt').forEach(b=>b.addEventListener('click',()=>{store.set('trvis',b.dataset.tr==='visible');applyTrPref()}));
+applyTrPref();
 function syncGoalUI(){const g=store.get('goal',50);document.querySelectorAll('.goal-opt').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.goal===g)))}
 document.querySelectorAll('.goal-opt').forEach(b=>b.addEventListener('click',()=>{store.set('goal',+b.dataset.goal);syncGoalUI();renderDash();toast('🎯 Objectif : '+b.dataset.goal+' XP par jour')}));
 syncGoalUI();
