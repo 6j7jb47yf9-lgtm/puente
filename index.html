@@ -2015,16 +2015,17 @@ const FAUX_Q=[
  {q:'« un gato » signifie…',opts:['un gâteau','un chat 🐱','un gars'],a:1,say:'un gato',e:'Gato = chat (latin <em>cattus</em>). « Gâteau » = <b>pastel</b> ou <b>tarta</b>.'},
 ];
 const SURVIE=[
- {es:'Hola',fr:'Salut / Bonjour'},{es:'Buenos días',fr:'Bonjour (le matin)'},
- {es:'Buenas noches',fr:'Bonsoir / Bonne nuit'},{es:'Adiós',fr:'Au revoir'},
- {es:'Hasta luego',fr:'À plus tard'},{es:'Por favor',fr:'S\'il te plaît'},
- {es:'Gracias',fr:'Merci'},{es:'De nada',fr:'De rien'},
- {es:'Perdón',fr:'Pardon'},{es:'Lo siento',fr:'Je suis désolé'},
- {es:'No entiendo',fr:'Je ne comprends pas'},{es:'¿Puedes repetir?',fr:'Tu peux répéter ?'},
- {es:'Me llamo…',fr:'Je m\'appelle…'},{es:'Soy de Francia',fr:'Je viens de France'},
- {es:'¿Cómo estás?',fr:'Comment vas-tu ?'},{es:'Muy bien, ¿y tú?',fr:'Très bien, et toi ?'},
- {es:'¿Cuánto cuesta?',fr:'Combien ça coûte ?'},{es:'¿Dónde está el baño?',fr:'Où sont les toilettes ?'},
- {es:'La cuenta, por favor',fr:'L\'addition, s\'il vous plaît'},{es:'Encantado',fr:'Enchanté'},
+ /* c = catégorie (salut/politesse/présentation/question) pour des distracteurs du même champ */
+ {es:'Hola',fr:'Salut / Bonjour',c:'salut'},{es:'Buenos días',fr:'Bonjour (le matin)',c:'salut'},
+ {es:'Buenas noches',fr:'Bonsoir / Bonne nuit',c:'salut'},{es:'Adiós',fr:'Au revoir',c:'salut'},
+ {es:'Hasta luego',fr:'À plus tard',c:'salut'},{es:'Por favor',fr:'S\'il te plaît',c:'politesse'},
+ {es:'Gracias',fr:'Merci',c:'politesse'},{es:'De nada',fr:'De rien',c:'politesse'},
+ {es:'Perdón',fr:'Pardon',c:'politesse'},{es:'Lo siento',fr:'Je suis désolé',c:'politesse'},
+ {es:'No entiendo',fr:'Je ne comprends pas',c:'question'},{es:'¿Puedes repetir?',fr:'Tu peux répéter ?',c:'question'},
+ {es:'Me llamo…',fr:'Je m\'appelle…',c:'présentation'},{es:'Soy de Francia',fr:'Je viens de France',c:'présentation'},
+ {es:'¿Cómo estás?',fr:'Comment vas-tu ?',c:'présentation'},{es:'Muy bien, ¿y tú?',fr:'Très bien, et toi ?',c:'présentation'},
+ {es:'¿Cuánto cuesta?',fr:'Combien ça coûte ?',c:'question'},{es:'¿Dónde está el baño?',fr:'Où sont les toilettes ?',c:'question'},
+ {es:'La cuenta, por favor',fr:'L\'addition, s\'il vous plaît',c:'question'},{es:'Encantado',fr:'Enchanté',c:'présentation'},
 ];
 const NUM=[[0,'cero'],[1,'uno'],[2,'dos'],[3,'tres'],[4,'cuatro'],[5,'cinco'],[6,'seis'],[7,'siete'],[8,'ocho'],[9,'nueve'],[10,'diez'],[11,'once'],[12,'doce'],[13,'trece'],[14,'catorce'],[15,'quince'],[16,'dieciséis'],[17,'diecisiete'],[18,'dieciocho'],[19,'diecinueve'],[20,'veinte'],[21,'veintiuno'],[22,'veintidós'],[25,'veinticinco'],[30,'treinta'],[33,'treinta y tres'],[40,'cuarenta'],[47,'cuarenta y siete'],[50,'cincuenta'],[58,'cincuenta y ocho'],[60,'sesenta'],[70,'setenta'],[73,'setenta y tres'],[80,'ochenta'],[90,'noventa'],[99,'noventa y nueve'],[100,'cien']];
 const GENRE_W=[
@@ -2044,15 +2045,18 @@ const GENRE_W=[
  ['trabajo','el','<b>-o → EL</b>. El trabajo = le travail.'],
  ['playa','la','<b>-a → LA</b>. La playa = la plage.'],
  ['idioma','el','⚠️ Mot grec en <b>-ma</b> → masculin : el idioma = la langue !'],
+ ['flor','la','⚠️ Exception au réflexe -or → EL : <b>la flor</b> (la fleur) — féminin, comme en français.'],
 ];
+/* les pièges utiles : exceptions et faux-indices, sur-représentés dans le tirage (~moitié) */
+const GENRE_TRAPS=['problema','día','mano','foto','mapa','moto','idioma','color','corazón','flor'];
 const ECOUTE=[
  {es:'Tengo veinte años',fr:'J\'ai vingt ans',w:['Je tiens vingt euros','J\'ai vingt amis']},
  {es:'¿Dónde está la escuela?',fr:'Où est l\'école ?',w:['Où est l\'écurie ?','Quand ouvre l\'école ?']},
  {es:'Me llamo Pablo',fr:'Je m\'appelle Pablo',w:['J\'appelle Pablo','Pablo m\'aime']},
  {es:'No entiendo',fr:'Je ne comprends pas',w:['Je n\'entends pas','Je n\'attends pas']},
  {es:'La cuenta, por favor',fr:'L\'addition, s\'il vous plaît',w:['Le conte, s\'il vous plaît','La chambre, s\'il vous plaît']},
- {es:'Tengo mucha hambre',fr:'J\'ai très faim',w:['J\'ai beaucoup d\'hommes','Je suis très fatigué']},
- {es:'Hasta mañana',fr:'À demain',w:['Jusqu\'au matin','Bonne nuit']},
+ {es:'Tengo mucha hambre',fr:'J\'ai très faim',w:['J\'ai beaucoup d\'hommes','J\'ai très soif']},
+ {es:'Hasta mañana',fr:'À demain',w:['Jusqu\'au matin','À plus tard']},
  {es:'Somos de Francia',fr:'Nous venons de France',w:['Nous sommes en France','Ils viennent de France']},
  {es:'¿Cuánto cuesta el libro?',fr:'Combien coûte le livre ?',w:['Combien de livres ?','Où est le livre ?']},
  {es:'Estoy muy cansado',fr:'Je suis très fatigué',w:['Je suis très content','J\'ai très chaud']},
@@ -2225,24 +2229,68 @@ bindAccents(document.getElementById('view-exam'),'examInput');
 /* Générateurs de questions */
 function genSurvie(n){
   return pick(SURVIE,n).map(it=>{
-    const others=pick(SURVIE.filter(x=>x!==it),2);
+    /* distracteurs du même champ (une salutation contre d'autres salutations…) */
+    let pool=SURVIE.filter(x=>x!==it&&x.c===it.c);
+    if(pool.length<2)pool=pool.concat(SURVIE.filter(x=>x!==it&&x.c!==it.c));
+    const others=pick(pool,2);
     if(Math.random()<0.5){
       return {q:'Comment dit-on « '+it.fr+' » ?',opts:[it.es,others[0].es,others[1].es],a:0,say:it.es,t:'SURVIE',e:'<b>'+it.es+'</b> = '+it.fr+'. Écoute et répète 🔊 !'};
     }
     return {q:'« '+it.es+' » signifie…',opts:[it.fr,others[0].fr,others[1].fr],a:0,say:it.es,t:'SURVIE',e:'<b>'+it.es+'</b> = '+it.fr+'.'};
   });
 }
+/* nom espagnol de n'importe quel nombre 0–100 (pour générer des distracteurs hors liste) */
+function esNum(n){
+  const U=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince'];
+  if(n<=15)return U[n];
+  if(n<20)return 'dieci'+['séis','siete','ocho','nueve'][n-16];
+  if(n===20)return 'veinte';
+  if(n<30)return 'veinti'+['uno','dós','trés','cuatro','cinco','séis','siete','ocho','nueve'][n-21];
+  if(n===100)return 'cien';
+  const D=['','','veinte','treinta','cuarenta','cincuenta','sesenta','setenta','ochenta','noventa'];
+  const d=Math.floor(n/10),u=n%10;
+  return u===0?D[d]:D[d]+' y '+U[u];
+}
+/* 2 distracteurs PLAUSIBLES : inversion (47→74), dizaine voisine (47→37/57), unité proche (47→46/48).
+   Même nature, même format, même ordre de grandeur — rien ne s'élimine sans connaître la réponse. */
+function numDistractors(num){
+  const cands=[];
+  const push=v=>{if(v!==num&&v>=lo&&v<=100&&cands.indexOf(v)<0)cands.push(v)};
+  let lo=0;
+  const d=Math.floor(num/10),u=num%10;
+  if(num>=16&&num<100&&u!==0){
+    lo=10; /* garde le format à deux chiffres */
+    push(u*10+d);                             /* a) inversion miroir */
+    push((d+1)*10+u);push((d-1)*10+u);        /* b) dizaine voisine */
+    push(d*10+u+1);push(d*10+u-1);            /* c) unité proche */
+  }else if(num>=20&&u===0){
+    lo=10;
+    push(num+10);push(num-10);                /* dizaines voisines */
+    if(num===60)push(70);if(num===70)push(60);/* sosies sonores sesenta↔setenta */
+    push(num+1);                              /* veinte↔veintiuno */
+  }else if(num===100){
+    lo=10;push(90);push(99);push(80);
+  }else{ /* 0–15 : voisins de la même famille */
+    push(num+1);push(num-1);push(num+2);push(num-2);
+  }
+  let g=1;while(cands.length<2&&g<15){push(num+g);push(num-g);g++}
+  return pick(cands,2);
+}
 function genNombres(n){
   return pick(NUM,n).map(([num,word])=>{
-    const others=pick(NUM.filter(x=>x[0]!==num),2);
+    const ds=numDistractors(num);
     if(Math.random()<0.5){
-      return {q:'Comment dit-on <em>'+num+'</em> ?',opts:[word,others[0][1],others[1][1]],a:0,say:word,t:'NOMBRES',e:'<b>'+num+' = '+word+'</b>. '+(num>30&&num%10!==0?'Dizaine + y + unité.':num>15&&num<30&&num%10!==0?'Mode soudure : dieci-/veinti- + unité.':'')};
+      return {q:'Comment dit-on <em>'+num+'</em> ?',opts:[word,esNum(ds[0]),esNum(ds[1])],a:0,say:word,t:'NOMBRES',e:'<b>'+num+' = '+word+'</b>. '+(num>30&&num%10!==0?'Dizaine + y + unité.':num>15&&num<30&&num%10!==0?'Mode soudure : dieci-/veinti- + unité.':'')};
     }
-    return {q:'« '+word+' » = ?',opts:[String(num),String(others[0][0]),String(others[1][0])],a:0,say:word,t:'NOMBRES',e:'<b>'+word+' = '+num+'</b>.'};
+    return {q:'« '+word+' » = ?',opts:[String(num),String(ds[0]),String(ds[1])],a:0,say:word,t:'NOMBRES',e:'<b>'+word+' = '+num+'</b>.'};
   });
 }
 function genGenre(n){
-  return pick(GENRE_W,n).map(([w,art,e])=>({
+  const traps=GENRE_W.filter(g=>GENRE_TRAPS.indexOf(g[0])>-1);
+  const easy=GENRE_W.filter(g=>GENRE_TRAPS.indexOf(g[0])<0);
+  const nT=Math.min(traps.length,Math.round(n/2));
+  const sel=shuffle(pick(traps,nT).concat(pick(easy,Math.max(0,n-nT))));
+  return sel.map(([w,art,e])=>({
     q:'___ '+w,opts:['el','la'],a:art==='el'?0:1,say:art+' '+w,t:'EL OU LA',e:e
   }));
 }
@@ -3457,6 +3505,33 @@ async function initAccount(){
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='hidden'&&sbUser&&syncTimer)pushCloud();
 });
+
+/* ═══════════ AUTO-TEST DES DISTRACTEURS (silencieux en usage normal) ═══════════ */
+(function testDistractors(){
+  try{
+    let ok=true;
+    /* 1) NOMBRES : 200 questions, 3 options uniques, format homogène, bonne réponse incluse */
+    for(let k=0;k<200;k++){
+      const q=genNombres(1)[0];
+      const set=new Set(q.opts);
+      if(q.opts.length!==3||set.size!==3){ok=false;console.assert(false,'nombres: options non uniques',q.opts)}
+      if(q.opts.indexOf(q.opts[q.a])<0){ok=false;console.assert(false,'nombres: bonne réponse absente',q)}
+      const allNum=q.opts.every(o=>/^\d+$/.test(o)),allWord=q.opts.every(o=>/[a-záéíóúñ]/i.test(o));
+      if(!allNum&&!allWord){ok=false;console.assert(false,'nombres: formats hétérogènes',q.opts)}
+    }
+    /* 2) esNum cohérent avec la table de référence NUM */
+    NUM.forEach(([n,w])=>{if(esNum(n)!==w){ok=false;console.assert(false,'esNum diverge de NUM pour '+n+' : '+esNum(n)+' ≠ '+w)}});
+    /* 3) autres générateurs : 3 options distinctes, bonne réponse incluse */
+    [genSurvie(8),genGenre(8),genEcoute(8),genVocab2(8)].forEach((qs,gi)=>{
+      qs.forEach(q=>{
+        const set=new Set(q.opts);
+        if(set.size!==q.opts.length){ok=false;console.assert(false,'gen'+gi+': doublon',q.opts)}
+        if(q.opts[q.a]===undefined){ok=false;console.assert(false,'gen'+gi+': index a invalide',q)}
+      });
+    });
+    if(ok&&/[?&]debug/.test(location.search))console.log('%c✓ auto-test distracteurs OK','color:#3EA84F');
+  }catch(e){console.assert(false,'auto-test distracteurs a levé : '+e.message)}
+})();
 
 /* ═══════════ INIT ═══════════ */
 /* enveloppe chaque tableau dans un conteneur scrollable (mobile) */
