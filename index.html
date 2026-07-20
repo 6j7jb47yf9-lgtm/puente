@@ -218,6 +218,9 @@ td.mono{font-family:var(--mono);font-weight:800;font-size:.85rem;color:var(--mut
 .flash-grade{display:flex;gap:12px;justify-content:center;margin-top:18px}
 .srs-stats{font-family:var(--sans);font-size:.78rem;text-align:center;margin-top:12px;color:var(--muted);font-weight:700}
 /* LESSONS */
+.lesson-group{display:flex;align-items:center;gap:12px;font-family:var(--display);font-weight:800;font-size:1.15rem;margin:26px 0 12px;color:var(--muted)}
+.lesson-group::after{content:"";flex:1;height:2px;background:var(--line2);border-radius:2px}
+.lvl-badge{display:inline-block;font-family:var(--sans);font-weight:800;font-size:.6rem;letter-spacing:.05em;background:var(--grape);color:#fff;border-radius:999px;padding:2px 8px;vertical-align:middle;margin-left:4px}
 .lesson{background:var(--card);border-radius:22px;margin-bottom:14px;overflow:hidden;box-shadow:0 4px 0 var(--line)}
 .lesson-head{width:100%;display:flex;align-items:center;gap:14px;padding:16px 20px;background:none;border:none;cursor:pointer;text-align:left;font-family:var(--sans)}
 .lesson-head:focus-visible{outline:3px solid var(--sun);outline-offset:-3px}
@@ -414,7 +417,7 @@ input::placeholder{color:var(--muted);opacity:.8}
     <div class="logo">Puente <span>fr → es</span></div>
     <nav aria-label="Navigation principale">
       <button class="tab-btn active" data-view="home">Accueil</button>
-      <button class="tab-btn" data-view="parcours">Niveau A1</button>
+      <button class="tab-btn" data-view="parcours">Parcours</button>
       <button class="tab-btn" data-view="lecons">Leçons</button>
       <button class="tab-btn" data-view="fiches">Fiches</button>
       <button class="tab-btn" data-view="jeux">Jeux</button>
@@ -504,7 +507,7 @@ input::placeholder{color:var(--muted);opacity:.8}
   <button class="btn ghost small" data-goto="home" style="margin-bottom:14px">← Retour au chemin</button>
   <div class="eyebrow" id="parcoursEyebrow">Niveau A1 · Débutant</div>
   <h2 id="parcoursTitle">Les modules de A1</h2>
-  <p style="margin-bottom:18px;max-width:64ch;color:var(--muted);font-weight:600">Chaque module : <strong>Apprendre</strong> (la leçon) puis <strong>Valider</strong> (le test à 70 %). Le dernier est l'<strong>examen</strong> : le réussir termine A1 et débloque A2 sur le chemin.</p>
+  <p id="parcoursIntro" style="margin-bottom:18px;max-width:64ch;color:var(--muted);font-weight:600"></p>
   <div id="levelList"></div>
 </section>
 
@@ -520,6 +523,8 @@ input::placeholder{color:var(--muted);opacity:.8}
 <section class="view" id="view-lecons">
   <div class="eyebrow">Le raccourci d'abord, la logique toujours</div>
   <h2>Leçons</h2>
+
+  <div class="lesson-group">🌱 Niveau A1</div>
 
   <div class="lesson open" id="lesson-l0">
     <button class="lesson-head" aria-expanded="true">
@@ -843,6 +848,221 @@ input::placeholder{color:var(--muted);opacity:.8}
     </div>
   </div>
 
+  <div class="lesson-group">🌿 Niveau A2</div>
+
+  <div class="lesson" id="lesson-a2l1">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">A2-L1</span>
+      <span class="lesson-title">Le passé simple (pretérito indefinido) — le temps du récit</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p>Action <strong>terminée et datée</strong> : <em>ayer</em> (hier), <em>el año pasado</em>, <em>en 2020</em>… Là où le français du quotidien dit « j'ai mangé », l'espagnol du récit dit <span class="es sayable">comí</span>. C'est le temps qui raconte : il avance l'histoire, clic après clic.</p>
+      <h4>🔧 Les terminaisons régulières</h4>
+      <table>
+        <tr><th></th><th>-AR · hablar</th><th>-ER · comer</th><th>-IR · vivir</th></tr>
+        <tr><td class="mono">yo</td><td class="es">hablé</td><td class="es">comí</td><td class="es">viví</td></tr>
+        <tr><td class="mono">tú</td><td class="es">hablaste</td><td class="es">comiste</td><td class="es">viviste</td></tr>
+        <tr><td class="mono">él / ella</td><td class="es">habló</td><td class="es">comió</td><td class="es">vivió</td></tr>
+        <tr><td class="mono">nosotros</td><td class="es">hablamos</td><td class="es">comimos</td><td class="es">vivimos</td></tr>
+        <tr><td class="mono">vosotros</td><td class="es">hablasteis</td><td class="es">comisteis</td><td class="es">vivisteis</td></tr>
+        <tr><td class="mono">ellos</td><td class="es">hablaron</td><td class="es">comieron</td><td class="es">vivieron</td></tr>
+      </table>
+      <div class="tip">🧠 <strong>L'accent fait tout :</strong> <em>yo</em> et <em>él</em> portent l'accent écrit — c'est LUI qui distingue <span class="es sayable">hablo</span> (« je parle », présent) de <span class="es sayable">habló</span> (« il parla », passé). Une petite apostrophe, un saut dans le temps.</div>
+      <h4>⚠️ Les 5 irréguliers vitaux</h4>
+      <table>
+        <tr><th>Verbe</th><th>Formes 🔊</th><th>Note</th></tr>
+        <tr><td class="mono">ser ET ir</td><td class="es">fui, fuiste, fue, fuimos, fuisteis, fueron</td><td>Les MÊMES formes pour les deux ! Le contexte décide : <em>fui médico</em> (je fus) / <em>fui a Madrid</em> (j'allai).</td></tr>
+        <tr><td class="mono">tener</td><td class="es">tuve, tuviste, tuvo, tuvimos, tuvisteis, tuvieron</td><td>« j'eus » — sans accent écrit</td></tr>
+        <tr><td class="mono">estar</td><td class="es">estuve, estuviste, estuvo</td><td>comme tener : estuve</td></tr>
+        <tr><td class="mono">hacer</td><td class="es">hice, hiciste, hizo, hicimos, hicisteis, hicieron</td><td>⚠️ él = hi<b>z</b>o (le c deviendrait « k » devant o)</td></tr>
+        <tr><td class="mono">decir</td><td class="es">dije, dijiste, dijo, dijimos, dijisteis, dijeron</td><td>⚠️ ellos = dijeron (jamais « dijieron »)</td></tr>
+      </table>
+      <div class="tip">🧠 <strong>Défi — clique pour vérifier :</strong><br>
+        <button class="reveal">hier j'ai parlé → <span class="q-mark">?</span><span class="ans">hablé</span></button>
+        <button class="reveal">il mangea → <span class="q-mark">?</span><span class="ans">comió</span></button>
+        <button class="reveal">nous sommes allés → <span class="q-mark">?</span><span class="ans">fuimos</span></button>
+        <button class="reveal">j'ai eu → <span class="q-mark">?</span><span class="ans">tuve</span></button>
+        <button class="reveal">elle a fait → <span class="q-mark">?</span><span class="ans">hizo</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson-a2l2">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">A2-L2</span>
+      <span class="lesson-title">L'imparfait (imperfecto) — le plus facile de l'espagnol</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p>Usage <strong>identique au français</strong> : le décor, l'habitude, la description. « Quand j'étais petit, je <em>jouais</em> au foot » → <span class="es sayable">De pequeño, jugaba al fútbol.</span> Ton intuition française fonctionne à 100 %.</p>
+      <h4>🔧 Les terminaisons (régulières à 99,9 %)</h4>
+      <table>
+        <tr><th></th><th>-AR · hablar</th><th>-ER · comer</th><th>-IR · vivir</th></tr>
+        <tr><td class="mono">yo</td><td class="es">hablaba</td><td class="es">comía</td><td class="es">vivía</td></tr>
+        <tr><td class="mono">tú</td><td class="es">hablabas</td><td class="es">comías</td><td class="es">vivías</td></tr>
+        <tr><td class="mono">él / ella</td><td class="es">hablaba</td><td class="es">comía</td><td class="es">vivía</td></tr>
+        <tr><td class="mono">nosotros</td><td class="es">hablábamos</td><td class="es">comíamos</td><td class="es">vivíamos</td></tr>
+        <tr><td class="mono">vosotros</td><td class="es">hablabais</td><td class="es">comíais</td><td class="es">vivíais</td></tr>
+        <tr><td class="mono">ellos</td><td class="es">hablaban</td><td class="es">comían</td><td class="es">vivían</td></tr>
+      </table>
+      <div class="tip">🧠 <strong>Le pont avec le français :</strong> -ER/-IR font <b>-ía, -ías, -ía…</b> — écoute : <em>comía, vivía</em>… c'est quasiment ton « -ais, -ait » ! Même héritage latin (<em>-ebam</em>). Et yo = él aux deux conjugaisons, comme « je mangeais / il mangeait » à l'oral.</div>
+      <div class="tip">🎉 <strong>À encadrer :</strong> il n'existe que <b>TROIS verbes irréguliers</b> à l'imparfait dans TOUTE la langue espagnole : <span class="es sayable">ser → era</span> (era, eras, era, éramos, erais, eran), <span class="es sayable">ir → iba</span> (iba, ibas, iba, íbamos, ibais, iban) et <span class="es sayable">ver → veía</span>. Trois. Le français en a des dizaines. Savoure.</div>
+      <div class="tip">🧠 <strong>Défi :</strong><br>
+        <button class="reveal">je parlais → <span class="q-mark">?</span><span class="ans">hablaba</span></button>
+        <button class="reveal">nous vivions → <span class="q-mark">?</span><span class="ans">vivíamos</span></button>
+        <button class="reveal">c'était → <span class="q-mark">?</span><span class="ans">era</span></button>
+        <button class="reveal">j'allais → <span class="q-mark">?</span><span class="ans">iba</span></button>
+        <button class="reveal">ils mangeaient → <span class="q-mark">?</span><span class="ans">comían</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson-a2l3">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">A2-L3</span>
+      <span class="lesson-title">Le duel des passés — ton avantage de francophone</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p><strong>La règle d'or :</strong> imparfait français → <b>imperfecto</b>. Passé composé / passé simple français → <b>indefinido</b>. C'est tout. Ton intuition de francophone donne déjà la bonne réponse ~90 % du temps — ce module la transforme en réflexe.</p>
+      <div class="tip">🎬 <strong>La métaphore du film :</strong> l'<b>imperfecto</b>, c'est le décor — la caméra tourne, rien ne « se passe » (<em>llovía</em>, il pleuvait). L'<b>indefinido</b>, c'est la photo — clic, c'est fait, on passe à la suite (<em>salí</em>, je sortis).<br><span class="es sayable">Llovía cuando salí.</span> = Il pleuvait (décor) quand je suis sorti (clic).</div>
+      <h4>📋 Les mots déclencheurs</h4>
+      <table>
+        <tr><th>Si tu vois…</th><th>Alors…</th><th>Exemple 🔊</th></tr>
+        <tr><td class="mono">ayer, anoche, de repente, una vez, en 2020, el año pasado</td><td><b>indefinido</b> (photo)</td><td class="es">Ayer comí paella.</td></tr>
+        <tr><td class="mono">todos los días, siempre, mientras, antes, de pequeño</td><td><b>imperfecto</b> (décor)</td><td class="es">Antes vivía en Lyon.</td></tr>
+      </table>
+      <div class="tip">🧠 <strong>Défi — quel temps ? Clique pour vérifier :</strong><br>
+        <button class="reveal">Hier j'ai mangé → <span class="q-mark">?</span><span class="ans">indefinido : comí</span></button>
+        <button class="reveal">Avant, je vivais à Lyon → <span class="q-mark">?</span><span class="ans">imperfecto : vivía</span></button>
+        <button class="reveal">Soudain, il est sorti → <span class="q-mark">?</span><span class="ans">indefinido : salió</span></button>
+        <button class="reveal">Pendant que je dormais… → <span class="q-mark">?</span><span class="ans">imperfecto : dormía</span></button>
+        <button class="reveal">Tous les jours elle parlait → <span class="q-mark">?</span><span class="ans">imperfecto : hablaba</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson-a2l4">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">A2-L4</span>
+      <span class="lesson-title">Comparer — plus simple qu'en français</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p>Trois formules couvrent toutes les comparaisons — et le superlatif espagnol est plus léger que le français (pas de « le plus… du/de la… » alambiqué).</p>
+      <table>
+        <tr><th>Formule</th><th>Exemple 🔊</th><th>Français</th></tr>
+        <tr><td class="mono">más … que</td><td class="es">Madrid es más grande que Cádiz.</td><td>plus … que</td></tr>
+        <tr><td class="mono">menos … que</td><td class="es">El tren es menos caro que el avión.</td><td>moins … que</td></tr>
+        <tr><td class="mono">tan … como</td><td class="es">Eres tan alto como yo.</td><td>aussi … que (⚠️ como, pas « que »)</td></tr>
+        <tr><td class="mono">el/la más …</td><td class="es">Es la ciudad más bonita de España.</td><td>le/la plus … (⚠️ jamais « la más ciudad » !)</td></tr>
+      </table>
+      <h4>⚠️ Les 4 irréguliers (comme « meilleur/pire » en français)</h4>
+      <table>
+        <tr><th>Español 🔊</th><th>Français</th><th>Exemple 🔊</th></tr>
+        <tr><td class="es">mejor</td><td>meilleur / mieux</td><td class="es">Este café es mejor.</td></tr>
+        <tr><td class="es">peor</td><td>pire</td><td class="es">El lunes es el peor día.</td></tr>
+        <tr><td class="es">mayor</td><td>plus âgé / aîné</td><td class="es">Mi hermano mayor.</td></tr>
+        <tr><td class="es">menor</td><td>plus jeune / cadet</td><td class="es">Mi hermana menor.</td></tr>
+      </table>
+      <div class="tip">🧠 <strong>Logique :</strong> on ne dit pas « más bueno » pour la qualité, comme on ne dit pas « plus bon » en français — même réflexe, même exception : <b>mejor</b>. Et après un superlatif, « de » : <em>el mejor restaurante <b>de</b> la ciudad</em> (le meilleur restaurant <b>de</b> la ville).</div>
+      <div class="tip">🧠 <strong>Défi :</strong><br>
+        <button class="reveal">plus rapide que → <span class="q-mark">?</span><span class="ans">más rápido que</span></button>
+        <button class="reveal">aussi grand que → <span class="q-mark">?</span><span class="ans">tan grande como</span></button>
+        <button class="reveal">meilleur → <span class="q-mark">?</span><span class="ans">mejor</span></button>
+        <button class="reveal">mon frère aîné → <span class="q-mark">?</span><span class="ans">mi hermano mayor</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson-a2l5">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">A2-L5</span>
+      <span class="lesson-title">Les verbes à diphtongue — une règle, des dizaines de verbes</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p>Certains verbes « gonflent » leur voyelle quand elle est accentuée : <em>querer</em> → <span class="es sayable">quiero</span>. Une seule règle, trois familles, des dizaines de verbes courants débloqués.</p>
+      <table>
+        <tr><th>Famille</th><th>Verbes courants 🔊</th></tr>
+        <tr><td class="mono"><b>e → ie</b></td><td class="es">querer → quiero · pensar → pienso · empezar → empiezo · entender → entiendo · preferir → prefiero</td></tr>
+        <tr><td class="mono"><b>o → ue</b></td><td class="es">poder → puedo · dormir → duermo · volver → vuelvo · encontrar → encuentro · costar → cuesta</td></tr>
+        <tr><td class="mono"><b>e → i</b></td><td class="es">pedir → pido · servir → sirvo · repetir → repito</td></tr>
+      </table>
+      <h4>🥾 Le secret : la « botte »</h4>
+      <p>Dessine un contour autour des formes qui diphtonguent — ça fait une botte. <strong>nosotros et vosotros restent dehors</strong> : la voyelle n'est pas accentuée chez eux, donc pas de diphtongue.</p>
+      <table>
+        <tr><th></th><th>QUERER 🔊</th><th>PODER 🔊</th><th>Dans la botte ?</th></tr>
+        <tr><td class="mono">yo</td><td class="es">quiero</td><td class="es">puedo</td><td>✅ diphtongue</td></tr>
+        <tr><td class="mono">tú</td><td class="es">quieres</td><td class="es">puedes</td><td>✅</td></tr>
+        <tr><td class="mono">él / ella</td><td class="es">quiere</td><td class="es">puede</td><td>✅</td></tr>
+        <tr><td class="mono">nosotros</td><td class="es">queremos</td><td class="es">podemos</td><td>❌ hors botte — régulier !</td></tr>
+        <tr><td class="mono">vosotros</td><td class="es">queréis</td><td class="es">podéis</td><td>❌ hors botte</td></tr>
+        <tr><td class="mono">ellos</td><td class="es">quieren</td><td class="es">pueden</td><td>✅</td></tr>
+      </table>
+      <div class="tip">🧠 <strong>Pourquoi ?</strong> La diphtongue n'apparaît que sous l'accent tonique : <em>QUIE-ro</em> mais <em>que-RE-mos</em> (l'accent est passé sur -re-, le e redevient sage). Écoute la différence 🔊 et la règle s'entend toute seule.</div>
+      <div class="tip">🧠 <strong>Défi :</strong><br>
+        <button class="reveal">je veux → <span class="q-mark">?</span><span class="ans">quiero</span></button>
+        <button class="reveal">nous voulons → <span class="q-mark">?</span><span class="ans">queremos</span></button>
+        <button class="reveal">je peux → <span class="q-mark">?</span><span class="ans">puedo</span></button>
+        <button class="reveal">il dort → <span class="q-mark">?</span><span class="ans">duerme</span></button>
+        <button class="reveal">je commande (au resto) → <span class="q-mark">?</span><span class="ans">pido</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson-a2l6">
+    <button class="lesson-head" aria-expanded="false">
+      <span class="lesson-num">A2-L6</span>
+      <span class="lesson-title">Vocabulaire du quotidien — 4 thèmes qui servent vraiment</span>
+      <span class="lesson-arrow" aria-hidden="true">▸</span>
+    </button>
+    <div class="lesson-body">
+      <p>~60 mots choisis pour voyager et vivre. Beaucoup se devinent avec tes clés A1 (regarde les notes) — clique chaque mot 🔊.</p>
+      <h4>✈️ Voyage</h4>
+      <table>
+        <tr><th>Español 🔊</th><th>Français</th><th>Español 🔊</th><th>Français</th></tr>
+        <tr><td class="es">el viaje</td><td>le voyage</td><td class="es">el billete</td><td>le billet</td></tr>
+        <tr><td class="es">el aeropuerto</td><td>l'aéroport</td><td class="es">la maleta</td><td>la valise</td></tr>
+        <tr><td class="es">el avión</td><td>l'avion</td><td class="es">el pasaporte</td><td>le passeport</td></tr>
+        <tr><td class="es">el tren</td><td>le train</td><td class="es">la reserva</td><td>la réservation</td></tr>
+        <tr><td class="es">la estación</td><td>la gare (é- → es- !)</td><td class="es">la habitación</td><td>la chambre (-ción → LA)</td></tr>
+        <tr><td class="es">la salida</td><td>la sortie / le départ</td><td class="es">la llegada</td><td>l'arrivée</td></tr>
+      </table>
+      <h4>🍽️ Restaurant</h4>
+      <table>
+        <tr><th>Español 🔊</th><th>Français</th><th>Español 🔊</th><th>Français</th></tr>
+        <tr><td class="es">la carta</td><td>le menu (faux ami : pas la carte géo !)</td><td class="es">el plato</td><td>le plat</td></tr>
+        <tr><td class="es">la cuenta</td><td>l'addition</td><td class="es">el postre</td><td>le dessert</td></tr>
+        <tr><td class="es">el camarero</td><td>le serveur</td><td class="es">la bebida</td><td>la boisson</td></tr>
+        <tr><td class="es">el desayuno</td><td>le petit-déjeuner</td><td class="es">el pescado</td><td>le poisson</td></tr>
+        <tr><td class="es">la propina</td><td>le pourboire</td><td class="es">la carne</td><td>la viande</td></tr>
+      </table>
+      <h4>🏥 Santé</h4>
+      <table>
+        <tr><th>Español 🔊</th><th>Français</th><th>Español 🔊</th><th>Français</th></tr>
+        <tr><td class="es">el médico</td><td>le médecin</td><td class="es">la fiebre</td><td>la fièvre</td></tr>
+        <tr><td class="es">la farmacia</td><td>la pharmacie (ph → f)</td><td class="es">el dolor</td><td>la douleur (-eur → -or, masculin !)</td></tr>
+        <tr><td class="es">el hospital</td><td>l'hôpital (ô → os)</td><td class="es">la receta</td><td>l'ordonnance</td></tr>
+        <tr><td class="es">la cabeza</td><td>la tête</td><td class="es">la pastilla</td><td>le comprimé</td></tr>
+        <tr><td class="es">el estómago</td><td>l'estomac (é- → es-)</td><td class="es">el resfriado</td><td>le rhume</td></tr>
+        <tr><td class="es">la cita</td><td>le rendez-vous</td><td class="es">la salud</td><td>la santé (-ud → LA)</td></tr>
+      </table>
+      <h4>🏙️ En ville</h4>
+      <table>
+        <tr><th>Español 🔊</th><th>Français</th><th>Español 🔊</th><th>Français</th></tr>
+        <tr><td class="es">la calle</td><td>la rue</td><td class="es">la tienda</td><td>la boutique</td></tr>
+        <tr><td class="es">la plaza</td><td>la place</td><td class="es">el banco</td><td>la banque</td></tr>
+        <tr><td class="es">el barrio</td><td>le quartier</td><td class="es">la iglesia</td><td>l'église</td></tr>
+        <tr><td class="es">el mercado</td><td>le marché</td><td class="es">el museo</td><td>le musée</td></tr>
+        <tr><td class="es">el parque</td><td>le parc</td><td class="es">el puente</td><td>le pont (comme l'appli !)</td></tr>
+        <tr><td class="es">la esquina</td><td>le coin de rue</td><td class="es">el semáforo</td><td>le feu tricolore</td></tr>
+      </table>
+      <p style="margin-top:16px"><button class="btn sun small" data-goto="jeux">🧳 M'entraîner sur ce vocabulaire →</button></p>
+    </div>
+  </div>
+
   <div style="text-align:center;margin-top:24px">
     <button class="btn sun" data-goto="parcours">Je valide mes niveaux →</button>
   </div>
@@ -1038,6 +1258,45 @@ input::placeholder{color:var(--muted);opacity:.8}
     </table>
     <p style="font-size:.85rem">Le participe reste <b>toujours en -o</b> au passé composé : <em>hemos comido</em> (jamais « comidos »).</p>
   </div>
+
+  <div class="fiche">
+    <h3>Fiche 10 · Indefinido &amp; Imperfecto <span class="lvl-badge">A2</span></h3>
+    <table>
+      <tr><th></th><th colspan="2">⏮ INDEFINIDO (photo : clic, c'est fait)</th><th colspan="2">🎞 IMPERFECTO (décor : ça durait)</th></tr>
+      <tr><th></th><th>-AR</th><th>-ER / -IR</th><th>-AR</th><th>-ER / -IR</th></tr>
+      <tr><td class="mono">yo</td><td class="es">hablé</td><td class="es">comí</td><td class="es">hablaba</td><td class="es">comía</td></tr>
+      <tr><td class="mono">tú</td><td class="es">hablaste</td><td class="es">comiste</td><td class="es">hablabas</td><td class="es">comías</td></tr>
+      <tr><td class="mono">él/ella</td><td class="es">habló</td><td class="es">comió</td><td class="es">hablaba</td><td class="es">comía</td></tr>
+      <tr><td class="mono">nosotros</td><td class="es">hablamos</td><td class="es">comimos</td><td class="es">hablábamos</td><td class="es">comíamos</td></tr>
+      <tr><td class="mono">vosotros</td><td class="es">hablasteis</td><td class="es">comisteis</td><td class="es">hablabais</td><td class="es">comíais</td></tr>
+      <tr><td class="mono">ellos</td><td class="es">hablaron</td><td class="es">comieron</td><td class="es">hablaban</td><td class="es">comían</td></tr>
+    </table>
+    <table>
+      <tr><th>Irréguliers indefinido</th><th>Irréguliers imperfecto (les 3 seuls !)</th></tr>
+      <tr><td class="es">ser/ir → fui, fuiste, fue, fuimos, fuisteis, fueron · tener → tuve · estar → estuve · hacer → hice/hizo · decir → dije/dijeron</td><td class="es">ser → era · ir → iba · ver → veía</td></tr>
+      <tr><th>→ indefinido si…</th><th>→ imperfecto si…</th></tr>
+      <tr><td class="mono">ayer, anoche, de repente, una vez, en 2020, el año pasado</td><td class="mono">todos los días, siempre, mientras, antes, de pequeño</td></tr>
+    </table>
+    <p style="font-size:.85rem"><b>Règle d'or du francophone :</b> imparfait FR → imperfecto · passé composé/simple FR → indefinido. <em>Llovía cuando salí.</em></p>
+  </div>
+
+  <div class="fiche">
+    <h3>Fiche 11 · Diphtongue &amp; comparaison <span class="lvl-badge">A2</span></h3>
+    <table>
+      <tr><th>Famille</th><th>Verbes</th></tr>
+      <tr><td class="mono">e → ie</td><td class="es">querer (quiero), pensar, empezar, entender, preferir</td></tr>
+      <tr><td class="mono">o → ue</td><td class="es">poder (puedo), dormir, volver, encontrar, costar</td></tr>
+      <tr><td class="mono">e → i</td><td class="es">pedir (pido), servir, repetir</td></tr>
+      <tr><td class="mono">🥾 La botte</td><td class="es">quiero, quieres, quiere, <b>queremos, queréis</b> (hors botte : pas de diphtongue !), quieren</td></tr>
+    </table>
+    <table>
+      <tr><th>Comparer</th><th>Exemple</th></tr>
+      <tr><td class="mono">más … que / menos … que</td><td class="es">más grande que Cádiz</td></tr>
+      <tr><td class="mono">tan … como</td><td class="es">tan alto como yo</td></tr>
+      <tr><td class="mono">el/la más … de</td><td class="es">la ciudad más bonita de España</td></tr>
+      <tr><td class="mono">Irréguliers</td><td class="es">mejor (meilleur) · peor (pire) · mayor (aîné) · menor (cadet)</td></tr>
+    </table>
+  </div>
 </section>
 
 <!-- ══════════════ JEUX ══════════════ -->
@@ -1055,7 +1314,9 @@ input::placeholder{color:var(--muted);opacity:.8}
       <div class="card clickable" data-quiz="ecoute" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">👂🔊</div><h3>Compréhension orale</h3><p>Écoute et choisis la traduction.</p></div>
       <div class="card clickable" id="dicteeCard" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">✏️🔊</div><h3>Dictée</h3><p>Écoute un mot, écris-le.</p></div>
       <div class="card clickable" id="flashCard" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🃏</div><h3>Flashcards</h3><p>Révision espacée : tes mots faibles reviennent plus souvent.</p></div>
-      <div class="card clickable" id="conjCard" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🔧</div><h3>Conjugaison</h3><p>Présent, <b>futur proche</b> et <b>passé composé</b> : choisis le verbe puis conjugue-le.</p></div>
+      <div class="card clickable" id="conjCard" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🔧</div><h3>Conjugaison</h3><p>Présent, <b>futur proche</b>, <b>passé composé</b> — et les passés A2 : choisis le verbe puis conjugue-le.</p></div>
+      <div class="card clickable" data-quiz="diptongo" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🥾 <em>e→ie</em></div><h3>Diphtongue <span class="lvl-badge">A2</span></h3><p>quiero, puedo, pido… et la botte qui protège nosotros.</p></div>
+      <div class="card clickable" data-quiz="vocab2" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🧳</div><h3>Vocabulaire <span class="lvl-badge">A2</span></h3><p>Voyage, restaurant, santé, ville — dans les deux sens.</p></div>
     </div>
   </div>
 
@@ -1140,7 +1401,10 @@ input::placeholder{color:var(--muted);opacity:.8}
       <button class="btn sun" data-conj="reguliers">🔧 Verbes réguliers</button>
       <button class="btn" data-conj="futuro">⏩ Futur proche</button>
       <button class="btn" data-conj="pasado">⏪ Passé composé</button>
-      <button class="btn red" data-conj="tout">🎲 Tout mélangé</button>
+      <button class="btn" data-conj="indef">⏮ Indefinido <span class="lvl-badge">A2</span></button>
+      <button class="btn" data-conj="impf">🎞 Imperfecto <span class="lvl-badge">A2</span></button>
+      <button class="btn" data-conj="duel">⚔️ Le bon temps <span class="lvl-badge">A2</span></button>
+      <button class="btn red" data-conj="tout">🎲 Tout mélangé (A1)</button>
     </div>
     <div id="conjGame" style="display:none">
       <div style="display:flex;justify-content:space-between;align-items:center">
@@ -1151,7 +1415,7 @@ input::placeholder{color:var(--muted);opacity:.8}
       <div class="qcard">
         <div class="fr-hint" id="conjFr"></div>
         <div class="sentence" id="conjSentence"></div>
-        <div class="qmeta" style="margin-top:14px">① Quel verbe ?</div>
+        <div class="qmeta" style="margin-top:14px" id="conjStep1Label">① Quel verbe ?</div>
         <div class="verb-picker" id="conjVerbs"></div>
         <div id="conjStep2" style="display:none">
           <div class="qmeta">② Conjugue-le :</div>
@@ -1591,9 +1855,8 @@ function render(){
   document.getElementById('xpBadge').textContent='⚡ '+S.xp+' XP';
   document.getElementById('streakBadge').textContent='🔥 '+S.streak.count;
   document.getElementById('statKey').innerHTML='⚡ <em>'+S.xp+'</em> XP · 🔥 '+S.streak.count+' j';
-  const passed=Object.values(S.levels).filter(l=>l.passed).length;
   document.getElementById('statLine').textContent=
-   'Niveaux validés : '+passed+'/6 · Quiz : '+S.quizAnswered+' réponses · Conjugaison : '+S.conjDone+' phrases · Meilleur examen : '+(S.bestExam===null?'—':S.bestExam+'/20');
+   'Modules A1 : '+modulesPassed('A1')+'/6 · A2 : '+modulesPassed('A2')+'/7 · Quiz : '+S.quizAnswered+' réponses · Meilleur examen : '+(S.bestExam===null?'—':S.bestExam+'/20');
   if(S.streak.count>=3)award('racha3');
   renderDash();
 }
@@ -1849,6 +2112,94 @@ const CONJ_PAS=[
  {fr:'Elle a écrit une lettre.',es:'Ella ___ una carta.',verbs:['escribir','abrir','comer'],v:'escribir',ans:'ha escrito',e:'⚠️ escribir → <b>escrito</b>. ha escrito. (carta = lettre !)'},
  {fr:'Nous avons vu la maison.',es:'Nosotros ___ la casa.',verbs:['ver','vender','vivir'],v:'ver',ans:'hemos visto',e:'⚠️ ver → <b>visto</b>. hemos visto.'},
 ];
+/* ═══ A2 : indefinido (10, dont les 5 irréguliers) ═══ */
+const CONJ_IND=[
+ {fr:'Hier j\'ai parlé avec María.',es:'Ayer yo ___ con María.',verbs:['hablar','comer','vivir'],v:'hablar',ans:'hablé',e:'Indefinido -AR, yo → <b>-é</b> (accent !) : hablé. Sans accent, <em>hablo</em> = présent.'},
+ {fr:'Hier soir tu as mangé une paella.',es:'Anoche tú ___ una paella.',verbs:['comer','hablar','abrir'],v:'comer',ans:'comiste',e:'-ER, tú → <b>-iste</b> : comiste. Marqueur -s du tú, comme toujours.'},
+ {fr:'Elle a vécu deux ans à Madrid.',es:'Ella ___ dos años en Madrid.',verbs:['vivir','ser','beber'],v:'vivir',ans:'vivió',e:'-IR, él/ella → <b>-ió</b> (accent) : vivió. habló/comió/vivió : l\'accent = le passé.'},
+ {fr:'En 2020 nous avons voyagé en Espagne.',es:'En 2020 nosotros ___ por España.',verbs:['viajar','vender','recibir'],v:'viajar',ans:'viajamos',e:'-AR, nosotros → <b>-amos</b> : viajamos — identique au présent, le contexte (en 2020) tranche.'},
+ {fr:'L\'an dernier ils ont vendu la maison.',es:'El año pasado ellos ___ la casa.',verbs:['vender','trabajar','vivir'],v:'vender',ans:'vendieron',e:'-ER, ellos → <b>-ieron</b> : vendieron.'},
+ {fr:'Hier je suis allé au marché.',es:'Ayer yo ___ al mercado.',verbs:['ir','ser','tener'],v:'ir',ans:'fui',e:'⚠️ ir → <b>fui</b>… et ser aussi ! Mêmes formes, le contexte décide : fui <em>al mercado</em> = aller.'},
+ {fr:'Le voyage a été génial.',es:'El viaje ___ genial.',verbs:['ser','estar','hacer'],v:'ser',ans:'fue',e:'⚠️ ser → <b>fue</b> (comme ir !). Bilan ponctuel d\'un événement → ser à l\'indefinido.'},
+ {fr:'J\'ai eu de la chance.',es:'Yo ___ suerte.',verbs:['tener','ser','decir'],v:'tener',ans:'tuve',e:'⚠️ tener → <b>tuve</b>, sans accent écrit (tuve, tuviste, tuvo…).'},
+ {fr:'Elle a fait un gâteau.',es:'Ella ___ un pastel.',verbs:['hacer','tener','ir'],v:'hacer',ans:'hizo',e:'⚠️ hacer → hice, mais él/ella = <b>hizo</b> (c→z devant o pour garder le son).'},
+ {fr:'Ils ont dit la vérité.',es:'Ellos ___ la verdad.',verbs:['decir','hacer','estar'],v:'decir',ans:'dijeron',e:'⚠️ decir → dije… et ellos = <b>dijeron</b> (jamais « dijieron »).'},
+];
+/* ═══ A2 : imperfecto (10, dont era/iba/veía) ═══ */
+const CONJ_IMP=[
+ {fr:'Quand j\'étais petit, je jouais au foot.',es:'De pequeño, yo ___ al fútbol.',verbs:['jugar','comer','ver'],v:'jugar',ans:'jugaba',e:'-AR → <b>-aba</b> : jugaba. L\'habitude d\'autrefois = imperfecto, comme ton imparfait.'},
+ {fr:'Tu parlais avec elle tous les jours.',es:'Tú ___ con ella todos los días.',verbs:['hablar','vivir','ir'],v:'hablar',ans:'hablabas',e:'-AR, tú → <b>-abas</b> : hablabas.'},
+ {fr:'Nous vivions à Paris.',es:'Nosotros ___ en París.',verbs:['vivir','hablar','tener'],v:'vivir',ans:'vivíamos',e:'-IR → <b>-íamos</b> : vivíamos. Le -ía- espagnol ≈ ton -ions/-iez français.'},
+ {fr:'Il mangeait toujours à la maison.',es:'Él ___ siempre en casa.',verbs:['comer','jugar','ser'],v:'comer',ans:'comía',e:'-ER → <b>-ía</b> : comía — écoute : c\'est presque « il mangeait » !'},
+ {fr:'La ville était très belle (décor).',es:'La ciudad ___ muy bonita.',verbs:['ser','estar','tener'],v:'ser',ans:'era',e:'⚠️ ser → <b>era</b>, l\'un des 3 seuls irréguliers de l\'imperfecto (era, iba, veía).'},
+ {fr:'J\'allais à l\'école à pied.',es:'Yo ___ a la escuela a pie.',verbs:['ir','ser','venir'],v:'ir',ans:'iba',e:'⚠️ ir → <b>iba</b> (iba, ibas, íbamos…). Irrégulier n°2 sur 3.'},
+ {fr:'Nous regardions la télé le soir.',es:'Nosotros ___ la tele por la noche.',verbs:['ver','comer','hablar'],v:'ver',ans:'veíamos',e:'⚠️ ver → <b>veía</b> (le e reste) : veíamos. Irrégulier n°3 sur 3 — c\'est tout !'},
+ {fr:'Ils avaient une grande maison.',es:'Ellos ___ una casa grande.',verbs:['tener','ser','hacer'],v:'tener',ans:'tenían',e:'tener est RÉGULIER à l\'imperfecto : <b>tenían</b>. Seuls ser/ir/ver sont irréguliers.'},
+ {fr:'Elle travaillait au restaurant.',es:'Ella ___ en el restaurante.',verbs:['trabajar','vivir','poder'],v:'trabajar',ans:'trabajaba',e:'-AR → <b>-aba</b> : trabajaba.'},
+ {fr:'Avant, vous étiez très fatigués.',es:'Antes, ustedes ___ muy cansados.',verbs:['estar','ser','tener'],v:'estar',ans:'estaban',e:'État qui durait → estar à l\'imperfecto : <b>estaban</b> (régulier).'},
+];
+/* ═══ A2 : le bon temps (choisir le temps, puis la forme) ═══ */
+const CONJ_DUEL=[
+ {fr:'Hier, j\'ai mangé au restaurant.',es:'Ayer yo ___ (comer) en un restaurante.',verbs:['indefinido','imperfecto'],v:'indefinido',ans:'comí',tense:true,e:'<b>ayer</b> = photo datée → indefinido : comí.'},
+ {fr:'Petit, je vivais à Lyon.',es:'De pequeño, yo ___ (vivir) en Lyon.',verbs:['indefinido','imperfecto'],v:'imperfecto',ans:'vivía',tense:true,e:'<b>de pequeño</b> = décor qui durait → imperfecto : vivía.'},
+ {fr:'Elle parlait avec sa mère tous les jours.',es:'Todos los días ella ___ (hablar) con su madre.',verbs:['indefinido','imperfecto'],v:'imperfecto',ans:'hablaba',tense:true,e:'<b>todos los días</b> = habitude → imperfecto : hablaba.'},
+ {fr:'Soudain, il est sorti.',es:'De repente, él ___ (salir) de la casa.',verbs:['indefinido','imperfecto'],v:'indefinido',ans:'salió',tense:true,e:'<b>de repente</b> = clic ! → indefinido : salió.'},
+ {fr:'Pendant que je dormais…',es:'Mientras yo ___ (dormir)…',verbs:['indefinido','imperfecto'],v:'imperfecto',ans:'dormía',tense:true,e:'<b>mientras</b> = la caméra tourne → imperfecto : dormía.'},
+ {fr:'Une fois, nous avons voyagé à Cuba.',es:'Una vez nosotros ___ (viajar) a Cuba.',verbs:['indefinido','imperfecto'],v:'indefinido',ans:'viajamos',tense:true,e:'<b>una vez</b> = événement unique → indefinido : viajamos.'},
+ {fr:'Ils mangeaient toujours à quatorze heures.',es:'Siempre ellos ___ (comer) a las dos.',verbs:['indefinido','imperfecto'],v:'imperfecto',ans:'comían',tense:true,e:'<b>siempre</b> = habitude → imperfecto : comían.'},
+ {fr:'En 2020, j\'ai été à Madrid.',es:'En 2020 yo ___ (estar) en Madrid.',verbs:['indefinido','imperfecto'],v:'indefinido',ans:'estuve',tense:true,e:'<b>en 2020</b> = daté → indefinido, et estar est irrégulier : estuve.'},
+ {fr:'Avant, tu travaillais dans une banque.',es:'Antes tú ___ (trabajar) en un banco.',verbs:['indefinido','imperfecto'],v:'imperfecto',ans:'trabajabas',tense:true,e:'<b>antes</b> = décor d\'avant → imperfecto : trabajabas.'},
+ {fr:'Hier soir, ils ont vu un film.',es:'Anoche ellos ___ (ver) una película.',verbs:['indefinido','imperfecto'],v:'indefinido',ans:'vieron',tense:true,e:'<b>anoche</b> = ponctuel → indefinido : vieron.'},
+];
+/* ═══ A2 : diphtongue (QCM) ═══ */
+const DIPT_Q=[
+ {q:'querer → <em>yo</em> …',opts:['quiero','quero','quieros'],a:0,say:'quiero',e:'<b>e→ie</b> sous l\'accent : qu<b>ie</b>ro.'},
+ {q:'poder → <em>yo</em> …',opts:['puedo','podo','pudo'],a:0,say:'puedo',e:'<b>o→ue</b> : p<b>ue</b>do. (pudo = passé !)'},
+ {q:'pensar → <em>tú</em> …',opts:['piensas','pensas','piensa'],a:0,say:'piensas',e:'<b>e→ie</b> + marqueur -s du tú : piensas.'},
+ {q:'dormir → <em>él</em> …',opts:['duerme','dorme','durme'],a:0,say:'duerme',e:'<b>o→ue</b> : duerme.'},
+ {q:'querer → <em>nosotros</em> …',opts:['queremos','quieremos','querimos'],a:0,say:'queremos',e:'🥾 nosotros est <b>HORS de la botte</b> : pas de diphtongue → queremos.'},
+ {q:'poder → <em>nosotros</em> …',opts:['podemos','puedemos','podamos'],a:0,say:'podemos',e:'🥾 Hors botte → podemos, tout régulier.'},
+ {q:'empezar → <em>yo</em> …',opts:['empiezo','empezo','empezío'],a:0,say:'empiezo',e:'<b>e→ie</b> : empiezo (je commence).'},
+ {q:'volver → <em>ellos</em> …',opts:['vuelven','volven','vuelvan'],a:0,say:'vuelven',e:'<b>o→ue</b> + marqueur -n : vuelven.'},
+ {q:'pedir → <em>yo</em> …',opts:['pido','pedo','piedo'],a:0,say:'pido',e:'<b>e→i</b> (pas ie !) : pido — LE verbe pour commander au resto.'},
+ {q:'entender → <em>tú</em> …',opts:['entiendes','entendes','entiendas'],a:0,say:'entiendes',e:'<b>e→ie</b> : entiendes (tu comprends — faux ami, pas « entendre »).'},
+ {q:'encontrar → <em>yo</em> …',opts:['encuentro','encontro','encuentró'],a:0,say:'encuentro',e:'<b>o→ue</b> : encuentro. (encontró avec accent = il trouva, passé.)'},
+ {q:'servir → <em>él</em> …',opts:['sirve','serve','sierve'],a:0,say:'sirve',e:'<b>e→i</b> : sirve.'},
+];
+/* ═══ A2 : comparaison (QCM, validation du module) ═══ */
+const COMP_Q=[
+ {q:'« Ce livre est <em>plus</em> intéressant <em>que</em> l\'autre » :<br>Este libro es ___ interesante ___ el otro.',opts:['más … que','menos … que','tan … como'],a:0,say:'más interesante que',e:'plus… que = <b>más… que</b>.'},
+ {q:'« Tu es <em>aussi</em> grand <em>que</em> moi » :<br>Eres ___ alto ___ yo.',opts:['tan … como','tan … que','más … como'],a:0,say:'tan alto como',e:'aussi… que = <b>tan… como</b> — ⚠️ como, pas « que » !'},
+ {q:'« Le train est <em>moins</em> cher <em>que</em> l\'avion » :<br>El tren es ___ caro ___ el avión.',opts:['menos … que','menos … como','tan … que'],a:0,say:'menos caro que',e:'moins… que = <b>menos… que</b>.'},
+ {q:'« Ce café est meilleur » se dit…',opts:['Este café es mejor','Este café es más bueno','Este café es mejor bueno'],a:0,say:'Este café es mejor',e:'<b>mejor</b> — comme en français on ne dit pas « plus bon ».'},
+ {q:'« C\'est le pire jour » se dit…',opts:['Es el peor día','Es el más malo día','Es el día más peor'],a:0,say:'Es el peor día',e:'<b>peor</b> = pire. Directement, sans « más ».'},
+ {q:'« Mon frère aîné » se dit…',opts:['mi hermano mayor','mi hermano más viejo','mi mayor hermano'],a:0,say:'mi hermano mayor',e:'<b>mayor</b> = aîné/plus âgé (más viejo se dit d\'un objet, pas très poli pour un frère !).'},
+ {q:'« Ma sœur cadette » se dit…',opts:['mi hermana menor','mi hermana más joven pequeña','mi menor hermana'],a:0,say:'mi hermana menor',e:'<b>menor</b> = cadet(te).'},
+ {q:'« La plus belle ville » se dit…',opts:['la ciudad más bonita','la más ciudad bonita','la ciudad la más bonita'],a:0,say:'la ciudad más bonita',e:'⚠️ Pas de calque du français : l\'adjectif reste après le nom → la ciudad <b>más bonita</b>.'},
+ {q:'« Le meilleur restaurant <em>de</em> la ville » :<br>el mejor restaurante ___ la ciudad.',opts:['de','que','en'],a:0,say:'el mejor restaurante de la ciudad',e:'Après un superlatif : <b>de</b> (le meilleur… DE la ville).'},
+ {q:'« Il court <em>aussi</em> vite <em>que</em> toi » :<br>Corre ___ rápido ___ tú.',opts:['tan … como','más … que','tan … que'],a:0,say:'tan rápido como',e:'<b>tan… como</b>, toujours.'},
+];
+/* ═══ A2 : vocabulaire du quotidien (4 thèmes) ═══ */
+const VOCAB_A2=[
+ {es:'el aeropuerto',fr:'l\'aéroport',th:'✈️'},{es:'el avión',fr:'l\'avion',th:'✈️'},
+ {es:'la estación',fr:'la gare',th:'✈️'},{es:'el billete',fr:'le billet',th:'✈️'},
+ {es:'la maleta',fr:'la valise',th:'✈️'},{es:'el pasaporte',fr:'le passeport',th:'✈️'},
+ {es:'la reserva',fr:'la réservation',th:'✈️'},{es:'la habitación',fr:'la chambre',th:'✈️'},
+ {es:'la salida',fr:'la sortie / le départ',th:'✈️'},{es:'la llegada',fr:'l\'arrivée',th:'✈️'},
+ {es:'la carta',fr:'le menu',th:'🍽️'},{es:'la cuenta',fr:'l\'addition',th:'🍽️'},
+ {es:'el camarero',fr:'le serveur',th:'🍽️'},{es:'el plato',fr:'le plat',th:'🍽️'},
+ {es:'el postre',fr:'le dessert',th:'🍽️'},{es:'la bebida',fr:'la boisson',th:'🍽️'},
+ {es:'la propina',fr:'le pourboire',th:'🍽️'},{es:'el desayuno',fr:'le petit-déjeuner',th:'🍽️'},
+ {es:'el pescado',fr:'le poisson (au menu)',th:'🍽️'},{es:'la carne',fr:'la viande',th:'🍽️'},
+ {es:'el médico',fr:'le médecin',th:'🏥'},{es:'la fiebre',fr:'la fièvre',th:'🏥'},
+ {es:'el dolor',fr:'la douleur',th:'🏥'},{es:'la receta',fr:'l\'ordonnance',th:'🏥'},
+ {es:'la pastilla',fr:'le comprimé',th:'🏥'},{es:'el resfriado',fr:'le rhume',th:'🏥'},
+ {es:'la cita',fr:'le rendez-vous',th:'🏥'},{es:'la salud',fr:'la santé',th:'🏥'},
+ {es:'la calle',fr:'la rue',th:'🏙️'},{es:'la plaza',fr:'la place',th:'🏙️'},
+ {es:'el barrio',fr:'le quartier',th:'🏙️'},{es:'el mercado',fr:'le marché',th:'🏙️'},
+ {es:'la tienda',fr:'la boutique',th:'🏙️'},{es:'la iglesia',fr:'l\'église',th:'🏙️'},
+ {es:'el puente',fr:'le pont',th:'🏙️'},{es:'la esquina',fr:'le coin de rue',th:'🏙️'},
+];
 
 /* ═══════════ HELPERS ═══════════ */
 const strip=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -1901,6 +2252,15 @@ function genEcoute(n){
     e:'La phrase était : <b>'+it.es+'</b> = '+it.fr+'.'
   }));
 }
+function genVocab2(n){
+  return pick(VOCAB_A2,n).map(it=>{
+    const others=pick(VOCAB_A2.filter(x=>x!==it&&x.fr!==it.fr),2);
+    if(Math.random()<0.5){
+      return {q:'Comment dit-on « '+it.fr+' » ?',opts:[it.es,others[0].es,others[1].es],a:0,say:it.es,t:'VOCAB A2 · '+it.th,e:'<b>'+it.es+'</b> = '+it.fr+'. Écoute et répète 🔊 !'};
+    }
+    return {q:'« '+it.es+' » signifie…',opts:[it.fr,others[0].fr,others[1].fr],a:0,say:it.es,t:'VOCAB A2 · '+it.th,e:'<b>'+it.es+'</b> = '+it.fr+'.'};
+  });
+}
 function buildQuiz(mode){
   if(mode==='patterns')return pick(PATTERN_Q,10).map(q=>({...q,t:'PATTERN'}));
   if(mode==='fauxamis')return pick(FAUX_Q,8).map(q=>({...q,t:'FAUX AMI'}));
@@ -1908,6 +2268,9 @@ function buildQuiz(mode){
   if(mode==='nombres')return genNombres(8);
   if(mode==='genre')return genGenre(8);
   if(mode==='ecoute')return genEcoute(8);
+  if(mode==='diptongo')return pick(DIPT_Q,10).map(q=>({...q,t:'DIPHTONGUE'}));
+  if(mode==='vocab2')return genVocab2(10);
+  if(mode==='comparar')return pick(COMP_Q,8).map(q=>({...q,t:'COMPARER'}));
   return shuffle([...pick(PATTERN_Q,4).map(q=>({...q,t:'PATTERN'})),...pick(FAUX_Q,2).map(q=>({...q,t:'FAUX AMI'})),...genGenre(2)]);
 }
 
@@ -2065,6 +2428,21 @@ const DECK=[
  {fr:'long',es:'largo'},{fr:'le chat',es:'el gato'},
  {fr:'aujourd\'hui',es:'hoy'},{fr:'demain',es:'mañana'},
  {fr:'toujours',es:'siempre'},{fr:'jamais',es:'nunca'},
+ /* ═══ cartes A2 : vocabulaire des 4 thèmes + formes clés ═══ */
+ {fr:'l\'aéroport',es:'el aeropuerto'},{fr:'la valise',es:'la maleta'},
+ {fr:'le billet',es:'el billete'},{fr:'la gare',es:'la estación'},
+ {fr:'la réservation',es:'la reserva'},{fr:'l\'addition',es:'la cuenta'},
+ {fr:'le serveur',es:'el camarero'},{fr:'le plat',es:'el plato'},
+ {fr:'le dessert',es:'el postre'},{fr:'le pourboire',es:'la propina'},
+ {fr:'le médecin',es:'el médico'},{fr:'la fièvre',es:'la fiebre'},
+ {fr:'l\'ordonnance',es:'la receta'},{fr:'le rhume',es:'el resfriado'},
+ {fr:'la rue',es:'la calle'},{fr:'le quartier',es:'el barrio'},
+ {fr:'le marché',es:'el mercado'},{fr:'la boutique',es:'la tienda'},
+ {fr:'le pont',es:'el puente'},{fr:'le rendez-vous',es:'la cita'},
+ {fr:'je suis allé / je fus (récit)',es:'fui'},{fr:'j\'ai eu (récit)',es:'tuve'},
+ {fr:'il a fait (récit)',es:'hizo'},{fr:'c\'était (décor)',es:'era'},
+ {fr:'j\'allais',es:'iba'},{fr:'je veux',es:'quiero'},
+ {fr:'je peux',es:'puedo'},{fr:'je commande (au resto)',es:'pido'},
 ];
 let SRS=store.get('srs',{});   // clé es → box 0..3
 let FL={queue:[],cur:null,done:0};
@@ -2139,7 +2517,10 @@ function startConj(mode,levelId){
   else if(mode==='reguliers')CJ.list=pick(CONJ_REG,8);
   else if(mode==='futuro')CJ.list=pick(CONJ_FUT,8);
   else if(mode==='pasado')CJ.list=pick(CONJ_PAS,8);
-  else CJ.list=shuffle([...pick(CONJ_SE,2),...pick(CONJ_REG,2),...pick(CONJ_FUT,2),...pick(CONJ_PAS,2)]);
+  else if(mode==='indef')CJ.list=pick(CONJ_IND,10);
+  else if(mode==='impf')CJ.list=pick(CONJ_IMP,10);
+  else if(mode==='duel')CJ.list=pick(CONJ_DUEL,10);
+  else CJ.list=shuffle([...pick(CONJ_SE,2),...pick(CONJ_REG,2),...pick(CONJ_FUT,2),...pick(CONJ_PAS,2)]); /* « tout » reste 100 % A1 */
   hideJeuxAll();
   document.getElementById('conjArea').style.display='block';
   document.getElementById('conjModes').style.display='none';
@@ -2152,6 +2533,7 @@ function showConjQ(){
   document.getElementById('conjScore').textContent='Score : '+CJ.score;
   document.getElementById('conjProg').style.width=(CJ.i/CJ.list.length*100)+'%';
   document.getElementById('conjFr').textContent='🇫🇷 '+q.fr;
+  document.getElementById('conjStep1Label').textContent=q.tense?'① Indefinido ou imperfecto ?':'① Quel verbe ?';
   document.getElementById('conjSentence').innerHTML=q.es.replace('___','<span class="blank" id="conjBlank">?</span>');
   const vp=document.getElementById('conjVerbs');vp.innerHTML='';
   shuffle(q.verbs).forEach(v=>{
@@ -2172,13 +2554,15 @@ function pickVerb(btn,v,q,vp){
     vp.querySelectorAll('.verb-btn').forEach(b=>b.disabled=true);
     sfx.good();buzz(15);
     CJ.score+=1;addXP(5);
-    f.className='feedback ok';f.innerHTML='✅ Bon verbe ! Maintenant, conjugue-le pour le sujet de la phrase.';
+    f.className='feedback ok';f.innerHTML='✅ '+(q.tense?'Bon temps !':'Bon verbe !')+' Maintenant, conjugue-le pour le sujet de la phrase.';
     document.getElementById('conjStep2').style.display='block';
     document.getElementById('conjInput').focus();
   }else{
     btn.classList.add('bad');btn.disabled=true;
     sfx.bad();buzz(60);
-    f.className='feedback ko';f.innerHTML='❌ Pas celui-là. Relis l\'indice : identité ? état/lieu ? possession ?';
+    f.className='feedback ko';f.innerHTML=q.tense
+      ?'❌ Relis le contexte : décor/habitude qui durait → <b>imperfecto</b> ; action ponctuelle ou datée → <b>indefinido</b>.'
+      :'❌ Pas celui-là. Relis l\'indice : identité ? état/lieu ? possession ?';
   }
 }
 function checkConj(){
@@ -2234,23 +2618,37 @@ function endConj(){
   if(CJ.level)recordLevel(CJ.level,pct);
   showResult(CJ.score+'<small>/'+max+'</small>',pct,
     ()=>startConj(CJ.mode,CJ.level),
-    CJ.level?(pct>=70?'Niveau validé ! Le suivant est déverrouillé 🗺️':'Il faut 70 %. Revois la fiche 6 et retente !')
+    CJ.level?(pct>=70?'Module validé ! Le suivant est déverrouillé 🗺️':'Il faut 70 %. Revois la leçon et retente !')
     :(pct>=70?'Les marqueurs -o / -s / -mos / -n deviennent des réflexes.':'Concentre-toi sur : yo → -o, tú → -s, nosotros → -mos, ellos → -n.'));
 }
 
 /* ═══════════ PARCOURS ═══════════ */
-const LEVELS=[
- {id:'survie',title:'Kit de survie',desc:'Saluer, remercier, se présenter, demander',lesson:'l0',launch:()=>startQuiz('survie','survie'),badge:'survivor'},
- {id:'nombres',title:'Les nombres 0–100',desc:'3 règles au lieu de 100 mots',lesson:'l0b',launch:()=>startQuiz('nombres','nombres'),badge:'mate'},
- {id:'patterns',title:'Les clés de conversion',desc:'-ción, -idad, -ico, -mente… ~4 000 mots',lesson:'l1',launch:()=>startQuiz('patterns','patterns'),badge:'llave'},
- {id:'genre',title:'El ou La ?',desc:'Le genre en 4 règles + 7 exceptions',lesson:'lg',launch:()=>startQuiz('genre','genre'),badge:'genero'},
- {id:'conjug',title:'SER · ESTAR · TENER',desc:'Choisir le verbe et le conjuguer en contexte',lesson:'l3',launch:()=>startConj('tout','conjug'),badge:'conj'},
- {id:'final',title:'Examen final',desc:'15 questions · 12 min · il faut 12/20',lesson:'l4',launch:()=>{goto('exam');startExam('final')},badge:'diploma'},
-];
-function levelState(i){
-  const id=LEVELS[i].id;
+const LEVELS_BY={
+ A1:[
+  {id:'survie',title:'Kit de survie',desc:'Saluer, remercier, se présenter, demander',lesson:'l0',launch:()=>startQuiz('survie','survie'),badge:'survivor'},
+  {id:'nombres',title:'Les nombres 0–100',desc:'3 règles au lieu de 100 mots',lesson:'l0b',launch:()=>startQuiz('nombres','nombres'),badge:'mate'},
+  {id:'patterns',title:'Les clés de conversion',desc:'-ción, -idad, -ico, -mente… ~4 000 mots',lesson:'l1',launch:()=>startQuiz('patterns','patterns'),badge:'llave'},
+  {id:'genre',title:'El ou La ?',desc:'Le genre en 4 règles + 7 exceptions',lesson:'lg',launch:()=>startQuiz('genre','genre'),badge:'genero'},
+  {id:'conjug',title:'SER · ESTAR · TENER',desc:'Choisir le verbe et le conjuguer en contexte',lesson:'l3',launch:()=>startConj('tout','conjug'),badge:'conj'},
+  {id:'final',title:'Examen final',desc:'15 questions · 12 min · il faut 12/20',lesson:'l4',launch:()=>{goto('exam');startExam('final')},badge:'diploma'},
+ ],
+ A2:[
+  {id:'a2_indef',title:'Le passé simple (indefinido)',desc:'Le temps du récit : hablé, comí, fui',lesson:'a2l1',launch:()=>startConj('indef','a2_indef')},
+  {id:'a2_impf',title:'L\'imparfait (imperfecto)',desc:'Décor et habitudes : hablaba, comía — 3 irréguliers en tout',lesson:'a2l2',launch:()=>startConj('impf','a2_impf')},
+  {id:'a2_duel',title:'Le duel des passés',desc:'Indefinido ou imperfecto ? Ton intuition française sait déjà',lesson:'a2l3',launch:()=>startConj('duel','a2_duel')},
+  {id:'a2_comp',title:'Comparer',desc:'más… que, tan… como, mejor, peor, mayor, menor',lesson:'a2l4',launch:()=>startQuiz('comparar','a2_comp')},
+  {id:'a2_dift',title:'Les verbes à diphtongue',desc:'e→ie, o→ue, e→i — et la botte qui protège nosotros',lesson:'a2l5',launch:()=>startQuiz('diptongo','a2_dift')},
+  {id:'a2_vocab',title:'Vocabulaire du quotidien',desc:'Voyage, restaurant, santé, ville — ~60 mots utiles',lesson:'a2l6',launch:()=>startQuiz('vocab2','a2_vocab')},
+  {id:'a2_final',title:'Examen A2',desc:'Valide les 6 modules en attendant : l\'examen arrive dans une prochaine version',lesson:'a2l1',soon:true,launch:()=>{}},
+ ],
+};
+let CUR_CEFR='A1';
+function allLevels(){return LEVELS_BY.A1.concat(LEVELS_BY.A2)}
+function modulesPassed(code){return LEVELS_BY[code].filter(lv=>(S.levels[lv.id]||{}).passed).length}
+function levelState(code,i){
+  const list=LEVELS_BY[code],id=list[i].id;
   const rec=S.levels[id]||{best:0,passed:false};
-  const unlocked=i===0||(S.levels[LEVELS[i-1].id]||{}).passed;
+  const unlocked=i===0||(S.levels[list[i-1].id]||{}).passed;
   return {rec,unlocked};
 }
 function recordLevel(id,pct){
@@ -2259,32 +2657,44 @@ function recordLevel(id,pct){
   if(pct>=70){
     if(!rec.passed){
       rec.passed=true;
-      const lv=LEVELS.find(l=>l.id===id);
+      const lv=allLevels().find(l=>l.id===id);
       if(lv&&lv.badge)award(lv.badge);
-      toast('🗺️ Niveau « '+lv.title+' » validé !');
+      if(lv)toast('🗺️ Module « '+lv.title+' » validé !');
     }
   }
   S.levels[id]=rec;save();render();renderLevels();if(typeof renderTrail==='function')renderTrail();
 }
+function openParcours(code){CUR_CEFR=code;renderLevels();goto('parcours')}
 function renderLevels(){
-  const box=document.getElementById('levelList');box.innerHTML='';
-  LEVELS.forEach((lv,i)=>{
-    const {rec,unlocked}=levelState(i);
+  const box=document.getElementById('levelList');if(!box)return;
+  const code=CUR_CEFR,list=LEVELS_BY[code],meta=CEFR.find(c=>c.code===code);
+  document.getElementById('parcoursEyebrow').textContent='Niveau '+code+' · '+(meta?meta.name:'');
+  document.getElementById('parcoursTitle').textContent='Les modules de '+code;
+  const intro=document.getElementById('parcoursIntro');
+  if(intro)intro.innerHTML=(code==='A1')
+    ?'Chaque module : <strong>Apprendre</strong> (la leçon) puis <strong>Valider</strong> (le test à 70 %). Le dernier est l\'<strong>examen</strong> : le réussir termine A1 et débloque A2 sur le chemin.'
+    :'Chaque module : <strong>Apprendre</strong> (la leçon) puis <strong>Valider</strong> (le test à 70 %). L\'<strong>examen A2</strong> arrive dans une prochaine version — les six premiers modules sont jouables dès maintenant.';
+  box.innerHTML='';
+  list.forEach((lv,i)=>{
+    const {rec,unlocked}=levelState(code,i);
+    const soon=!!lv.soon;
     const d=document.createElement('div');
-    d.className='level'+(unlocked?'':' locked')+(rec.passed?' passed':'');
-    d.innerHTML='<div class="level-num">'+(rec.passed?'✓':unlocked?(i+1):'🔒')+'</div>'+
-      '<div class="level-info"><h3>Niveau '+(i+1)+' · '+lv.title+'</h3><p>'+lv.desc+'</p>'+
+    d.className='level'+((unlocked&&!soon)?'':' locked')+(rec.passed?' passed':'');
+    d.innerHTML='<div class="level-num">'+(rec.passed?'✓':soon?'🚧':unlocked?(i+1):'🔒')+'</div>'+
+      '<div class="level-info"><h3>Module '+(i+1)+' · '+lv.title+'</h3><p>'+lv.desc+'</p>'+
       (rec.best>0?'<div class="level-best">Meilleur score : '+rec.best+' %'+(rec.passed?' · validé ✅':' · objectif 70 %')+'</div>':'')+
+      (soon?'<div class="level-best" style="color:var(--muted)">🚧 Bientôt disponible</div>':'')+
       '</div><div class="level-actions"></div>';
     const actions=d.querySelector('.level-actions');
     const learn=document.createElement('button');
     learn.className='btn ghost small';learn.textContent='📖 Apprendre';
-    learn.disabled=!unlocked;
-    learn.addEventListener('click',()=>openLesson(lv.lesson));
+    learn.disabled=!unlocked||soon;
+    if(!soon)learn.addEventListener('click',()=>openLesson(lv.lesson));
     const test=document.createElement('button');
-    test.className='btn small '+(rec.passed?'sun':'');test.textContent=rec.passed?'🔁 Refaire':'🎯 Valider';
-    test.disabled=!unlocked;
-    test.addEventListener('click',lv.launch);
+    test.className='btn small '+(rec.passed?'sun':'');
+    test.textContent=soon?'🎓 Bientôt':rec.passed?'🔁 Refaire':'🎯 Valider';
+    test.disabled=!unlocked||soon;
+    if(!soon)test.addEventListener('click',lv.launch);
     actions.appendChild(learn);actions.appendChild(test);
     box.appendChild(d);
   });
@@ -2293,7 +2703,7 @@ function renderLevels(){
 /* ═══════════ CHEMIN CEFR (A1 → C2) ═══════════ */
 const CEFR=[
  {code:'A1',name:'Débutant',emoji:'🌱',content:true,blurb:'Survie, nombres, clés de conversion, genre, présent · futur · passé composé.'},
- {code:'A2',name:'Élémentaire',emoji:'🌿',syllabus:['Passé simple (pretérito indefinido) : comí, comió…','Imparfait (imperfecto) et son opposition au passé','Comparatifs et superlatifs (más… que, el más…)','Pronoms compléments (me lo, te la…)','Verbes à diphtongue : e→ie (querer), o→ue (poder)','Vocabulaire : voyage, restaurant, santé, ville']},
+ {code:'A2',name:'Élémentaire',emoji:'🌿',content:true,blurb:'Indefinido, imperfecto, le duel des passés, comparaison, diphtongue, vocabulaire du quotidien.'},
  {code:'B1',name:'Intermédiaire',emoji:'🌳',syllabus:['Subjonctif présent : introduction et déclencheurs','Choisir entre perfecto / indefinido / imperfecto','Le discours rapporté (il a dit que…)','Connecteurs logiques (sin embargo, por lo tanto…)','Exprimer une opinion, un doute, un souhait']},
  {code:'B2',name:'Avancé',emoji:'⛰️',syllabus:['Subjonctif imparfait (si tuviera…)','Conditionnel et phrases hypothétiques','La voix passive et la tournure « se »','Nuances fines de ser / estar','Registres : formel vs familier']},
  {code:'C1',name:'Autonome',emoji:'🏔️',syllabus:['Le subjonctif à tous les temps','Périphrases verbales (llevar + gérondif…)','Expressions idiomatiques et locutions','Comprendre presse et textes littéraires','Nuancer son style et son ton']},
@@ -2322,8 +2732,7 @@ function renderTrail(){
     let sub;
     if(!unlocked)sub='🔒 Réussis l\'examen '+CEFR[i-1].code;
     else if(lv.content){
-      const passed=Object.values(S.levels).filter(l=>l.passed).length;
-      sub=done?'Terminé ✅':passed+'/6 modules';
+      sub=done?'Terminé ✅':modulesPassed(lv.code)+'/'+LEVELS_BY[lv.code].length+' modules';
     }else sub=done?'Terminé ✅':'Aperçu du programme';
     const btn=document.createElement('button');
     btn.className='tbtn';
@@ -2332,7 +2741,7 @@ function renderTrail(){
     btn.innerHTML='<span class="tcode">'+lv.code+'</span><span class="temoji">'+(unlocked?lv.emoji:'🔒')+'</span>'+(done?'<span class="tflag">✓</span>':isCur?'<span class="tflag">★</span>':'');
     btn.addEventListener('click',()=>{
       if(!unlocked){toast('🔒 Réussis d\'abord l\'examen '+CEFR[i-1].code+' pour débloquer '+lv.code+'.');return;}
-      if(lv.content){goto('parcours');}
+      if(lv.content){openParcours(lv.code);}
       else openPreview(i);
     });
     node.appendChild(btn);
