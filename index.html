@@ -257,7 +257,20 @@ html.tr-visible .tr-btn{display:none}
 html.tr-visible .tr.masked{display:block!important}
 .dlg-tools{max-width:640px;margin:0 auto 10px;text-align:right}
 .pick-row.two{grid-template-columns:repeat(2,1fr);max-width:340px}
+/* SÉLECTEUR D'EXAMEN (A1 / A2) */
+.exam-choice{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;max-width:640px}
+.exam-opt{width:100%;text-align:left;font-family:var(--sans);color:var(--ink);border:none;transition:transform .12s,box-shadow .12s}
+button.exam-opt{cursor:pointer}
+button.exam-opt:hover{transform:translateY(-3px);box-shadow:0 8px 0 var(--sun)}
+button.exam-opt:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.exam-opt.locked{opacity:.6}
+.exam-opt .exam-opt-emoji{font-size:1.9rem;line-height:1}
+.exam-opt h3{margin:6px 0 6px}
+.exam-opt p{font-size:.86rem;color:var(--muted);font-weight:600;margin:0}
+.exam-opt-sub{margin-top:12px;font-size:.78rem;font-weight:800;color:var(--grape-text)}
+.exam-opt.locked .exam-opt-sub{color:var(--muted)}
 .dlg-pick{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.dlg-pick .btn{display:inline-flex;align-items:center;gap:8px}
 .dlg-box{max-width:640px;margin:0 auto}
 .dlg-line{display:flex;gap:10px;margin:12px 0;align-items:flex-end}
 .dlg-line.me{flex-direction:row-reverse}
@@ -1467,17 +1480,8 @@ input::placeholder{color:var(--muted);opacity:.8}
   <div class="eyebrow">15 questions · 12 minutes · note sur 20</div>
   <h2>Examen blanc</h2>
   <div id="examIntro">
-    <div class="card" style="max-width:640px">
-      <h3>Règles de l'examen</h3>
-      <ul style="margin:12px 0 12px 22px;line-height:2">
-        <li>🛟 2 questions de <strong>survie</strong> · 🔢 2 de <strong>nombres</strong></li>
-        <li>🔑 4 de <strong>patterns</strong> · ⚖️ 2 de <strong>genre</strong> · ⚠️ 2 de <strong>faux amis</strong></li>
-        <li>✍️ 3 phrases de <strong>conjugaison</strong> (verbe + forme, 2 pts chacune)</li>
-        <li>⏱️ <strong>12 minutes</strong> — l'examen se termine automatiquement</li>
-        <li>📊 Note /20, mention, correction détaillée · <strong>12/20 valide le niveau final</strong></li>
-      </ul>
-      <button class="btn" id="examStart" style="margin-top:10px">🎓 Commencer l'examen</button>
-    </div>
+    <p style="margin-bottom:16px;max-width:60ch;color:var(--muted);font-weight:600">Choisis ton examen. <strong>12 minutes</strong>, 15 questions, note /20 avec mention et correction détaillée. Il faut <strong>12/20</strong> pour valider un niveau.</p>
+    <div class="exam-choice" id="examChoice"></div>
   </div>
   <div class="quiz-shell" id="examArea" style="display:none">
     <div class="exam-header">
@@ -1491,7 +1495,7 @@ input::placeholder{color:var(--muted);opacity:.8}
       <div class="qword" id="examQuestion"></div>
       <div class="options" id="examOptions" style="display:none"></div>
       <div id="examConjZone" style="display:none">
-        <div class="qmeta" style="margin-top:14px">① Quel verbe ?</div>
+        <div class="qmeta" style="margin-top:14px" id="examStep1Label">① Quel verbe ?</div>
         <div class="verb-picker" id="examVerbs"></div>
         <div id="examStep2" style="display:none">
           <div class="qmeta">② Conjugue-le :</div>
@@ -1822,8 +1826,10 @@ const BADGES=[
  {id:'genero',icon:'⚖️',name:'El o La',desc:'Valider le genre'},
  {id:'conj',icon:'🔧',name:'Conjugador',desc:'Valider la conjugaison'},
  {id:'oreja',icon:'👂',name:'Buena oreja',desc:'Dictée parfaite 8/8'},
- {id:'diploma',icon:'🎓',name:'Diplomado',desc:'Examen ≥ 12/20'},
- {id:'honor',icon:'🏆',name:'Mención de honor',desc:'Examen ≥ 16/20'},
+ {id:'diploma',icon:'🎓',name:'Diplomado',desc:'Examen A1 ≥ 12/20'},
+ {id:'honor',icon:'🏆',name:'Mención de honor',desc:'Examen A1 ≥ 16/20'},
+ {id:'diplomaA2',icon:'🎓',name:'Diplomado A2',desc:'Examen A2 ≥ 12/20'},
+ {id:'honorA2',icon:'🏆',name:'Honor A2',desc:'Examen A2 ≥ 16/20'},
  {id:'racha3',icon:'🔥',name:'Racha ×3',desc:'3 jours d\'affilée'},
  {id:'xp500',icon:'⚡',name:'500 XP',desc:'Atteindre 500 XP'},
 ];
@@ -1896,6 +1902,7 @@ function goto(v){
   views.forEach(x=>x.classList.toggle('active',x.id==='view-'+v));
   tabs.forEach(t=>t.classList.toggle('active',t.dataset.view===v));
   if(v==='reglages'){populateVoiceSelect();syncRateUI()}
+  if(v==='exam'&&typeof renderExamIntro==='function')renderExamIntro();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 tabs.forEach(t=>t.addEventListener('click',()=>goto(t.dataset.view)));
@@ -2687,7 +2694,7 @@ const LEVELS_BY={
   {id:'a2_comp',title:'Comparer',desc:'más… que, tan… como, mejor, peor, mayor, menor',lesson:'a2l4',launch:()=>startQuiz('comparar','a2_comp')},
   {id:'a2_dift',title:'Les verbes à diphtongue',desc:'e→ie, o→ue, e→i — et la botte qui protège nosotros',lesson:'a2l5',launch:()=>startQuiz('diptongo','a2_dift')},
   {id:'a2_vocab',title:'Vocabulaire du quotidien',desc:'Voyage, restaurant, santé, ville — ~60 mots utiles',lesson:'a2l6',launch:()=>startQuiz('vocab2','a2_vocab')},
-  {id:'a2_final',title:'Examen A2',desc:'Valide les 6 modules en attendant : l\'examen arrive dans une prochaine version',lesson:'a2l1',soon:true,launch:()=>{}},
+  {id:'a2_final',title:'Examen A2',desc:'15 questions · 12 min · il faut 12/20 pour terminer A2',lesson:'a2l1',launch:()=>startExam('a2_final','A2')},
  ],
 };
 let CUR_CEFR='A1';
@@ -2828,7 +2835,7 @@ document.querySelectorAll('.reveal').forEach(r=>{
 
 /* ═══════════ DIALOGUES ═══════════ */
 const DIALOGUES=[
- {id:'cafe',title:'☕ Au café',lines:[
+ {id:'cafe',title:'☕ Au café',lvl:'A1',lines:[
    {who:'Camarero',text:'¡Hola! ¿Qué desea?',tr:'Bonjour ! Vous désirez ?'},
    {who:'Toi',text:'___, un café con leche, por favor.',tr:'…, un café au lait, s\'il vous plaît.',opts:['Buenos días','Buenas noches','Adiós'],a:0,note:'On salue selon le moment : le matin → <b>buenos días</b>.'},
    {who:'Camarero',text:'¿Algo más?',tr:'Autre chose ?'},
@@ -2836,7 +2843,7 @@ const DIALOGUES=[
    {who:'Camarero',text:'Son dos euros con cincuenta.',tr:'Ça fait deux euros cinquante.'},
    {who:'Toi',text:'Aquí tiene. ¡___!',tr:'Voilà. À plus tard !',opts:['Hasta luego','Lo siento','Por qué'],a:0,note:'<b>hasta luego</b> : la façon la plus courante de dire au revoir.'},
  ]},
- {id:'hotel',title:'🏨 À l\'hôtel',lines:[
+ {id:'hotel',title:'🏨 À l\'hôtel',lvl:'A1',lines:[
    {who:'Recepcionista',text:'Buenas tardes, ¿en qué puedo ayudarle?',tr:'Bonjour, comment puis-je vous aider ?'},
    {who:'Toi',text:'Hola, ___ una reserva.',tr:'Bonjour, j\'ai une réservation.',opts:['soy','estoy','tengo'],a:2,note:'Possession → <b>TENER</b> : tengo una reserva.'},
    {who:'Recepcionista',text:'Perfecto. ¿Cómo se llama?',tr:'Parfait. Quel est votre nom ?'},
@@ -2846,7 +2853,7 @@ const DIALOGUES=[
    {who:'Recepcionista',text:'Al lado de la recepción.',tr:'À côté de la réception.'},
    {who:'Toi',text:'¡Muchas ___!',tr:'Merci beaucoup !',opts:['gracias','perdón','nada'],a:0,note:'<b>muchas gracias</b> — gracias est féminin pluriel, donc <em>muchas</em>.'},
  ]},
- {id:'rencontre',title:'👋 Une rencontre',lines:[
+ {id:'rencontre',title:'👋 Une rencontre',lvl:'A1',lines:[
    {who:'Ana',text:'¡Hola! ¿Cómo te llamas?',tr:'Salut ! Comment tu t\'appelles ?'},
    {who:'Toi',text:'___ Léo. ¿Y tú?',tr:'Je m\'appelle Léo. Et toi ?',opts:['Me llamo','Soy llamo','Tengo'],a:0},
    {who:'Ana',text:'Soy Ana. ¿De dónde eres?',tr:'Je suis Ana. D\'où viens-tu ?'},
@@ -2856,12 +2863,46 @@ const DIALOGUES=[
    {who:'Ana',text:'¡Hablas muy bien español!',tr:'Tu parles très bien espagnol !'},
    {who:'Toi',text:'Gracias, pero no ___ todo todavía.',tr:'Merci, mais je ne comprends pas encore tout.',opts:['entiendo','escucho','tengo'],a:0,note:'<b>entender</b> = comprendre (faux ami : pas « entendre » !).'},
  ]},
+ {id:'viaje',title:'🧳 Le récit de voyage',lvl:'A2',lines:[
+   {who:'Ana',text:'¡Hola! ¿Qué tal las vacaciones? ¿Adónde fuiste?',tr:'Salut ! Comment étaient les vacances ? Où es-tu allé(e) ?'},
+   {who:'Toi',text:'___ a Sevilla con mi familia.',tr:'Nous sommes allés à Séville avec ma famille.',opts:['Fuimos','Íbamos','Vamos'],a:0,note:'Voyage précis et terminé → <b>indefinido</b> : fuimos. <em>Íbamos</em> = « nous allions » (habitude).'},
+   {who:'Ana',text:'¡Qué bien! ¿Y qué tal el tiempo?',tr:'Super ! Et le temps qu\'il a fait ?'},
+   {who:'Toi',text:'___ muchísimo calor todos los días.',tr:'Il faisait très chaud tous les jours.',opts:['Hacía','Hizo','Hace'],a:0,note:'Décor qui dure (<em>todos los días</em>) → <b>imperfecto</b> : hacía.'},
+   {who:'Ana',text:'¿Y visitasteis la catedral?',tr:'Et vous avez visité la cathédrale ?'},
+   {who:'Toi',text:'Sí, un día ___ la catedral y la Giralda.',tr:'Oui, un jour nous avons visité la cathédrale et la Giralda.',opts:['visitamos','visitábamos','visitar'],a:0,note:'<em>Un día</em> = action ponctuelle → <b>indefinido</b> : visitamos.'},
+   {who:'Ana',text:'De pequeña, yo iba mucho a Andalucía.',tr:'Petite, j\'allais souvent en Andalousie.'},
+   {who:'Toi',text:'Yo también: cuando ___ pequeño, íbamos siempre a la montaña.',tr:'Moi aussi : quand j\'étais petit, on allait toujours à la montagne.',opts:['era','fui','soy'],a:0,note:'Description du passé (« quand j\'étais ») → <b>imperfecto</b> : era.'},
+   {who:'Ana',text:'¡Qué recuerdos tan bonitos!',tr:'Quels beaux souvenirs !'},
+ ]},
+ {id:'resto2',title:'🍽️ Au restaurant, le retour',lvl:'A2',lines:[
+   {who:'Camarero',text:'Buenas noches. ¿Tienen una reserva?',tr:'Bonsoir. Vous avez une réservation ?'},
+   {who:'Toi',text:'Sí, una mesa para dos. ¿___ ver la carta, por favor?',tr:'Oui, une table pour deux. Puis-je voir le menu, s\'il vous plaît ?',opts:['Puedo','Podo','Pueo'],a:0,note:'poder → <b>puedo</b> (o→ue sous l\'accent). <em>Podo</em> n\'existe pas.'},
+   {who:'Camarero',text:'Aquí tiene. Hoy el pescado está muy bueno.',tr:'Voici. Aujourd\'hui le poisson est très bon.'},
+   {who:'Toi',text:'Mmm… ___ la paella, por favor.',tr:'Mmm… je veux la paella, s\'il vous plaît.',opts:['Quiero','Quero','Queo'],a:0,note:'querer → <b>quiero</b> (e→ie). Jamais « quero ».'},
+   {who:'Camarero',text:'Muy bien. ¿Y para beber?',tr:'Très bien. Et comme boisson ?'},
+   {who:'Toi',text:'¿Me ___ traer agua, por favor?',tr:'Pouvez-vous m\'apporter de l\'eau, s\'il vous plaît ?',opts:['puede','pode','puedo'],a:0,note:'Politesse avec « usted » → <b>puede</b> (o→ue). <em>Puedo</em> = « je peux » (mauvais sujet ici).'},
+   {who:'Camarero',text:'Enseguida. ¿Algo más?',tr:'Tout de suite. Autre chose ?'},
+   {who:'Toi',text:'Al final, ¿nos trae la ___, por favor?',tr:'Pour finir, vous nous apportez l\'addition, s\'il vous plaît ?',opts:['cuenta','carta','propina'],a:0,note:'L\'addition = <b>la cuenta</b>. <em>Carta</em> = le menu, <em>propina</em> = le pourboire.'},
+   {who:'Camarero',text:'Claro, ahora mismo.',tr:'Bien sûr, tout de suite.'},
+ ]},
+ {id:'piso',title:'🏙️ Chercher un logement',lvl:'A2',lines:[
+   {who:'Agente',text:'Tengo dos pisos para enseñarle. El primero tiene 60 metros, el segundo 90.',tr:'J\'ai deux appartements à vous montrer. Le premier fait 60 m², le second 90.'},
+   {who:'Toi',text:'Entonces el segundo es ___ el primero.',tr:'Alors le second est plus grand que le premier.',opts:['más grande que','más grande como','tan grande que'],a:0,note:'Supériorité → <b>más… que</b>. « como » ne s\'emploie qu\'avec <em>tan</em>.'},
+   {who:'Agente',text:'Sí, pero el segundo también es más caro.',tr:'Oui, mais le second est aussi plus cher.'},
+   {who:'Toi',text:'El primero es ___ el segundo, mejor para mi presupuesto.',tr:'Le premier est moins cher que le second, mieux pour mon budget.',opts:['menos caro que','menos caro como','tan caro'],a:0,note:'Infériorité → <b>menos… que</b>.'},
+   {who:'Agente',text:'El barrio del primero es muy tranquilo y luminoso.',tr:'Le quartier du premier est très calme et lumineux.'},
+   {who:'Toi',text:'¿Y es ___ el segundo de luminoso?',tr:'Et est-il aussi lumineux que le second ?',opts:['tan luminoso como','tan luminoso que','más luminoso como'],a:0,note:'Égalité → <b>tan… como</b> (aussi… que).'},
+   {who:'Agente',text:'Igual de luminoso, sí.',tr:'Tout aussi lumineux, oui.'},
+   {who:'Toi',text:'Entonces me quedo con el primero: para mí es ___ opción.',tr:'Alors je prends le premier : pour moi c\'est la meilleure option.',opts:['la mejor','la más buena','la más mejor'],a:0,note:'« le meilleur » → <b>mejor</b>, jamais « más bueno » (comme « plus bon » n\'existe pas en français).'},
+   {who:'Agente',text:'¡Perfecto! Preparo el contrato.',tr:'Parfait ! Je prépare le contrat.'},
+ ]},
 ];
 let DLG={sc:null,i:0};
 (function initDlg(){
   const pickBox=document.getElementById('dlgPick');
   DIALOGUES.forEach(d=>{
-    const b=document.createElement('button');b.className='btn';b.textContent=d.title;
+    const b=document.createElement('button');b.className='btn'+(d.lvl==='A2'?' sun':'');
+    b.innerHTML=d.title.replace(/</g,'&lt;')+' <span class="lvl-badge">'+(d.lvl||'A1')+'</span>';
     b.addEventListener('click',()=>startDlg(d));
     pickBox.appendChild(b);
   });
@@ -3120,20 +3161,56 @@ function renderLessonNotes(){
 })();
 
 /* ═══════════ EXAMEN ═══════════ */
-let EX={list:[],i:0,pts:0,max:0,timer:null,time:720,review:[],verbOK:false,level:null};
-document.getElementById('examStart').addEventListener('click',()=>startExam(null));
-document.getElementById('examRetry').addEventListener('click',()=>startExam(EX.level));
-function startExam(levelId){
-  goto('exam');
-  const qs=[
-    ...genSurvie(2).map(q=>({...q,kind:'mcq',pts:1})),
-    ...genNombres(2).map(q=>({...q,kind:'mcq',pts:1})),
-    ...pick(PATTERN_Q,4).map(q=>({...q,kind:'mcq',t:'PATTERN',pts:1})),
-    ...genGenre(2).map(q=>({...q,kind:'mcq',pts:1})),
-    ...pick(FAUX_Q,2).map(q=>({...q,kind:'mcq',t:'FAUX AMI',pts:1})),
-    ...pick([...CONJ_SE,...CONJ_REG],3).map(q=>({...q,kind:'conj',t:'CONJUGAISON',pts:2})),
+let EX={list:[],i:0,pts:0,max:0,timer:null,time:720,review:[],verbOK:false,level:null,code:'A1'};
+document.getElementById('examRetry').addEventListener('click',()=>startExam(EX.level,EX.code));
+function a2ExamReady(){return LEVELS_BY.A2.slice(0,6).every(lv=>(S.levels[lv.id]||{}).passed)}
+function renderExamIntro(){
+  const box=document.getElementById('examChoice');if(!box)return;
+  const ready=a2ExamReady();
+  const defs=[
+    {code:'A1',emoji:'🎓',title:'Examen A1',ok:true,
+     comp:'2 survie · 2 nombres · 4 patterns · 2 genre · 2 faux amis · 3 conjugaisons',
+     sub:'12/20 valide le niveau A1'},
+    {code:'A2',emoji:'🌿',title:'Examen A2',ok:ready,
+     comp:'3 indefinido · 3 imperfecto · 3 « le bon temps » · 2 comparer · 2 diphtongue · 2 vocabulaire',
+     sub:ready?'12/20 termine A2 et débloque B1 🗺️':'🔒 Valide d\'abord les 6 modules A2'},
   ];
-  EX={list:shuffle(qs),i:0,pts:0,review:[],time:720,timer:null,verbOK:false,level:levelId};
+  box.innerHTML='';
+  defs.forEach(d=>{
+    const c=document.createElement(d.ok?'button':'div');
+    c.className='card exam-opt'+(d.ok?'':' locked');
+    c.innerHTML='<div class="exam-opt-emoji" aria-hidden="true">'+d.emoji+'</div><h3>'+d.title+'</h3><p>'+d.comp+'</p><div class="exam-opt-sub">'+d.sub+'</div>';
+    if(d.ok){
+      c.setAttribute('aria-label','Commencer l\'examen '+d.code);
+      c.addEventListener('click',()=>startExam(d.code==='A2'?'a2_final':null,d.code));
+    }else{c.setAttribute('aria-disabled','true')}
+    box.appendChild(c);
+  });
+}
+function startExam(levelId,code){
+  code=code||'A1';
+  goto('exam');
+  let qs;
+  if(code==='A2'){
+    qs=[
+      ...pick(CONJ_IND,3).map(q=>({...q,kind:'conj',t:'INDEFINIDO',pts:2})),
+      ...pick(CONJ_IMP,3).map(q=>({...q,kind:'conj',t:'IMPERFECTO',pts:2})),
+      ...pick(CONJ_DUEL,3).map(q=>({...q,kind:'conj',t:'LE BON TEMPS',pts:2})),
+      ...pick(COMP_Q,2).map(q=>({...q,kind:'mcq',t:'COMPARER',pts:1})),
+      ...pick(DIPT_Q,2).map(q=>({...q,kind:'mcq',t:'DIPHTONGUE',pts:1})),
+      ...genVocab2(2).map(q=>({...q,kind:'mcq',pts:1})),
+    ];
+  }else{
+    qs=[
+      ...genSurvie(2).map(q=>({...q,kind:'mcq',pts:1})),
+      ...genNombres(2).map(q=>({...q,kind:'mcq',pts:1})),
+      ...pick(PATTERN_Q,4).map(q=>({...q,kind:'mcq',t:'PATTERN',pts:1})),
+      ...genGenre(2).map(q=>({...q,kind:'mcq',pts:1})),
+      ...pick(FAUX_Q,2).map(q=>({...q,kind:'mcq',t:'FAUX AMI',pts:1})),
+      ...pick([...CONJ_SE,...CONJ_REG],3).map(q=>({...q,kind:'conj',t:'CONJUGAISON',pts:2})),
+    ];
+  }
+  EX={list:shuffle(qs),i:0,pts:0,review:[],time:720,timer:null,verbOK:false,level:levelId,code:code};
   EX.max=EX.list.reduce((s,q)=>s+q.pts,0);
   document.getElementById('examIntro').style.display='none';
   document.getElementById('examResultZone').style.display='none';
@@ -3185,6 +3262,7 @@ function showExamQ(){
   }else{
     opt.style.display='none';cz.style.display='block';
     fr.style.display='block';fr.textContent='🇫🇷 '+q.fr;
+    document.getElementById('examStep1Label').textContent=q.tense?'① Indefinido ou imperfecto ?':'① Quel verbe ?';
     document.getElementById('examQuestion').innerHTML=q.es.replace('___','<span class="blank">?</span>');
     document.getElementById('examStep2').style.display='none';
     document.getElementById('examInput').value='';
@@ -3238,18 +3316,26 @@ function endExam(timeout){
   const note=Math.round(EX.pts/EX.max*20*10)/10;
   if(S.bestExam===null||note>S.bestExam)S.bestExam=note;
   addXP(Math.round(note*2));
-  const a1Before=cefrDone('A1');
-  if(note>=12){award('diploma');recordLevel('final',Math.round(note/20*100))}
-  if(note>=16)award('honor');
-  if(note>=12&&!a1Before){renderTrail();setTimeout(()=>toast('🎉 Niveau A1 terminé — A2 est débloqué sur le chemin !'),1200);}
+  if(EX.code==='A2'){
+    const a2Before=cefrDone('A2');
+    if(note>=12){award('diplomaA2');recordLevel('a2_final',Math.round(note/20*100));markCefrDone('A2')}
+    if(note>=16)award('honorA2');
+    if(note>=12&&!a2Before){renderTrail();setTimeout(()=>toast('🎉 Niveau A2 terminé — B1 est débloqué sur le chemin !'),1200);}
+  }else{
+    const a1Before=cefrDone('A1');
+    if(note>=12){award('diploma');recordLevel('final',Math.round(note/20*100))}
+    if(note>=16)award('honor');
+    if(note>=12&&!a1Before){renderTrail();setTimeout(()=>toast('🎉 Niveau A1 terminé — A2 est débloqué sur le chemin !'),1200);}
+  }
   document.getElementById('examNote').innerHTML=note+'<small>/20</small>';
   const m=note>=18?'Mention Excellent 🏆':note>=16?'Mention Très Bien 🥇':note>=14?'Mention Bien 🥈':note>=12?'Mention Assez Bien 🥉':note>=10?'Admis ✅':'Ajourné — repasse-le ! 📖';
   document.getElementById('examMention').textContent=m;
+  const lvlName=EX.code==='A2'?'A2':'A1';
   document.getElementById('examComment').textContent=
     (timeout?'⏱️ Temps écoulé ! ':'')+
     (note>=14?'Tu convertis le français en espagnol par la logique, pas par cœur. Objectif atteint.'
-    :note>=12?'Niveau final validé ! Retravaille les points rouges pour viser la mention.'
-    :'Chaque erreur ci-dessous pointe UNE règle précise à revoir dans les leçons. 12/20 pour valider le niveau final.');
+    :note>=12?'Niveau '+lvlName+' validé ! Retravaille les points rouges pour viser la mention.'
+    :'Chaque erreur ci-dessous pointe UNE règle précise à revoir dans les leçons. 12/20 pour valider le niveau '+lvlName+'.');
   const rv=document.getElementById('examReview');rv.innerHTML='';
   EX.review.forEach(r=>{
     const d=document.createElement('div');
@@ -3541,7 +3627,7 @@ document.querySelectorAll('main table').forEach(t=>{
 });
 decorateSayables(document);
 render();renderBadges();renderLevels();renderTrail();
-renderNotes();renderLessonNotes();
+renderNotes();renderLessonNotes();renderExamIntro();
 initAccount();
 /* on démarre en bas du chemin, sur le niveau en cours */
 setTimeout(()=>{
