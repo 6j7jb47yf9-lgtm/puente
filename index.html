@@ -2,9 +2,16 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Puente — apprends l'espagnol depuis le français : leçons, jeux, dialogues, flashcards et examens de A1 à C2, avec audio.">
 <meta name="theme-color" content="#FF4E64">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Puente">
 <title>Puente · Apprendre l'espagnol de zéro</title>
 <script>
 /* applique le thème AVANT le premier rendu (zéro flash) */
@@ -47,11 +54,11 @@ var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('co
 html.theme-anim,html.theme-anim *,html.theme-anim *::before,html.theme-anim *::after{transition:background-color .2s ease,color .2s ease,border-color .2s ease,box-shadow .2s ease,fill .2s ease,stroke .2s ease}
 html.reduce-anim,html.reduce-anim *,html.reduce-anim *::before,html.reduce-anim *::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--sand);color:var(--ink);min-height:100vh;font-size:16px;line-height:1.55;font-weight:600}
+html{scroll-behavior:smooth;touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--sand);color:var(--ink);min-height:100vh;font-size:16px;line-height:1.55;font-weight:600;touch-action:manipulation}
 .azulejo{height:8px;background:linear-gradient(90deg,var(--coral) 0 20%,var(--sun) 20% 40%,var(--leaf) 40% 60%,var(--sky) 60% 80%,var(--grape) 80% 100%)}
-header{background:var(--card);position:sticky;top:0;z-index:50;box-shadow:0 2px 0 var(--line)}
-.header-inner{max-width:1120px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header{background:var(--card);position:sticky;top:0;z-index:50;box-shadow:0 2px 0 var(--line);padding-top:env(safe-area-inset-top)}
+.header-inner{max-width:1120px;margin:0 auto;padding:12px max(20px,env(safe-area-inset-right)) 12px max(20px,env(safe-area-inset-left));display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .logo{font-family:var(--display);font-weight:800;font-size:1.6rem;letter-spacing:-0.01em;color:var(--coral);display:flex;align-items:baseline;gap:8px}
 .logo span{font-family:var(--sans);font-size:.66rem;font-weight:800;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;background:var(--soft-coral);padding:3px 8px;border-radius:999px}
 nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
@@ -66,7 +73,7 @@ nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
 .gear-btn::after{content:"";position:absolute;inset:-4px;border-radius:50%}
 .gear-btn:hover{filter:brightness(.96)}
 .gear-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
-main{max-width:1000px;margin:0 auto;padding:28px 20px 90px}
+main{max-width:1000px;margin:0 auto;padding:28px max(20px,env(safe-area-inset-right)) calc(90px + env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))}
 section.view{display:none}
 section.view.active{display:block;animation:fadein .25s ease}
 @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -341,9 +348,9 @@ button.exam-opt:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
 .vm-actions{display:flex;gap:10px;margin-top:18px}
 .vm-note{font-size:.76rem;color:var(--muted);margin-top:16px;padding-top:14px;border-top:2px solid var(--sand);line-height:1.5;font-weight:600}
 /* TOAST */
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--ink);color:var(--sand);border-radius:18px;padding:14px 22px;font-family:var(--display);font-weight:700;z-index:100;transition:transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.28);max-width:90vw;text-align:center;pointer-events:none}
+#toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(140px);background:var(--ink);color:var(--sand);border-radius:18px;padding:14px 22px;font-family:var(--display);font-weight:700;z-index:100;transition:transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.28);max-width:90vw;text-align:center;pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
-footer{background:var(--card);padding:22px;text-align:center;font-family:var(--sans);font-weight:700;font-size:.78rem;color:var(--muted);box-shadow:0 -2px 0 var(--line)}
+footer{background:var(--card);padding:22px 22px calc(22px + env(safe-area-inset-bottom));text-align:center;font-family:var(--sans);font-weight:700;font-size:.78rem;color:var(--muted);box-shadow:0 -2px 0 var(--line)}
 /* CARNET DE NOTES */
 .carnet-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .carnet-bar .conj-input{flex:1;min-width:200px;font-size:1rem;width:auto}
@@ -362,7 +369,7 @@ footer{background:var(--card);padding:22px;text-align:center;font-family:var(--s
 .note-btn:active{transform:translateY(1px)}
 .note-btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 .note-btn.pin[aria-pressed="true"]{background:var(--soft-sun);border-color:var(--sun-d);color:var(--warn-text)}
-.note-input{width:100%;font-family:var(--sans);font-weight:600;font-size:.95rem;background:var(--card);color:var(--ink);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:10px 12px;resize:none;overflow:hidden;min-height:60px;line-height:1.5}
+.note-input{width:100%;font-family:var(--sans);font-weight:600;font-size:1rem;background:var(--card);color:var(--ink);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:10px 12px;resize:none;overflow:hidden;min-height:60px;line-height:1.5}
 .note-input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 .note-empty{text-align:center;color:var(--muted);font-weight:700;padding:26px 18px}
 .lnotes{margin-top:22px;border-top:2px solid var(--sand);padding-top:6px}
@@ -408,11 +415,11 @@ input::placeholder{color:var(--muted);opacity:.8}
   td.es::after{content:""}
 }
 @media (max-width:640px){
-  .header-inner{padding:10px 12px;gap:8px}
+  .header-inner{padding:10px max(12px,env(safe-area-inset-right)) 10px max(12px,env(safe-area-inset-left));gap:8px}
   nav{order:3;width:100%;margin-left:0;flex-wrap:nowrap;overflow-x:auto;padding:4px 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   nav::-webkit-scrollbar{display:none}
   .tab-btn{white-space:nowrap;font-size:.78rem;padding:7px 11px}
-  main{padding:20px 14px 70px}
+  main{padding:20px max(14px,env(safe-area-inset-right)) calc(70px + env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
   .tbtn{width:84px;height:84px}
   .tbtn .tcode{font-size:1.3rem}
   .dlg-opts,.dlg-note{margin-left:0}
@@ -3634,6 +3641,27 @@ setTimeout(()=>{
   const cur=document.querySelector('#cefrTrail .tnode.current');
   if(cur)cur.scrollIntoView({behavior:'smooth',block:'center'});
 },400);
+
+/* ═══════════ ANTI-ZOOM ACCIDENTEL (comportement app) ═══════════ */
+/* Bloque le pinch (Safari : gesture*) et le double-tap-to-zoom, SANS toucher au
+   zoom d'accessibilité système ni au scroll. touch-action:manipulation gère déjà
+   le double-tap sur navigateurs compatibles ; ceci couvre le reste. */
+(function preventAccidentalZoom(){
+  const skip=t=>t&&t.closest&&t.closest('input,textarea,select,[contenteditable="true"],.table-wrap');
+  ['gesturestart','gesturechange','gestureend'].forEach(ev=>{
+    document.addEventListener(ev,e=>{if(!skip(e.target))e.preventDefault()},{passive:false});
+  });
+  document.addEventListener('dblclick',e=>{if(!skip(e.target))e.preventDefault()},{passive:false});
+})();
+
+/* ═══════════ SERVICE WORKER (PWA, hors ligne) ═══════════ */
+if('serviceWorker' in navigator){
+  try{
+    window.addEventListener('load',()=>{
+      navigator.serviceWorker.register('/sw.js').catch(()=>{});
+    });
+  }catch(e){}
+}
 </script>
 </body>
 </html>
