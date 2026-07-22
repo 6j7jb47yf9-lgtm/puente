@@ -4,7 +4,7 @@
      la dernière version après un push, avec repli sur le cache si hors ligne.
    - autres ressources même origine (manifest, icônes) : CACHE-FIRST.
    - cross-origin (CDN Supabase, Google Fonts) : on ne s'en mêle pas (passe au réseau). */
-const CACHE = 'puente-v1';
+const CACHE = 'puente-v2';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/icon-180.png'];
 
 self.addEventListener('install', e => {
