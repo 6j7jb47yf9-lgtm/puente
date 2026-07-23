@@ -422,6 +422,20 @@ input::placeholder{color:var(--muted);opacity:.8}
 .pdj-note b{color:var(--grape-text)}
 .mode-pick{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
 .jeux-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+/* CONSTRUIRE LA PHRASE */
+.bp-answer{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:60px;padding:12px 14px;margin:12px 0 6px;background:var(--sand);border:2px dashed var(--line2);border-radius:16px}
+.bp-answer.empty{align-items:center}
+.bp-answer.empty::before{content:attr(data-ph);color:var(--muted);font-style:italic;font-weight:600;font-size:.92rem}
+.bp-bank{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px;min-height:48px}
+.bp-tok{font-family:var(--display);font-weight:600;font-size:1.06rem;line-height:1.1;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:8px 14px;cursor:pointer;box-shadow:var(--shadow-1);transition:transform .1s cubic-bezier(.2,.8,.2,1),background .1s;max-width:100%;overflow-wrap:anywhere}
+.bp-tok:hover{background:var(--soft-grape)}
+.bp-tok:active{transform:translateY(1px) scale(.97)}
+.bp-tok:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.bp-answer .bp-tok{background:var(--soft-grape);border-color:var(--line2)}
+.bp-answer .bp-tok.wrong{background:var(--soft-coral);border-color:var(--coral);color:var(--ko-text)}
+.bp-answer .bp-tok.good{background:var(--soft-leaf);border-color:var(--leaf);color:var(--ok-text)}
+.bp-answer.solved .bp-tok{animation:pop .35s ease}
+.bp-tok:disabled{cursor:default}
 @media print{
   header,footer,nav,.fiche-tools,.pdj,.dash,.trail,.trail-intro,.lnotes{display:none!important}
   body{background:#fff}
@@ -1364,6 +1378,7 @@ input::placeholder{color:var(--muted);opacity:.8}
       <div class="card clickable" id="conjCard" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🔧</div><h3>Conjugaison</h3><p>Présent, <b>futur proche</b>, <b>passé composé</b> — et les passés A2 : choisis le verbe puis conjugue-le.</p></div>
       <div class="card clickable" data-quiz="diptongo" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🥾 <em>e→ie</em></div><h3>Diphtongue <span class="lvl-badge">A2</span></h3><p>quiero, puedo, pido… et la botte qui protège nosotros.</p></div>
       <div class="card clickable" data-quiz="vocab2" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🧳</div><h3>Vocabulaire <span class="lvl-badge">A2</span></h3><p>Voyage, restaurant, santé, ville — dans les deux sens.</p></div>
+      <div class="card clickable" id="buildCard" tabindex="0" role="button"><div class="corner"></div><div class="pattern-key">🧩</div><h3>Construire la phrase</h3><p>Remets les mots espagnols dans le bon ordre — rien à écrire, tu ne fais que taper dessus.</p></div>
     </div>
   </div>
 
@@ -1481,6 +1496,37 @@ input::placeholder{color:var(--muted);opacity:.8}
           <button class="btn sun" id="conjNext" style="display:none">Suivant →</button>
           <button class="btn ghost small" id="conjQuit">Quitter</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSTRUIRE LA PHRASE (sélection de mots, sans saisie) -->
+  <div class="quiz-shell" id="buildArea" style="display:none">
+    <div class="mode-pick" id="buildModes">
+      <button class="btn sun" data-build="a1">🧩 Niveau A1</button>
+      <button class="btn" data-build="a2">🧩 Niveau A2 <span class="lvl-badge">A2</span></button>
+      <button class="btn red" data-build="mix">🎲 Mélangé</button>
+    </div>
+    <div id="buildGame" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="qmeta" id="bpCounter"></span>
+        <span class="qmeta" id="bpScore"></span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="bpProg"></div></div>
+      <div class="qcard">
+        <div class="qmeta">🧩 Reconstruis la phrase espagnole</div>
+        <div class="fr-hint" id="bpFr"></div>
+        <div class="bp-answer empty" id="bpAnswer" role="list" aria-label="Ta phrase" data-ph="Tape les mots dans le bon ordre…"></div>
+        <div class="bp-bank" id="bpBank" role="list" aria-label="Mots disponibles"></div>
+        <div class="feedback" id="bpFeedback"></div>
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn sun" id="bpCheck" disabled>Vérifier</button>
+          <button class="btn ghost small" id="bpHint">💡 Indice</button>
+          <button class="btn sun" id="bpNext" style="display:none">Suivant →</button>
+          <button class="btn ghost small" id="bpRetry" style="display:none">↺ Réessayer</button>
+          <button class="btn ghost small" id="bpQuit">Quitter</button>
+        </div>
+        <div class="kbd-hint">⌨️ Tab pour parcourir les mots, Entrée/Espace pour poser ou retirer.</div>
       </div>
     </div>
   </div>
@@ -1860,6 +1906,7 @@ const BADGES=[
  {id:'genero',icon:'⚖️',name:'El o La',desc:'Valider le genre'},
  {id:'conj',icon:'🔧',name:'Conjugador',desc:'Valider la conjugaison'},
  {id:'oreja',icon:'👂',name:'Buena oreja',desc:'Dictée parfaite 8/8'},
+ {id:'constructor',icon:'🧩',name:'Constructor',desc:'Série « Construire la phrase » sans faute'},
  {id:'diploma',icon:'🎓',name:'Diplomado',desc:'Examen A1 ≥ 12/20'},
  {id:'honor',icon:'🏆',name:'Mención de honor',desc:'Examen A1 ≥ 16/20'},
  {id:'diplomaA2',icon:'🎓',name:'Diplomado A2',desc:'Examen A2 ≥ 12/20'},
@@ -2377,7 +2424,7 @@ document.querySelectorAll('[data-quiz]').forEach(b=>{
   b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
 });
 function hideJeuxAll(){
-  ['jeuxMenu','quizArea','dicteeArea','flashArea','conjArea','gameResult'].forEach(id=>document.getElementById(id).style.display='none');
+  ['jeuxMenu','quizArea','dicteeArea','flashArea','conjArea','buildArea','gameResult'].forEach(id=>document.getElementById(id).style.display='none');
 }
 function backToJeux(){hideJeuxAll();document.getElementById('jeuxMenu').style.display='block'}
 function startQuiz(mode,levelId){
@@ -2715,6 +2762,172 @@ function endConj(){
     ()=>startConj(CJ.mode,CJ.level),
     CJ.level?(pct>=70?'Module validé ! Le suivant est déverrouillé 🗺️':'Il faut 70 %. Revois la leçon et retente !')
     :(pct>=70?'Les marqueurs -o / -s / -mos / -n deviennent des réflexes.':'Concentre-toi sur : yo → -o, tú → -s, nosotros → -mos, ellos → -n.'));
+}
+
+/* ═══════════ CONSTRUIRE LA PHRASE (sélection de mots, sans saisie) ═══════════ */
+/* ~30 phrases où l'ORDRE espagnol diffère du français ; intr = intrus plausibles (jamais utiles). */
+const PHRASES=[
+ /* place de l'adjectif (après le nom) */
+ {fr:'une grande maison',es:'una casa grande',intr:['un','grandes'],note:'L\'adjectif suit le nom : <b>casa grande</b> (pas « grande casa »).',lvl:'A1'},
+ {fr:'une voiture rouge',es:'un coche rojo',intr:['roja','una'],note:'Adjectif après le nom, accordé au masculin : <b>coche rojo</b>.',lvl:'A1'},
+ {fr:'un livre intéressant',es:'un libro interesante',intr:['interesantes'],note:'L\'adjectif se place après : <b>libro interesante</b>.',lvl:'A1'},
+ {fr:'la nourriture espagnole',es:'la comida española',intr:['el','español'],note:'Adjectif après le nom, accordé au féminin : <b>comida española</b>.',lvl:'A1'},
+ {fr:'une bonne idée',es:'una buena idea',intr:['bueno','un'],note:'Exception fréquente : <em>bueno</em> peut précéder → <b>buena idea</b>.',lvl:'A1'},
+ /* pronoms compléments (avant le verbe) */
+ {fr:'je m\'appelle Ana',es:'me llamo Ana',intr:['soy','te'],note:'Le pronom précède le verbe : <b>me llamo</b> (litt. « je me nomme »).',lvl:'A1'},
+ {fr:'je t\'aime',es:'te quiero',intr:['tú','me'],note:'Le pronom d\'abord : <b>te quiero</b> (litt. « te veux »).',lvl:'A1'},
+ {fr:'elle s\'appelle Sofía',es:'se llama Sofía',intr:['me','es'],note:'<b>se llama</b> : pronom avant le verbe.',lvl:'A1'},
+ {fr:'j\'aime le café',es:'me gusta el café',intr:['gusto','yo'],note:'Tournure inversée : <b>me gusta el café</b> (litt. « le café me plaît »).',lvl:'A1'},
+ {fr:'je ne le sais pas',es:'no lo sé',intr:['no lo','se'],note:'Ordre : <b>no + lo + sé</b>. Le pronom colle au verbe.',lvl:'A1'},
+ {fr:'je te le dis',es:'te lo digo',intr:['lo te','dico'],note:'Deux pronoms avant le verbe, dans l\'ordre <b>te lo</b>.',lvl:'A1'},
+ /* négation */
+ {fr:'je ne parle pas anglais',es:'no hablo inglés',intr:['no pas','hablas'],note:'Une seule négation, avant le verbe : <b>no hablo</b>.',lvl:'A1'},
+ {fr:'je n\'ai pas le temps',es:'no tengo tiempo',intr:['tengo no','el'],note:'<b>no</b> juste avant le verbe : no tengo tiempo.',lvl:'A1'},
+ {fr:'je ne comprends pas',es:'no entiendo',intr:['comprendo','no pas'],note:'<b>entender</b> = comprendre (faux ami). no entiendo.',lvl:'A1'},
+ {fr:'je ne mange jamais de viande',es:'nunca como carne',intr:['no','carnes'],note:'<b>nunca</b> avant le verbe suffit (pas besoin de « no »).',lvl:'A1'},
+ /* questions inversées avec ¿ ? */
+ {fr:'comment vas-tu ?',es:'¿cómo estás?',intr:['eres','como'],note:'Question ouverte par <b>¿</b> et fermée par <b>?</b>. Lieu/état → estar.',lvl:'A1'},
+ {fr:'où est la gare ?',es:'¿dónde está la estación?',intr:['es','el'],note:'Localisation → <b>está</b>. N\'oublie pas les <b>¿ ?</b>.',lvl:'A1'},
+ {fr:'quel âge as-tu ?',es:'¿cuántos años tienes?',intr:['eres','año'],note:'L\'âge → <b>tener</b> : ¿cuántos años tienes?',lvl:'A1'},
+ {fr:'quelle heure est-il ?',es:'¿qué hora es?',intr:['está','cómo'],note:'L\'heure → <b>ser</b> : ¿qué hora es?',lvl:'A1'},
+ {fr:'d\'où viens-tu ?',es:'¿de dónde eres?',intr:['estás','a'],note:'Origine → <b>ser</b> : ¿de dónde eres?',lvl:'A1'},
+ {fr:'combien ça coûte ?',es:'¿cuánto cuesta?',intr:['cuestas','cuántos'],note:'Question voyageur : ¿cuánto cuesta?',lvl:'A1'},
+ /* ser / estar / tener */
+ {fr:'j\'ai faim',es:'tengo hambre',intr:['estoy','soy'],note:'La faim → <b>tener</b> : tengo hambre (jamais « estoy »).',lvl:'A1'},
+ {fr:'j\'ai vingt ans',es:'tengo veinte años',intr:['soy','año'],note:'L\'âge → <b>tener</b> : tengo veinte años.',lvl:'A1'},
+ {fr:'je suis très fatigué',es:'estoy muy cansado',intr:['soy','cansada'],note:'État passager → <b>estar</b> : estoy cansado.',lvl:'A1'},
+ {fr:'nous sommes de France',es:'somos de Francia',intr:['estamos','en'],note:'Origine → <b>ser</b> : somos de Francia.',lvl:'A1'},
+ /* A2 : passés, comparatif, diphtongue */
+ {fr:'hier j\'ai mangé une paella',es:'ayer comí una paella',intr:['como','comía'],note:'Passé daté (<em>ayer</em>) → indefinido : <b>comí</b>.',lvl:'A2'},
+ {fr:'nous sommes allés à Séville',es:'fuimos a Sevilla',intr:['íbamos','en'],note:'Voyage terminé → indefinido : <b>fuimos</b> (ser/ir partagent la forme).',lvl:'A2'},
+ {fr:'quand j\'étais petit je jouais au foot',es:'cuando era pequeño jugaba al fútbol',intr:['fui','jugué'],note:'Décor du passé → imperfecto : <b>era</b> / <b>jugaba</b>.',lvl:'A2'},
+ {fr:'Madrid est plus grande que Séville',es:'Madrid es más grande que Sevilla',intr:['como','mejor'],note:'Comparatif : <b>más … que</b> (grande entre les deux).',lvl:'A2'},
+ {fr:'je veux un café au lait',es:'quiero un café con leche',intr:['quero','quieres'],note:'querer diphtongue : <b>quiero</b> (e→ie).',lvl:'A2'},
+ {fr:'il fait très chaud aujourd\'hui',es:'hace mucho calor hoy',intr:['está','muy'],note:'La météo → <b>hacer</b> : hace calor. Quantité d\'un nom → <b>mucho</b>.',lvl:'A2'},
+];
+function tokenizeES(es){
+  const out=[];
+  es.trim().split(/\s+/).forEach(w=>{
+    const lead=[],tail=[];
+    while(/^[¿¡]/.test(w)){lead.push(w[0]);w=w.slice(1);}
+    while(/[?!]$/.test(w)){tail.unshift(w.slice(-1));w=w.slice(0,-1);}
+    lead.forEach(t=>out.push(t)); if(w)out.push(w); tail.forEach(t=>out.push(t));
+  });
+  return out;
+}
+let BP={list:[],i:0,score:0,mode:'',target:[],bank:[],answer:[],hintUsed:false,locked:false};
+document.getElementById('buildCard').addEventListener('click',()=>{hideJeuxAll();document.getElementById('buildArea').style.display='block';document.getElementById('buildModes').style.display='flex';document.getElementById('buildGame').style.display='none'});
+document.getElementById('buildCard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();document.getElementById('buildCard').click()}});
+document.querySelectorAll('[data-build]').forEach(b=>b.addEventListener('click',()=>startBuild(b.dataset.build)));
+function startBuild(mode){
+  goto('jeux');
+  let pool=PHRASES;
+  if(mode==='a1')pool=PHRASES.filter(p=>p.lvl==='A1');
+  else if(mode==='a2')pool=PHRASES.filter(p=>p.lvl==='A2');
+  BP={list:pick(pool,Math.min(8,pool.length)),i:0,score:0,mode,target:[],bank:[],answer:[],hintUsed:false,locked:false};
+  hideJeuxAll();
+  document.getElementById('buildArea').style.display='block';
+  document.getElementById('buildModes').style.display='none';
+  document.getElementById('buildGame').style.display='block';
+  loadPhrase();
+}
+function loadPhrase(){
+  const p=BP.list[BP.i];
+  BP.target=tokenizeES(p.es);
+  BP.answer=[];BP.hintUsed=false;BP.locked=false;
+  let uid=0;
+  const toks=BP.target.map(t=>({id:'t'+(uid++),text:t,d:false}))
+    .concat((p.intr||[]).map(t=>({id:'t'+(uid++),text:t,d:true})));
+  BP.bank=shuffle(toks);
+  document.getElementById('bpCounter').textContent='Phrase '+(BP.i+1)+'/'+BP.list.length;
+  document.getElementById('bpScore').textContent='Score : '+BP.score;
+  document.getElementById('bpProg').style.width=(BP.i/BP.list.length*100)+'%';
+  document.getElementById('bpFr').textContent='🇫🇷 '+p.fr;
+  const f=document.getElementById('bpFeedback');f.className='feedback';f.innerHTML='';
+  document.getElementById('bpNext').style.display='none';
+  document.getElementById('bpRetry').style.display='none';
+  document.getElementById('bpCheck').style.display='inline-block';
+  document.getElementById('bpHint').style.display='inline-block';
+  document.getElementById('bpHint').disabled=false;
+  renderBP();
+}
+function renderBP(){
+  const ans=document.getElementById('bpAnswer'),bank=document.getElementById('bpBank');
+  ans.innerHTML='';bank.innerHTML='';
+  ans.classList.toggle('empty',BP.answer.length===0);
+  ans.classList.remove('solved');
+  BP.answer.forEach(tok=>ans.appendChild(makeTok(tok,true)));
+  BP.bank.forEach(tok=>bank.appendChild(makeTok(tok,false)));
+  const check=document.getElementById('bpCheck');
+  check.disabled=BP.locked||BP.answer.length!==BP.target.length;
+}
+function makeTok(tok,placed){
+  const b=document.createElement('button');
+  b.className='bp-tok';b.textContent=tok.text;b.setAttribute('lang','es');
+  b.setAttribute('aria-label',(placed?'Retirer le mot ':'Placer le mot ')+tok.text);
+  if(BP.locked){b.disabled=true;return b}
+  b.addEventListener('click',()=>{
+    if(BP.locked)return;
+    if(placed){
+      BP.answer=BP.answer.filter(x=>x!==tok);BP.bank.push(tok);
+    }else{
+      BP.bank=BP.bank.filter(x=>x!==tok);BP.answer.push(tok);
+    }
+    renderBP();
+  });
+  return b;
+}
+function checkBP(){
+  if(BP.locked||BP.answer.length!==BP.target.length)return;
+  const p=BP.list[BP.i];
+  const ok=BP.answer.every((tok,idx)=>tok.text===BP.target[idx]);
+  BP.locked=true;
+  const f=document.getElementById('bpFeedback');
+  const ans=document.getElementById('bpAnswer');
+  ans.querySelectorAll('.bp-tok').forEach(b=>b.disabled=true);
+  document.getElementById('bpCheck').style.display='none';
+  document.getElementById('bpHint').style.display='none';
+  if(ok){
+    sfx.good();buzz(15);BP.score++;addXP(12);save();render();
+    ans.classList.add('solved');
+    [...ans.querySelectorAll('.bp-tok')].forEach(b=>b.classList.add('good'));
+    speak(p.es);
+    f.className='feedback ok';f.innerHTML='✅ ¡Exacto! <b lang="es">'+p.es+'</b>';
+    document.getElementById('bpNext').style.display='inline-block';
+    document.getElementById('bpNext').focus();
+  }else{
+    sfx.bad();buzz(60);
+    [...ans.querySelectorAll('.bp-tok')].forEach((b,idx)=>{if(BP.answer[idx].text!==BP.target[idx])b.classList.add('wrong')});
+    f.className='feedback ko';f.innerHTML='❌ Pas dans le bon ordre. La phrase juste : <b lang="es">'+p.es+'</b>'+(p.note?'<br>💡 '+p.note:'');
+    document.getElementById('bpRetry').style.display='inline-block';
+    document.getElementById('bpRetry').focus();
+  }
+}
+function hintBP(){
+  if(BP.locked||BP.hintUsed)return;
+  const nextIdx=BP.answer.length;
+  if(nextIdx>=BP.target.length)return;
+  const want=BP.target[nextIdx];
+  const tok=BP.bank.find(x=>!x.d&&x.text===want);
+  if(!tok)return;
+  BP.bank=BP.bank.filter(x=>x!==tok);BP.answer.push(tok);
+  BP.hintUsed=true;document.getElementById('bpHint').disabled=true;
+  renderBP();
+}
+document.getElementById('bpCheck').addEventListener('click',checkBP);
+document.getElementById('bpHint').addEventListener('click',hintBP);
+document.getElementById('bpQuit').addEventListener('click',backToJeux);
+document.getElementById('bpRetry').addEventListener('click',loadPhrase);
+document.getElementById('bpNext').addEventListener('click',()=>{
+  BP.i++;
+  if(BP.i<BP.list.length)loadPhrase();else endBuild();
+});
+function endBuild(){
+  const n=BP.list.length,pct=Math.round(BP.score/n*100);
+  award('first');
+  if(BP.score===n){award('constructor');confetti()}
+  showResult(BP.score+'<small>/'+n+'</small>',pct,()=>startBuild(BP.mode),
+    pct>=75?'L\'ordre des mots devient un réflexe — tu construis, tu ne récites pas.':'Repère où l\'espagnol change l\'ordre : adjectif après le nom, pronom avant le verbe, ¿ ? autour des questions.');
 }
 
 /* ═══════════ PARCOURS ═══════════ */
